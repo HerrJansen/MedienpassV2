@@ -7,7 +7,7 @@
 "azureActiveDirectory": {
 "registration": {
 "openIdConnectConfiguration": {
-"wellKnownConfigUrl": "https://www.google.com/search?q=https://login.microsoftonline.com/09c4bd58-1b8c-410d-930e-816015e61028/v2.0/.well-known/openid-configuration"
+"wellKnownConfigUrl": "https://login.microsoftonline.com/09c4bd58-1b8c-410d-930e-816015e61028/v2.0/.well-known/openid-configuration"
 }
 }
 }
