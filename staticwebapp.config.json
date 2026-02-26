@@ -2,17 +2,6 @@
   "navigationFallback": {
     "rewrite": "/index.html"
   },
-  "auth": {
-    "identityProviders": {
-      "azureActiveDirectory": {
-        "registration": {
-          "openIdConnectConfiguration": {
-            "wellKnownConfigUrl": "https://login.microsoftonline.com/09c4bd58-1b8c-410d-930e-816015e61028/v2.0/.well-known/openid-configuration"
-          }
-        }
-      }
-    }
-  },
   "routes": [
     {
       "route": "/.auth/login/aad",
@@ -30,4 +19,3 @@
     }
   }
 }
-```
