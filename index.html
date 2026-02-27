@@ -102,29 +102,27 @@
             const [activeStage, setActiveStage] = useState("5-6");
             const [loading, setLoading] = useState(true);
             const [syncing, setSyncing] = useState(false);
-            const [debugMsg, setDebugMsg] = useState(""); // Zeigt Fehler auf dem Bildschirm an
+            const [debugMsg, setDebugMsg] = useState("");
+            const [authRequired, setAuthRequired] = useState(false); // NEU: Steuert den Login-Button
 
             useEffect(() => {
                 const initApp = async () => {
                     try {
                         let payload = { clientPrincipal: null };
-                        // Wir prüfen nicht mehr ob die Origin mit http startet, da fetch relative URLs auch so nicht immer mag. 
-                        // Stattdessen versuchen wir es einfach und fangen den Fehler, falls wir nicht auf Azure sind.
                         try {
-                             // Erstelle eine absolute URL aus window.location.origin
                             const authUrl = new URL('/.auth/me', window.location.origin).toString();
                             const response = await fetch(authUrl);
                             if (response.ok) {
                                 payload = await response.json();
                             }
                         } catch (fetchErr) {
-                             console.log("Kann '/.auth/me' nicht erreichen (läuft vermutlich lokal/in Vorschau).", fetchErr);
+                             console.log("Kann '/.auth/me' nicht erreichen.", fetchErr);
                         }
                         
                         if (payload.clientPrincipal) {
                             setUser(payload.clientPrincipal);
-                            // Wenn Benutzer eingeloggt ist, lade Daten aus SharePoint
-                            fetchSharePointData(payload.clientPrincipal.userDetails);
+                            // Initialer Versuch: OHNE Popup (ssoSilent)
+                            fetchSharePointData(payload.clientPrincipal.userDetails, false);
                         } else {
                             setUser({ userDetails: "Gast-Nutzer (Nicht eingeloggt)" });
                             setLoading(false);
@@ -141,30 +139,44 @@
             // ==========================================
             // LOGIK: ABRUF VON MICROSOFT LISTS
             // ==========================================
-            const fetchSharePointData = async (userEmail) => {
+            // NEU: Parameter "usePopup" entscheidet, ob ein Popup forciert wird
+            const fetchSharePointData = async (userEmail, usePopup = false) => {
                 setSyncing(true);
-                setDebugMsg("Verbinde mit Microsoft Graph...");
+                setDebugMsg(usePopup ? "Öffne Login-Fenster..." : "Verbinde mit Microsoft Graph...");
                 
                 try {
-                    await msalInstance.initialize();
-                    const tokenRequest = { scopes: ["Sites.Read.All"] };
+                    // msalInstance muss initialisiert sein
+                    try { await msalInstance.initialize(); } catch (e) { /* Bereits initialisiert */ }
+                    
+                    const tokenRequest = { scopes: ["Sites.Read.All"], loginHint: userEmail };
                     let tokenResponse;
                     
                     try {
-                        console.log("Versuche leisen Login...");
-                        tokenResponse = await msalInstance.ssoSilent(tokenRequest);
+                        if (usePopup) {
+                            // Wird nur durch Klick auf den Button ausgelöst -> Browser blockiert NICHT
+                            tokenResponse = await msalInstance.loginPopup(tokenRequest);
+                            setAuthRequired(false);
+                        } else {
+                            // Versuch im Hintergrund -> Schlägt oft fehl, wenn noch keine Rechte erteilt wurden
+                            tokenResponse = await msalInstance.ssoSilent(tokenRequest);
+                        }
                     } catch (err) {
-                        console.log("Leiser Login fehlgeschlagen, fordere Popup an...", err);
-                        setDebugMsg("Bitte im Popup anmelden / Berechtigung erteilen...");
-                        tokenResponse = await msalInstance.loginPopup(tokenRequest);
+                        if (!usePopup) {
+                            console.log("Leiser Login fehlgeschlagen, Nutzer muss klicken.", err);
+                            setDebugMsg("Einmalige Freigabe erforderlich.");
+                            setAuthRequired(true); // Zeigt den Login-Button an
+                            setLoading(false);
+                            setSyncing(false);
+                            return; // Breche hier ab, warte auf Klick
+                        } else {
+                            throw err; // Wenn das Popup fehlschlägt, zeige echten Fehler
+                        }
                     }
 
                     const token = tokenResponse.accessToken;
                     setDebugMsg("Token erhalten, frage SharePoint Liste ab...");
 
-                    // URL zur Liste zusammenbauen
                     const graphUrl = `https://graph.microsoft.com/v1.0/sites/${MS_CONFIG.siteId}/lists/${MS_CONFIG.listId}/items?$expand=fields`;
-                    console.log("Graph URL:", graphUrl);
                     
                     const res = await fetch(graphUrl, {
                         headers: { Authorization: `Bearer ${token}` }
@@ -172,43 +184,33 @@
                     
                     if (res.ok) {
                         const data = await res.json();
-                        console.log("KOMPLETTE DATEN AUS SHAREPOINT:", data.value);
                         
-                        // Suche nach dem Schüler (Groß-/Kleinschreibung ignorieren)
                         const studentRow = data.value.find(item => 
                             item.fields.Title && 
                             item.fields.Title.toLowerCase() === userEmail.toLowerCase()
                         );
                         
                         if (studentRow) {
-                            console.log("Zeile für Schüler gefunden:", studentRow.fields);
-                            
-                            // WICHTIG: Die Spalte in SharePoint MUSS "Erledigte_Module" heißen
                             if (studentRow.fields.Erledigte_Module) {
                                 const modulesArray = studentRow.fields.Erledigte_Module.split(',').map(m => parseInt(m.trim()));
                                 setCompletedTasks(modulesArray);
                                 setDebugMsg("Daten erfolgreich geladen!");
                             } else {
-                                setDebugMsg("Schüler gefunden, aber Spalte 'Erledigte_Module' ist leer oder existiert nicht.");
+                                setDebugMsg("Schüler gefunden, aber Spalte 'Erledigte_Module' ist leer.");
                             }
                         } else {
-                            console.warn("Kein Eintrag in der SharePoint-Liste gefunden für:", userEmail);
                             setDebugMsg(`Kein Eintrag für ${userEmail} in SharePoint gefunden.`);
                         }
                     } else {
-                        const errorData = await res.text();
-                        console.error("Graph API Fehler:", errorData);
-                        setDebugMsg(`Fehler beim Abruf: ${res.status} - Bitte Konsole (F12) prüfen.`);
+                        setDebugMsg(`Fehler beim Abruf: ${res.status}`);
                     }
 
                 } catch (error) {
-                    console.error("Schwerer Fehler bei SharePoint Synchronisation:", error);
-                    setDebugMsg(`Schwerer Fehler: ${error.message}`);
+                    console.error("Fehler bei SharePoint Synchronisation:", error);
+                    setDebugMsg(`Popup blockiert oder geschlossen. Bitte Popups erlauben.`);
                 } finally {
                     setLoading(false);
                     setSyncing(false);
-                    
-                    // Verstecke die Erfolgsmeldung nach 3 Sekunden
                     setTimeout(() => {
                         setDebugMsg(prev => prev === "Daten erfolgreich geladen!" ? "" : prev);
                     }, 3000);
@@ -216,6 +218,29 @@
             };
 
             const progressValue = Math.round((completedTasks.length / 18) * 100);
+
+            // NEU: Der Login-Screen, der den Popup-Blocker austrickst
+            if (authRequired) {
+                return (
+                    <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 p-6">
+                        <div className="bg-white p-10 rounded-[3rem] shadow-2xl max-w-md w-full text-center border">
+                            <div className="mx-auto w-24 h-24 bg-red-50 rounded-full flex items-center justify-center mb-6 text-red-600">
+                                <Icon name="shield" size={48} />
+                            </div>
+                            <h2 className="text-2xl font-black mb-4 uppercase tracking-tighter text-slate-800">Datenzugriff erlauben</h2>
+                            <p className="text-slate-500 mb-8 font-medium">Damit der Medienpass deinen Fortschritt aus der Datenbank laden kann, musst du einmalig die Verbindung bestätigen.</p>
+                            <button 
+                                onClick={() => { setLoading(true); fetchSharePointData(user.userDetails, true); }}
+                                className="w-full text-white font-black uppercase px-8 py-4 rounded-2xl transition-all shadow-lg hover:scale-105 active:scale-95"
+                                style={{ backgroundColor: THOMA_RED }}
+                            >
+                                Mit Microsoft verbinden
+                            </button>
+                            <p className="text-[10px] text-slate-400 mt-4 uppercase font-bold tracking-widest">Bitte erlaube Popups für diese Seite</p>
+                        </div>
+                    </div>
+                );
+            }
 
             if (loading) {
                 return (
@@ -228,9 +253,8 @@
 
             return (
                 <div className="min-h-screen flex flex-col bg-slate-50 font-sans selection:bg-red-100 relative">
-                    {/* Debug-Meldung Leiste */}
                     {debugMsg && (
-                        <div className={`w-full text-center py-2 text-xs font-bold ${debugMsg.includes('Fehler') || debugMsg.includes('Kein Eintrag') ? 'bg-red-600 text-white' : 'bg-green-500 text-white'}`}>
+                        <div className={`w-full text-center py-2 text-xs font-bold ${debugMsg.includes('Fehler') || debugMsg.includes('blockiert') || debugMsg.includes('Kein Eintrag') ? 'bg-red-600 text-white' : 'bg-green-500 text-white'}`}>
                             DIAGNOSE: {debugMsg}
                         </div>
                     )}
