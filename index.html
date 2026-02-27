@@ -40,16 +40,18 @@
 
         const THOMA_RED = "#BF0D3E";
 
-        // MSAL Konfiguration für Graph API (Zurück zum stabilen Popup-Modus)
+        // MSAL Konfiguration - STRENG AUF REDIRECT OPTIMIERT
         const msalConfig = {
             auth: {
                 clientId: MS_CONFIG.clientId,
                 authority: `https://login.microsoftonline.com/${MS_CONFIG.tenantId}`,
                 redirectUri: window.location.origin,
+                // Verhindert zusätzliche Seiten-Neuladevorgänge, die den Token löschen könnten
+                navigateToLoginRequestUrl: false 
             },
             cache: {
-                cacheLocation: "localStorage",
-                storeAuthStateInCookie: true,
+                cacheLocation: "localStorage", // Wichtig für Redirects!
+                storeAuthStateInCookie: false,
             }
         };
         const msalInstance = new msal.PublicClientApplication(msalConfig);
@@ -69,36 +71,9 @@
         };
 
         const curriculumData = {
-            "5-6": {
-                tasks: [
-                    { id: 1, category: "Anwendung", title: "Hardware-Führerschein", desc: "Geräte sicher bedienen." },
-                    { id: 2, category: "Anwendung", title: "Dateimanagement", desc: "Ordner & Cloud-Strukturen." },
-                    { id: 3, category: "Anwendung", title: "Textverarbeitung I", desc: "Layouts & PDF-Export." },
-                    { id: 4, category: "Umgang", title: "Netiquette", desc: "Regeln im Klassenchat." },
-                    { id: 5, category: "Umgang", title: "Prävention", desc: "Umgang mit Cybermobbing." },
-                    { id: 6, category: "Umgang", title: "Suchmaschinen", desc: "Sicher recherchieren." }
-                ]
-            },
-            "7-8": {
-                tasks: [
-                    { id: 7, category: "Anwendung", title: "Präsentationsprofi", desc: "Foliendesign & Vortrag." },
-                    { id: 8, category: "Anwendung", title: "Medienproduktion", desc: "Video- & Bildschnitt." },
-                    { id: 9, category: "Anwendung", title: "Tabellenkalkulation", desc: "Daten visualisieren." },
-                    { id: 10, category: "Umgang", title: "Urheberrecht", desc: "Lizenzen & Bildrechte." },
-                    { id: 11, category: "Umgang", title: "Quellenkritik", desc: "Fake News erkennen." },
-                    { id: 12, category: "Umgang", title: "Datenschutz", desc: "Privatsphäre & Tracker." }
-                ]
-            },
-            "9-10": {
-                tasks: [
-                    { id: 13, category: "Anwendung", title: "KI-Produktivität", desc: "Prompt-Engineering." },
-                    { id: 14, category: "Anwendung", title: "Digitale Bewerbung", desc: "E-Portfolio & Profile." },
-                    { id: 15, category: "Anwendung", title: "Projektmanagement", desc: "Agiles Arbeiten." },
-                    { id: 16, category: "Umgang", title: "KI-Ethik", desc: "Folgen von Algorithmen." },
-                    { id: 17, category: "Umgang", title: "Zivilcourage", desc: "Hate Speech kontern." },
-                    { id: 18, category: "Umgang", title: "Digitaler Fußabdruck", desc: "Eigene Biografie." }
-                ]
-            }
+            "5-6": { tasks: [{ id: 1, category: "Anwendung", title: "Hardware-Führerschein", desc: "Geräte bedienen." }, { id: 2, category: "Anwendung", title: "Dateimanagement", desc: "Cloud-Strukturen." }, { id: 3, category: "Anwendung", title: "Textverarbeitung I", desc: "Layouts & PDF." }, { id: 4, category: "Umgang", title: "Netiquette", desc: "Klassenchat." }, { id: 5, category: "Umgang", title: "Prävention", desc: "Cybermobbing." }, { id: 6, category: "Umgang", title: "Suchmaschinen", desc: "Sicher recherchieren." }] },
+            "7-8": { tasks: [{ id: 7, category: "Anwendung", title: "Präsentationsprofi", desc: "Vortrag." }, { id: 8, category: "Anwendung", title: "Medienproduktion", desc: "Video-Schnitt." }, { id: 9, category: "Anwendung", title: "Tabellenkalkulation", desc: "Daten visualisieren." }, { id: 10, category: "Umgang", title: "Urheberrecht", desc: "Lizenzen." }, { id: 11, category: "Umgang", title: "Quellenkritik", desc: "Fake News." }, { id: 12, category: "Umgang", title: "Datenschutz", desc: "Privatsphäre." }] },
+            "9-10": { tasks: [{ id: 13, category: "Anwendung", title: "KI-Produktivität", desc: "Prompting." }, { id: 14, category: "Anwendung", title: "Digitale Bewerbung", desc: "Profile." }, { id: 15, category: "Anwendung", title: "Projektmanagement", desc: "Agiles Arbeiten." }, { id: 16, category: "Umgang", title: "KI-Ethik", desc: "Algorithmen." }, { id: 17, category: "Umgang", title: "Zivilcourage", desc: "Hate Speech." }, { id: 18, category: "Umgang", title: "Digitaler Fußabdruck", desc: "Biografie." }] }
         };
 
         const App = () => {
@@ -106,45 +81,67 @@
             const [completedTasks, setCompletedTasks] = useState([]);
             const [activeStage, setActiveStage] = useState("5-6");
             const [loading, setLoading] = useState(true);
-            const [syncing, setSyncing] = useState(false);
-            const [debugMsg, setDebugMsg] = useState("");
             const [authRequired, setAuthRequired] = useState(false);
-            const [currentOrigin, setCurrentOrigin] = useState("");
+            const [debugMsg, setDebugMsg] = useState("");
 
             useEffect(() => {
-                setCurrentOrigin(window.location.origin);
                 const initApp = async () => {
                     try {
-                        // MSAL zwingend initialisieren
+                        setDebugMsg("1. Initialisiere Microsoft Schnittstelle...");
                         await msalInstance.initialize();
+
+                        // 1. Prüfen: Kommen wir gerade von einem Redirect zurück?
+                        setDebugMsg("2. Prüfe auf Rückkehr vom Login...");
+                        const redirectResponse = await msalInstance.handleRedirectPromise();
                         
-                        // Versuche, eine E-Mail aus dem Azure SWA Token zu bekommen (als Hinweis)
-                        let swaUserEmail = null;
+                        if (redirectResponse && redirectResponse.accessToken) {
+                            // ERFOLG! Wir haben den Token direkt aus der Weiterleitung.
+                            setDebugMsg("3. Login erfolgreich! Lade Daten...");
+                            msalInstance.setActiveAccount(redirectResponse.account);
+                            setUser({ userDetails: redirectResponse.account.username });
+                            await fetchSharePointData(redirectResponse.account.username, redirectResponse.accessToken);
+                            return; // WICHTIG: Hier abbrechen, sonst läuft der Code weiter.
+                        }
+
+                        // 2. Prüfen: Haben wir einen gültigen Token im lokalen Speicher (LocalStorage)?
+                        setDebugMsg("4. Prüfe lokale Speicherung...");
+                        const accounts = msalInstance.getAllAccounts();
+                        if (accounts.length > 0) {
+                            msalInstance.setActiveAccount(accounts[0]);
+                            try {
+                                const silentResponse = await msalInstance.acquireTokenSilent({
+                                    scopes: ["Sites.Read.All"],
+                                    account: accounts[0]
+                                });
+                                setDebugMsg("5. Bekannter Nutzer gefunden! Lade Daten...");
+                                setUser({ userDetails: accounts[0].username });
+                                await fetchSharePointData(accounts[0].username, silentResponse.accessToken);
+                                return; // WICHTIG: Abbrechen, wir sind fertig.
+                            } catch (e) {
+                                console.log("Lokaler Token ist abgelaufen.");
+                            }
+                        }
+
+                        // 3. KEIN TOKEN VORHANDEN! 
+                        // Wir prüfen noch kurz, ob Azure Static Web Apps den Namen kennt (nur für die Anzeige).
                         try {
                             const authUrl = new URL('/.auth/me', window.location.origin).toString();
                             const response = await fetch(authUrl);
                             if (response.ok) {
                                 const payload = await response.json();
-                                if (payload.clientPrincipal) swaUserEmail = payload.clientPrincipal.userDetails;
+                                if (payload.clientPrincipal) setUser({ userDetails: payload.clientPrincipal.userDetails });
                             }
-                        } catch (e) { /* SWA lokal nicht verfügbar */ }
+                        } catch (e) {}
 
-                        // Falls nicht vorhanden, schaue nach MSAL Konten
-                        if (!swaUserEmail) {
-                            const activeAcc = msalInstance.getActiveAccount() || msalInstance.getAllAccounts()[0];
-                            if (activeAcc) swaUserEmail = activeAcc.username;
-                        }
-                        
-                        if (swaUserEmail) {
-                            setUser({ userDetails: swaUserEmail });
-                            // Versuche einen lautlosen Token-Abruf im Hintergrund
-                            await fetchSharePointData(swaUserEmail);
-                        } else {
-                            setUser({ userDetails: "Gast-Nutzer" });
-                            setLoading(false);
-                        }
+                        // Zeige den Button an, damit der Nutzer aktiv klicken kann.
+                        setDebugMsg("6. Warten auf Benutzerklick...");
+                        setAuthRequired(true);
+                        setLoading(false);
+
                     } catch (err) {
-                        console.error("Init-Fehler:", err);
+                        console.error("Schwerer Initialisierungsfehler:", err);
+                        setDebugMsg("Fehler beim Starten der App.");
+                        setAuthRequired(true);
                         setLoading(false);
                     }
                 };
@@ -152,73 +149,27 @@
             }, []);
 
             // ==========================================
-            // LOGIN-FUNKTION (Garantiert ohne Blocker)
+            // SAUBERER REDIRECT LOGIN (Keine Popups!)
             // ==========================================
             const handleManualLogin = async () => {
-                // WICHTIG: Das Popup MUSS sofort nach dem Klick passieren (ohne async Verzögerung vorher)
+                setLoading(true);
+                setDebugMsg("Leite zu Microsoft um...");
                 try {
-                    const tokenRequest = { 
-                        scopes: ["Sites.Read.All"], 
-                        loginHint: user?.userDetails || undefined,
-                        prompt: "select_account" 
-                    };
-                    
-                    const tokenResponse = await msalInstance.loginPopup(tokenRequest);
-                    
-                    // Ab hier haben wir die Rechte und können laden
-                    setLoading(true);
-                    msalInstance.setActiveAccount(tokenResponse.account);
-                    setUser({ userDetails: tokenResponse.account.username });
-                    setAuthRequired(false);
-                    
-                    // Daten direkt mit dem frischen Token abrufen
-                    await fetchSharePointData(tokenResponse.account.username, tokenResponse.accessToken);
-
+                    await msalInstance.loginRedirect({
+                        scopes: ["Sites.Read.All"]
+                    });
                 } catch (error) {
-                    console.error("Login abgebrochen oder fehlgeschlagen:", error);
-                    setDebugMsg("Popup blockiert oder geschlossen. Bitte erneut versuchen.");
+                    console.error("Redirect Error:", error);
+                    setDebugMsg("Weiterleitung fehlgeschlagen. Bitte Seite neu laden.");
+                    setLoading(false);
                 }
             };
 
             // ==========================================
             // DATEN ABRUFEN
             // ==========================================
-            const fetchSharePointData = async (userEmail, preFetchedToken = null) => {
-                setSyncing(true);
-                setDebugMsg("Verbinde mit Microsoft Graph...");
-                
+            const fetchSharePointData = async (userEmail, token) => {
                 try {
-                    const tokenRequest = { scopes: ["Sites.Read.All"], loginHint: userEmail };
-                    let token = preFetchedToken;
-                    
-                    // Wenn wir noch keinen Token haben (z.B. beim ersten automatischen Laden)
-                    if (!token) {
-                        try {
-                            const accounts = msalInstance.getAllAccounts();
-                            if (accounts.length > 0) {
-                                msalInstance.setActiveAccount(accounts[0]);
-                                tokenRequest.account = accounts[0];
-                                const tokenResponse = await msalInstance.acquireTokenSilent(tokenRequest);
-                                token = tokenResponse.accessToken;
-                            } else {
-                                const tokenResponse = await msalInstance.ssoSilent(tokenRequest);
-                                token = tokenResponse.accessToken;
-                            }
-                        } catch (err) {
-                            // Wenn silent scheitert, brauchen wir den Button!
-                            console.log("Lautloser Login gescheitert. Nutzer muss Button klicken.");
-                            setDebugMsg("Zustimmung erforderlich.");
-                            setAuthRequired(true);
-                            setLoading(false);
-                            setSyncing(false);
-                            return; 
-                        }
-                    }
-
-                    // Wir haben den Token -> SharePoint anfunken
-                    setAuthRequired(false);
-                    setDebugMsg("Datenabruf läuft...");
-
                     const graphUrl = `https://graph.microsoft.com/v1.0/sites/${MS_CONFIG.siteId}/lists/${MS_CONFIG.listId}/items?$expand=fields`;
                     
                     const res = await fetch(graphUrl, {
@@ -237,7 +188,7 @@
                             if (studentRow.fields.Erledigte_Module) {
                                 const modulesArray = studentRow.fields.Erledigte_Module.split(',').map(m => parseInt(m.trim()));
                                 setCompletedTasks(modulesArray);
-                                setDebugMsg("Daten erfolgreich geladen!");
+                                setDebugMsg(""); // Erfolgreich, lösche Diagnose
                             } else {
                                 setDebugMsg("Schüler gefunden, aber noch keine Module erledigt.");
                             }
@@ -245,34 +196,28 @@
                             setDebugMsg(`Konto ${userEmail} nicht in der SharePoint-Liste gefunden.`);
                         }
                     } else {
-                        const errorData = await res.text();
-                        console.error("Graph API Fehler:", errorData);
                         setDebugMsg(`Fehler beim Abruf: ${res.status}. Keine Leserechte auf die Liste.`);
                     }
 
                 } catch (error) {
-                    console.error("Fehler bei Synchronisation:", error);
-                    setDebugMsg(`Fehler: ${error.message}`);
+                    setDebugMsg(`Verbindungsfehler zur Liste: ${error.message}`);
                 } finally {
                     setLoading(false);
-                    setSyncing(false);
-                    setTimeout(() => {
-                        setDebugMsg(prev => (prev === "Daten erfolgreich geladen!") ? "" : prev);
-                    }, 3000);
+                    setAuthRequired(false);
                 }
             };
 
             const progressValue = Math.round((completedTasks.length / 18) * 100);
 
             // ==========================================
-            // UI: DER LOGIN SCREEN (Ohne Loop)
+            // UI: DER LOGIN SCREEN
             // ==========================================
             if (authRequired) {
                 return (
                     <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 p-6 relative">
                         {debugMsg && (
-                            <div className="absolute top-0 left-0 w-full text-center py-2 text-xs font-bold bg-yellow-500 text-white shadow-md">
-                                HINWEIS: {debugMsg}
+                            <div className="absolute top-0 left-0 w-full text-center py-2 text-xs font-bold bg-slate-800 text-white shadow-md">
+                                SYSTEM-STATUS: {debugMsg}
                             </div>
                         )}
                         <div className="bg-white p-10 rounded-[3rem] shadow-2xl max-w-md w-full text-center border">
@@ -280,7 +225,7 @@
                                 <Icon name="shield" size={48} />
                             </div>
                             <h2 className="text-2xl font-black mb-4 uppercase tracking-tighter text-slate-800">Datenzugriff erlauben</h2>
-                            <p className="text-slate-500 mb-6 font-medium">Damit der Medienpass deinen Fortschritt sicher aus der Datenbank laden kann, musst du einmalig zustimmen.</p>
+                            <p className="text-slate-500 mb-6 font-medium">Klicke auf den Button, um deinen Fortschritt sicher aus der Schul-Datenbank zu laden.</p>
                             
                             <button 
                                 onClick={handleManualLogin}
@@ -289,16 +234,7 @@
                             >
                                 Mit Microsoft verbinden
                             </button>
-
-                            {/* DIAGNOSE-FELD FÜR DEN ADMIN */}
-                            <div className="p-4 bg-slate-100 rounded-xl text-left border border-slate-200">
-                                <p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Für den Admin:</p>
-                                <p className="text-xs text-slate-600 mb-2 leading-relaxed">Bitte stelle sicher, dass in Azure unter "Single-Page-Application" (SPA) <strong className="text-red-600 border-b border-red-200">exakt diese URL</strong> eingetragen ist:</p>
-                                <code className="block bg-white p-3 rounded-lg text-sm font-bold text-slate-800 shadow-sm border border-slate-200 break-all select-all">
-                                    {currentOrigin}
-                                </code>
-                            </div>
-
+                            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Die Seite wird kurz neu geladen.</p>
                         </div>
                     </div>
                 );
@@ -311,7 +247,7 @@
                 return (
                     <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50">
                         <div className="w-12 h-12 border-4 border-slate-200 border-t-red-600 rounded-full animate-spin mb-4"></div>
-                        <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest">Lade Medienpass...</p>
+                        <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest">{debugMsg || "Lade Medienpass..."}</p>
                     </div>
                 );
             }
@@ -322,8 +258,8 @@
             return (
                 <div className="min-h-screen flex flex-col bg-slate-50 font-sans selection:bg-red-100 relative">
                     {debugMsg && (
-                        <div className={`w-full text-center py-2 text-xs font-bold ${debugMsg.includes('Fehler') || debugMsg.includes('nicht') ? 'bg-red-600 text-white' : 'bg-green-500 text-white'}`}>
-                            DIAGNOSE: {debugMsg}
+                        <div className={`w-full text-center py-2 text-xs font-bold bg-yellow-500 text-white`}>
+                            HINWEIS: {debugMsg}
                         </div>
                     )}
                     
@@ -337,11 +273,8 @@
                         
                         <div className="flex items-center gap-4">
                             <div className="text-right hidden sm:block">
-                                <p className="text-[10px] font-black text-blue-600 uppercase leading-none mb-1 flex items-center justify-end gap-1">
-                                    {syncing ? <Icon name="refresh" size={10} className="animate-spin" /> : "MS Graph:"} 
-                                    {syncing ? "Synct..." : "Aktiv"}
-                                </p>
-                                <p className="text-xs font-bold text-slate-700">{user?.userDetails || 'Anonym'}</p>
+                                <p className="text-[10px] font-black text-green-600 uppercase leading-none mb-1">MS Graph: Aktiv</p>
+                                <p className="text-xs font-bold text-slate-700">{user?.userDetails || 'Schüler'}</p>
                             </div>
                             <div className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 border-2 border-white shadow-sm overflow-hidden">
                                 <Icon name="user" size={20} />
@@ -369,9 +302,6 @@
                                     <div className="h-2 w-full bg-white/20 rounded-full overflow-hidden relative">
                                         <div className="bg-white h-full transition-all duration-1000" style={{ width: `${progressValue}%` }}></div>
                                     </div>
-                                </div>
-                                <div className="absolute -right-20 -bottom-20 opacity-5 pointer-events-none">
-                                    <Icon name="award" size={400} color="white" />
                                 </div>
                             </div>
 
