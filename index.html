@@ -109,8 +109,10 @@
             const [syncing, setSyncing] = useState(false);
             const [debugMsg, setDebugMsg] = useState("");
             const [authRequired, setAuthRequired] = useState(false);
+            const [currentOrigin, setCurrentOrigin] = useState("");
 
             useEffect(() => {
+                setCurrentOrigin(window.location.origin);
                 const initApp = async () => {
                     try {
                         // MSAL zwingend initialisieren
@@ -278,14 +280,25 @@
                                 <Icon name="shield" size={48} />
                             </div>
                             <h2 className="text-2xl font-black mb-4 uppercase tracking-tighter text-slate-800">Datenzugriff erlauben</h2>
-                            <p className="text-slate-500 mb-8 font-medium">Damit der Medienpass deinen Fortschritt sicher aus der Datenbank laden kann, musst du einmalig zustimmen.</p>
+                            <p className="text-slate-500 mb-6 font-medium">Damit der Medienpass deinen Fortschritt sicher aus der Datenbank laden kann, musst du einmalig zustimmen.</p>
+                            
                             <button 
                                 onClick={handleManualLogin}
-                                className="w-full text-white font-black uppercase px-8 py-4 rounded-2xl transition-all shadow-lg hover:scale-105 active:scale-95"
+                                className="w-full text-white font-black uppercase px-8 py-4 rounded-2xl transition-all shadow-lg hover:scale-105 active:scale-95 mb-6"
                                 style={{ backgroundColor: THOMA_RED }}
                             >
                                 Mit Microsoft verbinden
                             </button>
+
+                            {/* DIAGNOSE-FELD FÜR DEN ADMIN */}
+                            <div className="p-4 bg-slate-100 rounded-xl text-left border border-slate-200">
+                                <p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Für den Admin:</p>
+                                <p className="text-xs text-slate-600 mb-2 leading-relaxed">Bitte stelle sicher, dass in Azure unter "Single-Page-Application" (SPA) <strong className="text-red-600 border-b border-red-200">exakt diese URL</strong> eingetragen ist:</p>
+                                <code className="block bg-white p-3 rounded-lg text-sm font-bold text-slate-800 shadow-sm border border-slate-200 break-all select-all">
+                                    {currentOrigin}
+                                </code>
+                            </div>
+
                         </div>
                     </div>
                 );
