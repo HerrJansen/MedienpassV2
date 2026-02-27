@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lehrerkonsole | Medienpass Thomaeum</title>
+    
+    <!-- Bibliotheken -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script type="text/javascript" src="https://alcdn.msauth.net/browser/2.32.2/js/msal-browser.min.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+        :root { --thomaeum-red: #BF0D3E; }
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .spinner { border: 3px solid rgba(0,0,0,0.1); border-left-color: var(--thomaeum-red); border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useMemo } = React;
+
+        // ==========================================
+        // KONFIGURATION (Gymnasium Thomaeum)
+        // ==========================================
+        const MS_CONFIG = {
+            tenantId: "09c4bd58-1b8c-410d-930e-816015e61028",
+            clientId: "7d277b19-93c1-4df7-8f1b-d38749b3d440",
+            siteId: "thomaeumde.sharepoint.com,9ef17c4d-b57b-482e-9168-3cc3bc43bc3d,d600d53b-cfd0-45f7-96a5-f1ac20222f8f",
+            listId: "08da02d9-5b67-4938-9d7e-9e9dee97fa2e"
+        };
+        const THOMA_RED = "#BF0D3E";
+
+        // WICHTIG: Die Lehrer-App fordert "ReadWrite" Rechte an!
+        const msalConfig = {
+            auth: {
+                clientId: MS_CONFIG.clientId,
+                authority: `https://login.microsoftonline.com/${MS_CONFIG.tenantId}`,
+                redirectUri: window.location.origin,
+                navigateToLoginRequestUrl: false
+            },
+            cache: { cacheLocation: "localStorage", storeAuthStateInCookie: true }
+        };
+        const msalInstance = new msal.PublicClientApplication(msalConfig);
+        const msalInitPromise = msalInstance.initialize();
+
+        const ALL_MODULES = [
+            { id: 1, title: "Hardware-Führerschein", stage: "5-6" }, { id: 2, title: "Dateimanagement", stage: "5-6" }, { id: 3, title: "Textverarbeitung I", stage: "5-6" },
+            { id: 4, title: "Netiquette", stage: "5-6" }, { id: 5, title: "Prävention", stage: "5-6" }, { id: 6, title: "Suchmaschinen", stage: "5-6" },
+            { id: 7, title: "Präsentationsprofi", stage: "7-8" }, { id: 8, title: "Medienproduktion", stage: "7-8" }, { id: 9, title: "Tabellenkalkulation", stage: "7-8" },
+            { id: 10, title: "Urheberrecht", stage: "7-8" }, { id: 11, title: "Quellenkritik", stage: "7-8" }, { id: 12, title: "Datenschutz", stage: "7-8" },
+            { id: 13, title: "KI-Produktivität", stage: "9-10" }, { id: 14, title: "Digitale Bewerbung", stage: "9-10" }, { id: 15, title: "Projektmanagement", stage: "9-10" },
+            { id: 16, title: "KI-Ethik", stage: "9-10" }, { id: 17, title: "Zivilcourage", stage: "9-10" }, { id: 18, title: "Digitaler Fußabdruck", stage: "9-10" }
+        ];
+
+        const Icon = ({ name, size = 20, className = "" }) => {
+            const [svg, setSvg] = useState("");
+            useEffect(() => {
+                if (window.lucide && window.lucide.icons[name]) {
+                    setSvg(window.lucide.icons[name].toSvg({ width: size, height: size, class: className }));
+                }
+            }, [name, size, className]);
+            return <span className="inline-flex items-center" dangerouslySetInnerHTML={{ __html: svg }} />;
+        };
+
+        const App = () => {
+            const [user, setUser] = useState(null);
+            const [students, setStudents] = useState([]);
+            const [loading, setLoading] = useState(true);
+            const [authRequired, setAuthRequired] = useState(false);
+            const [debugMsg, setDebugMsg] = useState("");
+            const [isUpdating, setIsUpdating] = useState(false);
+
+            // Filter States
+            const [searchName, setSearchName] = useState("");
+            const [filterKlasse, setFilterKlasse] = useState("ALL");
+            const [filterJahrgang, setFilterJahrgang] = useState("ALL");
+            const [filterModul, setFilterModul] = useState("ALL");
+
+            // Initialisierung & Auth
+            useEffect(() => {
+                const bootstrap = async () => {
+                    try {
+                        setDebugMsg("Lade MSAL...");
+                        await msalInitPromise;
+                        const redirectResponse = await msalInstance.handleRedirectPromise();
+                        
+                        let activeAccount = msalInstance.getActiveAccount();
+                        if (!activeAccount && msalInstance.getAllAccounts().length > 0) {
+                            activeAccount = msalInstance.getAllAccounts()[0];
+                            msalInstance.setActiveAccount(activeAccount);
+                        }
+
+                        if (activeAccount) {
+                            setUser({ name: activeAccount.name, username: activeAccount.username });
+                            fetchData(activeAccount);
+                        } else {
+                            setAuthRequired(true);
+                            setLoading(false);
+                        }
+                    } catch (err) {
+                        setDebugMsg("Startfehler: " + err.message);
+                        setAuthRequired(true);
+                        setLoading(false);
+                    }
+                };
+                bootstrap();
+            }, []);
+
+            const handleLogin = async () => {
+                // WICHTIG: Wir fordern explizit Lese- UND Schreibrechte (ReadWrite) an!
+                const tokenRequest = { scopes: ["Sites.ReadWrite.All"], prompt: "select_account" };
+                try {
+                    const response = await msalInstance.loginPopup(tokenRequest);
+                    setLoading(true);
+                    msalInstance.setActiveAccount(response.account);
+                    setUser({ name: response.account.name, username: response.account.username });
+                    setAuthRequired(false);
+                    fetchData(response.account);
+                } catch (error) {
+                    if (error.name === "BrowserAuthError" || error.message.includes("popup")) {
+                        msalInstance.loginRedirect(tokenRequest);
+                    }
+                }
+            };
+
+            const handleLogout = () => msalInstance.logoutRedirect({ postLogoutRedirectUri: window.location.origin });
+
+            // Daten aus SharePoint holen
+            const fetchData = async (account) => {
+                setLoading(true);
+                setDebugMsg("Lade Schülerdaten aus SharePoint...");
+                try {
+                    const tokenRes = await msalInstance.acquireTokenSilent({ scopes: ["Sites.ReadWrite.All"], account });
+                    
+                    let allItems = [];
+                    // $top=999 holt bis zu 999 Schüler auf einmal ab (verhindert Paginierungs-Probleme)
+                    let url = `https://graph.microsoft.com/v1.0/sites/${MS_CONFIG.siteId}/lists/${MS_CONFIG.listId}/items?$expand=fields&$top=999`;
+                    
+                    const res = await fetch(url, { headers: { Authorization: `Bearer ${tokenRes.accessToken}` }});
+                    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                    const data = await res.json();
+                    
+                    const parsedStudents = data.value.map(item => {
+                        const f = item.fields;
+                        const completedArray = f.Erledigte_Module ? f.Erledigte_Module.split(',').map(m => parseInt(m.trim())).filter(n => !isNaN(n)) : [];
+                        return {
+                            id: item.id, // Die Graph-API ID (wichtig fürs Updaten!)
+                            email: f.Title || "",
+                            vorname: f.Vorname || "",
+                            nachname: f.Nachname || "",
+                            klasse: f.Klasse || "Unbekannt",
+                            completedTasks: completedArray
+                        };
+                    });
+                    
+                    // Sortiere standardmäßig alphabetisch nach Nachname
+                    parsedStudents.sort((a, b) => a.nachname.localeCompare(b.nachname));
+                    
+                    setStudents(parsedStudents);
+                    setDebugMsg("");
+                } catch (error) {
+                    console.error(error);
+                    setDebugMsg("Fehler beim Laden (Fehlende Rechte?).");
+                    setAuthRequired(true);
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            // Ein einzelnes Modul für einen Schüler umschalten
+            const toggleModuleSingle = async (studentId, moduleId) => {
+                if (isUpdating) return;
+                setIsUpdating(true);
+                
+                try {
+                    const student = students.find(s => s.id === studentId);
+                    const isDone = student.completedTasks.includes(moduleId);
+                    const newTasks = isDone 
+                        ? student.completedTasks.filter(id => id !== moduleId) 
+                        : [...student.completedTasks, moduleId];
+                    
+                    await updateSharePoint(studentId, newTasks);
+                    
+                    setStudents(prev => prev.map(s => s.id === studentId ? { ...s, completedTasks: newTasks } : s));
+                } catch (err) {
+                    alert("Fehler beim Speichern in SharePoint: " + err.message);
+                } finally {
+                    setIsUpdating(false);
+                }
+            };
+
+            // Massen-Update (Alle gefilterten Schüler für ein Modul freischalten/sperren)
+            const bulkToggle = async (action) => {
+                if (filterModul === "ALL" || isUpdating) {
+                    alert("Bitte wähle zuerst oben rechts im Filter ein spezifisches Modul aus, um Massenaktionen durchzuführen.");
+                    return;
+                }
+                
+                const moduleId = parseInt(filterModul);
+                const studentsToUpdate = filteredStudents.filter(s => {
+                    const hasMod = s.completedTasks.includes(moduleId);
+                    return action === "grant" ? !hasMod : hasMod;
+                });
+
+                if (studentsToUpdate.length === 0) {
+                    alert("Alle angezeigten Schüler haben diesen Status bereits.");
+                    return;
+                }
+
+                if (!confirm(`Möchtest du Modul ${moduleId} für ${studentsToUpdate.length} Schüler ${action === 'grant' ? 'freischalten' : 'sperren'}?`)) return;
+
+                setIsUpdating(true);
+                setDebugMsg(`Aktualisiere ${studentsToUpdate.length} Schüler... Bitte warten.`);
+
+                try {
+                    const tokenRes = await msalInstance.acquireTokenSilent({ scopes: ["Sites.ReadWrite.All"], account: msalInstance.getActiveAccount() });
+                    
+                    // Wir updaten die Schüler parallel in kleinen Gruppen (Promise.all)
+                    const updatePromises = studentsToUpdate.map(async (student) => {
+                        let newTasks = action === "grant" 
+                            ? [...student.completedTasks, moduleId] 
+                            : student.completedTasks.filter(id => id !== moduleId);
+                        
+                        const url = `https://graph.microsoft.com/v1.0/sites/${MS_CONFIG.siteId}/lists/${MS_CONFIG.listId}/items/${student.id}/fields`;
+                        await fetch(url, {
+                            method: 'PATCH',
+                            headers: { 'Authorization': `Bearer ${tokenRes.accessToken}`, 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ "Erledigte_Module": newTasks.join(', ') })
+                        });
+                        return { id: student.id, tasks: newTasks };
+                    });
+
+                    const results = await Promise.all(updatePromises);
+                    
+                    // State lokal aktualisieren
+                    setStudents(prev => prev.map(s => {
+                        const updatedInfo = results.find(r => r.id === s.id);
+                        return updatedInfo ? { ...s, completedTasks: updatedInfo.tasks } : s;
+                    }));
+                    
+                    setDebugMsg("Massen-Update erfolgreich!");
+                    setTimeout(() => setDebugMsg(""), 3000);
+                } catch (err) {
+                    alert("Fehler beim Massen-Update: " + err.message);
+                } finally {
+                    setIsUpdating(false);
+                }
+            };
+
+            // Hilfsfunktion: Schreibt Daten nach SharePoint
+            const updateSharePoint = async (itemId, tasksArray) => {
+                const tokenRes = await msalInstance.acquireTokenSilent({ scopes: ["Sites.ReadWrite.All"], account: msalInstance.getActiveAccount() });
+                const url = `https://graph.microsoft.com/v1.0/sites/${MS_CONFIG.siteId}/lists/${MS_CONFIG.listId}/items/${itemId}/fields`;
+                
+                const res = await fetch(url, {
+                    method: 'PATCH',
+                    headers: { 'Authorization': `Bearer ${tokenRes.accessToken}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ "Erledigte_Module": tasksArray.join(', ') })
+                });
+                
+                if (!res.ok) throw new Error("Graph API Update gescheitert.");
+            };
+
+            // Filter Logik
+            const uniqueKlassen = useMemo(() => [...new Set(students.map(s => s.klasse))].sort(), [students]);
+            
+            // Ermittle Jahrgangsstufe (Nimmt die ersten Zahlen der Klasse, z.B. "05" aus "05a")
+            const uniqueJahrgaenge = useMemo(() => {
+                const j = students.map(s => s.klasse.match(/\d+/)?.[0]).filter(Boolean);
+                return [...new Set(j)].sort((a,b) => parseInt(a) - parseInt(b));
+            }, [students]);
+
+            const filteredStudents = useMemo(() => {
+                return students.filter(s => {
+                    // Filter 1: Name (Nachname oder Vorname)
+                    const searchMatch = `${s.vorname} ${s.nachname}`.toLowerCase().includes(searchName.toLowerCase());
+                    // Filter 2: Klasse
+                    const klasseMatch = filterKlasse === "ALL" || s.klasse === filterKlasse;
+                    // Filter 3: Jahrgang
+                    const jg = s.klasse.match(/\d+/)?.[0];
+                    const jahrgangMatch = filterJahrgang === "ALL" || jg === filterJahrgang;
+                    
+                    return searchMatch && klasseMatch && jahrgangMatch;
+                });
+            }, [students, searchName, filterKlasse, filterJahrgang]);
+
+
+            // ==========================================
+            // UI RENDER
+            // ==========================================
+            if (authRequired) {
+                return (
+                    <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 p-6 relative">
+                        {debugMsg && <div className="absolute top-0 left-0 w-full text-center py-2 text-xs font-bold bg-slate-800 text-white">{debugMsg}</div>}
+                        <div className="bg-white p-10 rounded-[3rem] shadow-2xl max-w-md w-full text-center border">
+                            <div className="mx-auto w-24 h-24 bg-red-50 rounded-full flex items-center justify-center mb-6 text-red-600">
+                                <Icon name="lock" size={48} />
+                            </div>
+                            <h2 className="text-2xl font-black mb-4 uppercase tracking-tighter text-slate-800">Lehrer-Login</h2>
+                            <p className="text-slate-500 mb-6 font-medium">Bitte logge dich mit deinem Office 365 Schulkonto ein, um Schülerdaten zu verwalten.</p>
+                            <button onClick={handleLogin} className="w-full text-white font-black uppercase px-8 py-4 rounded-2xl transition-all shadow-lg hover:scale-105 active:scale-95" style={{ backgroundColor: THOMA_RED }}>
+                                Mit Microsoft verbinden
+                            </button>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (loading) {
+                return (
+                    <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50">
+                        <div className="spinner mb-4"></div>
+                        <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest">{debugMsg || "Lade Schüler-Datenbank..."}</p>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="min-h-screen flex flex-col bg-slate-50 font-sans selection:bg-red-100">
+                    {/* Header */}
+                    <header className="bg-white border-b h-20 flex items-center justify-between px-8 shadow-sm sticky top-0 z-40">
+                        <div className="flex items-center gap-3">
+                            <div className="p-2 rounded-xl text-white shadow-lg" style={{ backgroundColor: THOMA_RED }}>
+                                <Icon name="graduation-cap" size={28} />
+                            </div>
+                            <h1 className="font-black text-xl uppercase tracking-tighter hidden md:block">
+                                Lehrer-Konsole <span style={{ color: THOMA_RED }}>Thomaeum</span>
+                            </h1>
+                        </div>
+                        <div className="flex items-center gap-4">
+                            {isUpdating && <div className="flex items-center gap-2 text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full"><div className="spinner border-blue-600 !w-3 !h-3"></div> Speichert...</div>}
+                            <div className="text-right hidden sm:block">
+                                <p className="text-[10px] font-black text-green-600 uppercase mb-1">Verbunden mit SharePoint</p>
+                                <p className="text-xs font-bold text-slate-700">{user?.name || "Lehrkraft"}</p>
+                            </div>
+                            <button onClick={handleLogout} className="text-[10px] font-black uppercase tracking-widest bg-slate-100 hover:bg-red-100 hover:text-red-600 text-slate-500 px-3 py-2 rounded-xl transition-all">Abmelden</button>
+                        </div>
+                    </header>
+
+                    {/* Filter Bar */}
+                    <div className="bg-white border-b shadow-sm p-4 sticky top-20 z-30">
+                        <div className="max-w-7xl mx-auto flex flex-wrap gap-4 items-center">
+                            <div className="relative flex-grow min-w-[200px]">
+                                <Icon name="search" size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                                <input type="text" placeholder="Nachname / Vorname suchen..." className="w-full pl-10 pr-4 py-2 bg-slate-50 border rounded-xl text-sm font-semibold outline-none focus:ring-2 focus:ring-red-600" value={searchName} onChange={e => setSearchName(e.target.value)} />
+                            </div>
+                            
+                            <select className="bg-slate-50 border rounded-xl px-4 py-2 text-sm font-semibold outline-none focus:ring-2 focus:ring-red-600" value={filterJahrgang} onChange={e => {setFilterJahrgang(e.target.value); setFilterKlasse("ALL");}}>
+                                <option value="ALL">Alle Jahrgänge</option>
+                                {uniqueJahrgaenge.map(j => <option key={j} value={j}>Jahrgang {j}</option>)}
+                            </select>
+
+                            <select className="bg-slate-50 border rounded-xl px-4 py-2 text-sm font-semibold outline-none focus:ring-2 focus:ring-red-600" value={filterKlasse} onChange={e => setFilterKlasse(e.target.value)}>
+                                <option value="ALL">Alle Klassen</option>
+                                {uniqueKlassen.filter(k => filterJahrgang === "ALL" || k.includes(filterJahrgang)).map(k => <option key={k} value={k}>Klasse {k}</option>)}
+                            </select>
+
+                            <select className="bg-slate-50 border rounded-xl px-4 py-2 text-sm font-semibold outline-none focus:ring-2 focus:ring-red-600" value={filterModul} onChange={e => setFilterModul(e.target.value)}>
+                                <option value="ALL">Gesamtfortschritt anzeigen</option>
+                                {ALL_MODULES.map(m => <option key={m.id} value={m.id}>Modul {m.id}: {m.title}</option>)}
+                            </select>
+                        </div>
+                        
+                        {/* Massen-Aktionen (Nur sichtbar, wenn ein spezifisches Modul ausgewählt ist) */}
+                        {filterModul !== "ALL" && (
+                            <div className="max-w-7xl mx-auto mt-4 p-4 bg-red-50 rounded-2xl flex flex-wrap items-center justify-between gap-4 border border-red-100">
+                                <div>
+                                    <h3 className="text-sm font-black text-slate-800 uppercase">Massen-Bearbeitung (Modul {filterModul})</h3>
+                                    <p className="text-xs font-medium text-slate-500">Wendet die Aktion auf alle {filteredStudents.length} Schüler an, die aktuell auf den Filter passen.</p>
+                                </div>
+                                <div className="flex gap-2">
+                                    <button disabled={isUpdating} onClick={() => bulkToggle('revoke')} className="bg-white text-slate-700 hover:bg-slate-100 border px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all">Alle Sperren</button>
+                                    <button disabled={isUpdating} onClick={() => bulkToggle('grant')} className="text-white px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all shadow-md" style={{ backgroundColor: THOMA_RED }}>Alle Freischalten</button>
+                                </div>
+                            </div>
+                        )}
+                        {debugMsg && <p className="text-center text-xs font-bold text-green-600 mt-2">{debugMsg}</p>}
+                    </div>
+
+                    {/* Main Content: Tabellen Ansicht */}
+                    <main className="max-w-7xl mx-auto w-full p-8 flex-grow">
+                        <div className="bg-white rounded-3xl shadow-lg border overflow-hidden">
+                            <table className="w-full text-left border-collapse">
+                                <thead>
+                                    <tr className="bg-slate-50 text-slate-400 text-xs uppercase tracking-widest font-black border-b">
+                                        <th className="p-4 pl-8">Nachname</th>
+                                        <th className="p-4">Vorname</th>
+                                        <th className="p-4">Klasse</th>
+                                        <th className="p-4 text-center">
+                                            {filterModul === "ALL" ? "Gesamtfortschritt" : `Status: Modul ${filterModul}`}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {filteredStudents.length === 0 ? (
+                                        <tr><td colSpan="4" className="p-8 text-center text-slate-400 font-bold">Keine Schüler gefunden.</td></tr>
+                                    ) : filteredStudents.map(student => {
+                                        const totalProgress = Math.round((student.completedTasks.length / 18) * 100);
+                                        const isModulDone = filterModul !== "ALL" && student.completedTasks.includes(parseInt(filterModul));
+
+                                        return (
+                                            <tr key={student.id} className="border-b last:border-0 hover:bg-slate-50 transition-colors">
+                                                <td className="p-4 pl-8 font-black text-slate-800">{student.nachname || "-"}</td>
+                                                <td className="p-4 font-semibold text-slate-600">{student.vorname || "-"}</td>
+                                                <td className="p-4">
+                                                    <span className="bg-slate-100 text-slate-600 px-3 py-1 rounded-lg text-xs font-black uppercase tracking-widest">{student.klasse}</span>
+                                                </td>
+                                                <td className="p-4 text-center">
+                                                    {filterModul === "ALL" ? (
+                                                        <div className="flex items-center justify-center gap-3">
+                                                            <div className="w-24 h-2 bg-slate-100 rounded-full overflow-hidden">
+                                                                <div className="h-full bg-green-500" style={{ width: `${totalProgress}%` }}></div>
+                                                            </div>
+                                                            <span className="text-xs font-black text-slate-500 w-8">{totalProgress}%</span>
+                                                        </div>
+                                                    ) : (
+                                                        <button 
+                                                            disabled={isUpdating}
+                                                            onClick={() => toggleModuleSingle(student.id, parseInt(filterModul))}
+                                                            className={`w-8 h-8 rounded-lg flex items-center justify-center mx-auto transition-all ${isModulDone ? 'bg-green-500 text-white shadow-md shadow-green-200 hover:bg-red-500 hover:shadow-red-200' : 'bg-slate-100 text-slate-300 hover:bg-green-500 hover:text-white'}`}
+                                                            title={isModulDone ? "Klicken zum Entziehen" : "Klicken zum Freischalten"}
+                                                        >
+                                                            <Icon name={isModulDone ? "check" : "circle"} size={16} />
+                                                        </button>
+                                                    )}
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
+                    </main>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
