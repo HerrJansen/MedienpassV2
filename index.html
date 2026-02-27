@@ -80,6 +80,7 @@
 
         const App = () => {
             const [user, setUser] = useState(null);
+            const [realName, setRealName] = useState(""); // NEU: Speichert den zusammengesetzten Vor- und Nachnamen
             const [completedTasks, setCompletedTasks] = useState([]);
             const [activeStage, setActiveStage] = useState("5-6");
             const [loading, setLoading] = useState(true);
@@ -192,6 +193,15 @@
                         );
                         
                         if (studentRow) {
+                            // NEU: Vorname und Nachname aus den Spalten abrufen und zusammensetzen
+                            const vorname = studentRow.fields.Vorname || "";
+                            const nachname = studentRow.fields.Nachname || "";
+                            
+                            if (vorname || nachname) {
+                                // Durch das trim() wird z.B. nur der Vorname angezeigt, falls der Nachname noch fehlt.
+                                setRealName(`${vorname} ${nachname}`.trim());
+                            }
+
                             if (studentRow.fields.Erledigte_Module) {
                                 const modulesArray = studentRow.fields.Erledigte_Module.split(',').map(m => parseInt(m.trim()));
                                 setCompletedTasks(modulesArray);
@@ -279,7 +289,8 @@
                         <div className="flex items-center gap-4">
                             <div className="text-right hidden sm:block">
                                 <p className="text-[10px] font-black text-green-600 uppercase leading-none mb-1">MS Graph: Aktiv</p>
-                                <p className="text-xs font-bold text-slate-700">{user?.userDetails || 'Schüler'}</p>
+                                {/* NEU: Zeigt den Klarname an, falls vorhanden, sonst die E-Mail */}
+                                <p className="text-xs font-bold text-slate-700">{realName || user?.userDetails || 'Schüler'}</p>
                             </div>
                             <div className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 border-2 border-white shadow-sm overflow-hidden">
                                 <Icon name="user" size={20} />
@@ -300,7 +311,8 @@
                                 <div className="relative z-10">
                                     <h2 className="text-xl font-black mb-3 tracking-tight uppercase opacity-80">Portfolio von:</h2>
                                     <div className="text-3xl md:text-4xl font-black mb-6 tracking-tighter uppercase text-white bg-white/10 px-8 py-4 rounded-[2rem] border-2 border-dashed border-white/30 inline-block">
-                                        {user?.userDetails || '[Name laden...]'}
+                                        {/* NEU: Zeigt den Klarname an, falls vorhanden, sonst die E-Mail */}
+                                        {realName || user?.userDetails || '[Name laden...]'}
                                     </div>
                                     <p className="text-red-100 text-lg max-w-md font-medium leading-relaxed italic">
                                         Die Daten werden live aus dem zentralen Microsoft-System deiner Schule geladen.
