@@ -40,11 +40,16 @@
 
         const THOMA_RED = "#BF0D3E";
 
-        // MSAL Konfiguration für Graph API
+        // MSAL Konfiguration für Graph API (Optimiert für Redirects)
         const msalConfig = {
             auth: {
                 clientId: MS_CONFIG.clientId,
                 authority: `https://login.microsoftonline.com/${MS_CONFIG.tenantId}`,
+                navigateToLoginRequestUrl: true
+            },
+            cache: {
+                cacheLocation: "sessionStorage",
+                storeAuthStateInCookie: false,
             }
         };
         const msalInstance = new msal.PublicClientApplication(msalConfig);
@@ -103,11 +108,24 @@
             const [loading, setLoading] = useState(true);
             const [syncing, setSyncing] = useState(false);
             const [debugMsg, setDebugMsg] = useState("");
-            const [authRequired, setAuthRequired] = useState(false); // NEU: Steuert den Login-Button
+            const [authRequired, setAuthRequired] = useState(false);
 
             useEffect(() => {
                 const initApp = async () => {
                     try {
+                        // 1. MSAL initialisieren
+                        await msalInstance.initialize();
+                        
+                        // 2. Prüfen, ob wir gerade von einem Redirect zurückkommen
+                        let redirectResponse = null;
+                        try {
+                            redirectResponse = await msalInstance.handleRedirectPromise();
+                        } catch (redirectErr) {
+                            console.error("Redirect Error:", redirectErr);
+                            setDebugMsg(`Fehler nach Weiterleitung: ${redirectErr.message.split(':')[0]}`);
+                        }
+                        
+                        // 3. Den Office 365 Nutzer über Azure Static Web Apps abfragen
                         let payload = { clientPrincipal: null };
                         try {
                             const authUrl = new URL('/.auth/me', window.location.origin).toString();
@@ -116,20 +134,27 @@
                                 payload = await response.json();
                             }
                         } catch (fetchErr) {
-                             console.log("Kann '/.auth/me' nicht erreichen.", fetchErr);
+                             console.log("Kann '/.auth/me' nicht erreichen.");
                         }
                         
                         if (payload.clientPrincipal) {
                             setUser(payload.clientPrincipal);
-                            // Initialer Versuch: OHNE Popup (ssoSilent)
-                            fetchSharePointData(payload.clientPrincipal.userDetails, false);
+                            
+                            // 4. Wenn wir einen Token aus dem Redirect haben, sofort nutzen!
+                            if (redirectResponse && redirectResponse.accessToken) {
+                                console.log("Token aus Redirect erfolgreich geladen!");
+                                fetchSharePointData(payload.clientPrincipal.userDetails, false, redirectResponse.accessToken);
+                            } else {
+                                // Ansonsten leise probieren
+                                fetchSharePointData(payload.clientPrincipal.userDetails, false);
+                            }
                         } else {
                             setUser({ userDetails: "Gast-Nutzer (Nicht eingeloggt)" });
                             setLoading(false);
                         }
                     } catch (err) {
                         console.error("Auth-Fehler:", err);
-                        setDebugMsg("Authentifizierung fehlgeschlagen.");
+                        setDebugMsg("Initialisierung fehlgeschlagen.");
                         setLoading(false);
                     }
                 };
@@ -139,41 +164,44 @@
             // ==========================================
             // LOGIK: ABRUF VON MICROSOFT LISTS
             // ==========================================
-            // NEU: Parameter "usePopup" entscheidet, ob ein Popup forciert wird
-            const fetchSharePointData = async (userEmail, usePopup = false) => {
+            const fetchSharePointData = async (userEmail, forceRedirect = false, preFetchedToken = null) => {
                 setSyncing(true);
-                setDebugMsg(usePopup ? "Öffne Login-Fenster..." : "Verbinde mit Microsoft Graph...");
+                setDebugMsg(forceRedirect ? "Leite zu Microsoft weiter..." : "Verbinde mit Microsoft Graph...");
                 
                 try {
-                    // msalInstance muss initialisiert sein
-                    try { await msalInstance.initialize(); } catch (e) { /* Bereits initialisiert */ }
-                    
                     const tokenRequest = { scopes: ["Sites.Read.All"], loginHint: userEmail };
-                    let tokenResponse;
+                    let token = preFetchedToken;
                     
-                    try {
-                        if (usePopup) {
-                            // Wird nur durch Klick auf den Button ausgelöst -> Browser blockiert NICHT
-                            tokenResponse = await msalInstance.loginPopup(tokenRequest);
-                            setAuthRequired(false);
-                        } else {
-                            // Versuch im Hintergrund -> Schlägt oft fehl, wenn noch keine Rechte erteilt wurden
-                            tokenResponse = await msalInstance.ssoSilent(tokenRequest);
-                        }
-                    } catch (err) {
-                        if (!usePopup) {
-                            console.log("Leiser Login fehlgeschlagen, Nutzer muss klicken.", err);
+                    if (!token) {
+                        try {
+                            if (forceRedirect) {
+                                // GANZ WICHTIG: Hier leitet die Seite nun komplett um, KEIN Popup mehr!
+                                await msalInstance.loginRedirect(tokenRequest);
+                                return; // Code stoppt hier, da die Seite neu lädt
+                            } else {
+                                // Versuche vorhandene Accounts zu nutzen
+                                const accounts = msalInstance.getAllAccounts();
+                                if (accounts.length > 0) {
+                                    tokenRequest.account = accounts[0];
+                                    const tokenResponse = await msalInstance.acquireTokenSilent(tokenRequest);
+                                    token = tokenResponse.accessToken;
+                                } else {
+                                    const tokenResponse = await msalInstance.ssoSilent(tokenRequest);
+                                    token = tokenResponse.accessToken;
+                                }
+                            }
+                        } catch (err) {
+                            console.log("Leiser Login fehlgeschlagen, Interaktion nötig:", err);
                             setDebugMsg("Einmalige Freigabe erforderlich.");
-                            setAuthRequired(true); // Zeigt den Login-Button an
+                            setAuthRequired(true);
                             setLoading(false);
                             setSyncing(false);
-                            return; // Breche hier ab, warte auf Klick
-                        } else {
-                            throw err; // Wenn das Popup fehlschlägt, zeige echten Fehler
+                            return;
                         }
                     }
 
-                    const token = tokenResponse.accessToken;
+                    // Ab hier haben wir erfolgreich einen Token!
+                    setAuthRequired(false);
                     setDebugMsg("Token erhalten, frage SharePoint Liste ab...");
 
                     const graphUrl = `https://graph.microsoft.com/v1.0/sites/${MS_CONFIG.siteId}/lists/${MS_CONFIG.listId}/items?$expand=fields`;
@@ -202,12 +230,14 @@
                             setDebugMsg(`Kein Eintrag für ${userEmail} in SharePoint gefunden.`);
                         }
                     } else {
-                        setDebugMsg(`Fehler beim Abruf: ${res.status}`);
+                        const errorData = await res.text();
+                        console.error("Graph API Fehler:", errorData);
+                        setDebugMsg(`Fehler beim Abruf: ${res.status}. Liste nicht gefunden oder keine Rechte.`);
                     }
 
                 } catch (error) {
                     console.error("Fehler bei SharePoint Synchronisation:", error);
-                    setDebugMsg(`Popup blockiert oder geschlossen. Bitte Popups erlauben.`);
+                    setDebugMsg(`Fehler: ${error.message}`);
                 } finally {
                     setLoading(false);
                     setSyncing(false);
@@ -219,7 +249,7 @@
 
             const progressValue = Math.round((completedTasks.length / 18) * 100);
 
-            // NEU: Der Login-Screen, der den Popup-Blocker austrickst
+            // Der Login-Screen
             if (authRequired) {
                 return (
                     <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 p-6">
@@ -228,7 +258,7 @@
                                 <Icon name="shield" size={48} />
                             </div>
                             <h2 className="text-2xl font-black mb-4 uppercase tracking-tighter text-slate-800">Datenzugriff erlauben</h2>
-                            <p className="text-slate-500 mb-8 font-medium">Damit der Medienpass deinen Fortschritt aus der Datenbank laden kann, musst du einmalig die Verbindung bestätigen.</p>
+                            <p className="text-slate-500 mb-8 font-medium">Damit der Medienpass deinen Fortschritt laden kann, musst du einmalig die Verbindung bestätigen.</p>
                             <button 
                                 onClick={() => { setLoading(true); fetchSharePointData(user.userDetails, true); }}
                                 className="w-full text-white font-black uppercase px-8 py-4 rounded-2xl transition-all shadow-lg hover:scale-105 active:scale-95"
@@ -236,7 +266,6 @@
                             >
                                 Mit Microsoft verbinden
                             </button>
-                            <p className="text-[10px] text-slate-400 mt-4 uppercase font-bold tracking-widest">Bitte erlaube Popups für diese Seite</p>
                         </div>
                     </div>
                 );
@@ -254,7 +283,7 @@
             return (
                 <div className="min-h-screen flex flex-col bg-slate-50 font-sans selection:bg-red-100 relative">
                     {debugMsg && (
-                        <div className={`w-full text-center py-2 text-xs font-bold ${debugMsg.includes('Fehler') || debugMsg.includes('blockiert') || debugMsg.includes('Kein Eintrag') ? 'bg-red-600 text-white' : 'bg-green-500 text-white'}`}>
+                        <div className={`w-full text-center py-2 text-xs font-bold ${debugMsg.includes('Fehler') || debugMsg.includes('Kein Eintrag') ? 'bg-red-600 text-white' : 'bg-green-500 text-white'}`}>
                             DIAGNOSE: {debugMsg}
                         </div>
                     )}
