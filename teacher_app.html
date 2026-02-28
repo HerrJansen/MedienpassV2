@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lehrerkonsole | Medienpass Thomaeum</title>
     
-    <!-- Bibliotheken -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -28,9 +27,6 @@
     <script type="text/babel">
         const { useState, useEffect, useMemo } = React;
 
-        // ==========================================
-        // KONFIGURATION (Gymnasium Thomaeum)
-        // ==========================================
         const MS_CONFIG = {
             tenantId: "09c4bd58-1b8c-410d-930e-816015e61028",
             clientId: "7d277b19-93c1-4df7-8f1b-d38749b3d440",
@@ -79,13 +75,11 @@
             const [debugMsg, setDebugMsg] = useState("");
             const [isUpdating, setIsUpdating] = useState(false);
 
-            // Filter States
             const [searchName, setSearchName] = useState("");
             const [filterKlasse, setFilterKlasse] = useState("ALL");
             const [filterJahrgang, setFilterJahrgang] = useState("ALL");
             const [filterModul, setFilterModul] = useState("ALL");
 
-            // Initialisierung & Auth
             useEffect(() => {
                 const bootstrap = async () => {
                     try {
@@ -120,7 +114,6 @@
                 bootstrap();
             }, []);
 
-            // DYNAMISCHE SICHERHEIT: LEHRER-ERKENNUNG
             const verifyTeacherStatus = async (account) => {
                 setLoading(true);
                 setDebugMsg("Prüfe Zugriffsrechte...");
@@ -132,9 +125,7 @@
                     const listsRes = await fetch(listsUrl, { headers: { Authorization: `Bearer ${token}` } });
                     const listsData = await listsRes.json();
                     
-                    const teacherList = listsData.value.find(l => 
-                        l.displayName === "Medienpass Lehrer" || l.name === "Medienpass Lehrer"
-                    );
+                    const teacherList = listsData.value.find(l => l.displayName === "Medienpass Lehrer" || l.name === "Medienpass Lehrer");
                     
                     if (!teacherList) {
                         setDebugMsg("Sicherheits-Liste 'Medienpass Lehrer' wurde im SharePoint nicht gefunden!");
@@ -146,9 +137,7 @@
                     const itemsRes = await fetch(itemsUrl, { headers: { Authorization: `Bearer ${token}` } });
                     const itemsData = await itemsRes.json();
 
-                    const isTeacher = itemsData.value.some(item => 
-                        item.fields.Title && item.fields.Title.toLowerCase() === account.username.toLowerCase()
-                    );
+                    const isTeacher = itemsData.value.some(item => item.fields.Title && item.fields.Title.toLowerCase() === account.username.toLowerCase());
 
                     if (isTeacher) {
                         setAccessDenied(false);
@@ -158,7 +147,6 @@
                         return false;
                     }
                 } catch (error) {
-                    console.error("Fehler bei Rechteprüfung:", error);
                     setDebugMsg("Fehler bei der Rechte-Prüfung.");
                     setAccessDenied(true);
                     return false;
@@ -194,23 +182,30 @@
                 setDebugMsg("Lade Schülerdaten aus SharePoint...");
                 try {
                     const tokenRes = await msalInstance.acquireTokenSilent({ scopes: ["Sites.ReadWrite.All"], account });
-                    
-                    let url = `https://graph.microsoft.com/v1.0/sites/${MS_CONFIG.siteId}/lists/${MS_CONFIG.listId}/items?$expand=fields&$top=999`;
-                    
+                    const url = `https://graph.microsoft.com/v1.0/sites/${MS_CONFIG.siteId}/lists/${MS_CONFIG.listId}/items?$expand=fields&$top=999`;
                     const res = await fetch(url, { headers: { Authorization: `Bearer ${tokenRes.accessToken}` }});
+                    
                     if (!res.ok) throw new Error(`HTTP ${res.status}`);
                     const data = await res.json();
                     
                     const parsedStudents = data.value.map(item => {
                         const f = item.fields;
                         const completedArray = f.Erledigte_Module ? f.Erledigte_Module.split(',').map(m => parseInt(m.trim())).filter(n => !isNaN(n)) : [];
+                        
+                        // Einlesen der Datums-Daten
+                        let parsedDates = {};
+                        if (f.Modul_Daten) {
+                            try { parsedDates = JSON.parse(f.Modul_Daten); } catch(e) {}
+                        }
+
                         return {
                             id: item.id,
                             email: f.Title || "",
                             vorname: f.Vorname || "",
                             nachname: f.Nachname || "",
                             klasse: f.Klasse || "Unbekannt",
-                            completedTasks: completedArray
+                            completedTasks: completedArray,
+                            moduleDates: parsedDates // Objekt mit { "ModulID": "Datum" }
                         };
                     });
                     
@@ -218,7 +213,6 @@
                     setStudents(parsedStudents);
                     setDebugMsg("");
                 } catch (error) {
-                    console.error(error);
                     setDebugMsg("Fehler beim Laden (Fehlende Rechte?).");
                     setAuthRequired(true);
                 } finally {
@@ -233,13 +227,22 @@
                 try {
                     const student = students.find(s => s.id === studentId);
                     const isDone = student.completedTasks.includes(moduleId);
+                    
                     const newTasks = isDone 
                         ? student.completedTasks.filter(id => id !== moduleId) 
                         : [...student.completedTasks, moduleId];
                     
-                    await updateSharePoint(studentId, newTasks);
+                    // Datum setzen oder entfernen
+                    let newDates = { ...student.moduleDates };
+                    if (isDone) {
+                        delete newDates[moduleId]; // Haken weg = Datum weg
+                    } else {
+                        newDates[moduleId] = new Date().toLocaleDateString('de-DE'); // Haken gesetzt = Heute
+                    }
                     
-                    setStudents(prev => prev.map(s => s.id === studentId ? { ...s, completedTasks: newTasks } : s));
+                    await updateSharePoint(studentId, newTasks, newDates);
+                    
+                    setStudents(prev => prev.map(s => s.id === studentId ? { ...s, completedTasks: newTasks, moduleDates: newDates } : s));
                 } catch (err) {
                     alert("Fehler beim Speichern in SharePoint: " + err.message);
                 } finally {
@@ -249,7 +252,7 @@
 
             const bulkToggle = async (action) => {
                 if (filterModul === "ALL" || isUpdating) {
-                    alert("Bitte wähle zuerst oben rechts im Filter ein spezifisches Modul aus, um Massenaktionen durchzuführen.");
+                    alert("Bitte wähle zuerst oben rechts im Filter ein spezifisches Modul aus.");
                     return;
                 }
                 
@@ -271,26 +274,38 @@
 
                 try {
                     const tokenRes = await msalInstance.acquireTokenSilent({ scopes: ["Sites.ReadWrite.All"], account: msalInstance.getActiveAccount() });
-                    
+                    const today = new Date().toLocaleDateString('de-DE');
+
                     const updatePromises = studentsToUpdate.map(async (student) => {
                         let newTasks = action === "grant" 
                             ? [...student.completedTasks, moduleId] 
                             : student.completedTasks.filter(id => id !== moduleId);
                         
+                        // Datum für die ganze Klasse verwalten
+                        let newDates = { ...student.moduleDates };
+                        if (action === "grant") {
+                            newDates[moduleId] = today;
+                        } else {
+                            delete newDates[moduleId];
+                        }
+                        
                         const url = `https://graph.microsoft.com/v1.0/sites/${MS_CONFIG.siteId}/lists/${MS_CONFIG.listId}/items/${student.id}/fields`;
                         await fetch(url, {
                             method: 'PATCH',
                             headers: { 'Authorization': `Bearer ${tokenRes.accessToken}`, 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ "Erledigte_Module": newTasks.join(', ') })
+                            body: JSON.stringify({ 
+                                "Erledigte_Module": newTasks.join(', '),
+                                "Modul_Daten": JSON.stringify(newDates) // Datums-Objekt mitsenden
+                            })
                         });
-                        return { id: student.id, tasks: newTasks };
+                        return { id: student.id, tasks: newTasks, dates: newDates };
                     });
 
                     const results = await Promise.all(updatePromises);
                     
                     setStudents(prev => prev.map(s => {
                         const updatedInfo = results.find(r => r.id === s.id);
-                        return updatedInfo ? { ...s, completedTasks: updatedInfo.tasks } : s;
+                        return updatedInfo ? { ...s, completedTasks: updatedInfo.tasks, moduleDates: updatedInfo.dates } : s;
                     }));
                     
                     setDebugMsg("Massen-Update erfolgreich!");
@@ -302,21 +317,24 @@
                 }
             };
 
-            const updateSharePoint = async (itemId, tasksArray) => {
+            // updateSharePoint nimmt jetzt auch das Datums-Objekt entgegen
+            const updateSharePoint = async (itemId, tasksArray, datesObj) => {
                 const tokenRes = await msalInstance.acquireTokenSilent({ scopes: ["Sites.ReadWrite.All"], account: msalInstance.getActiveAccount() });
                 const url = `https://graph.microsoft.com/v1.0/sites/${MS_CONFIG.siteId}/lists/${MS_CONFIG.listId}/items/${itemId}/fields`;
                 
                 const res = await fetch(url, {
                     method: 'PATCH',
                     headers: { 'Authorization': `Bearer ${tokenRes.accessToken}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ "Erledigte_Module": tasksArray.join(', ') })
+                    body: JSON.stringify({ 
+                        "Erledigte_Module": tasksArray.join(', '),
+                        "Modul_Daten": JSON.stringify(datesObj) // Wird als String in die neue Spalte geschrieben
+                    })
                 });
                 
                 if (!res.ok) throw new Error("Graph API Update gescheitert.");
             };
 
             const uniqueKlassen = useMemo(() => [...new Set(students.map(s => s.klasse))].sort(), [students]);
-            
             const uniqueJahrgaenge = useMemo(() => {
                 const j = students.map(s => s.klasse.match(/\d+/)?.[0]).filter(Boolean);
                 return [...new Set(j)].sort((a,b) => parseInt(a) - parseInt(b));
@@ -328,19 +346,12 @@
                     const klasseMatch = filterKlasse === "ALL" || s.klasse === filterKlasse;
                     const jg = s.klasse.match(/\d+/)?.[0];
                     const jahrgangMatch = filterJahrgang === "ALL" || jg === filterJahrgang;
-                    
                     return searchMatch && klasseMatch && jahrgangMatch;
                 });
             }, [students, searchName, filterKlasse, filterJahrgang]);
 
-            // Prüfen, ob irgendein Filter gesetzt ist
             const hasActiveFilters = searchName.trim() !== "" || filterJahrgang !== "ALL" || filterKlasse !== "ALL" || filterModul !== "ALL";
 
-
-            // ==========================================
-            // UI RENDER
-            // ==========================================
-            
             if (accessDenied) {
                 return (
                     <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 p-6 relative">
@@ -414,14 +425,14 @@
                                 <input type="text" placeholder="Nachname / Vorname suchen..." className="w-full pl-10 pr-4 py-2 bg-slate-50 border rounded-xl text-sm font-semibold outline-none focus:ring-2 focus:ring-red-600" value={searchName} onChange={e => setSearchName(e.target.value)} />
                             </div>
                             
-                            <select className="bg-slate-50 border rounded-xl px-4 py-2 text-sm font-semibold outline-none focus:ring-2 focus:ring-red-600" value={filterJahrgang} onChange={e => {setFilterJahrgang(e.target.value); setFilterKlasse("ALL");}}>
-                                <option value="ALL">Alle Jahrgänge</option>
-                                {uniqueJahrgaenge.map(j => <option key={j} value={j}>Jahrgang {j}</option>)}
-                            </select>
-
                             <select className="bg-slate-50 border rounded-xl px-4 py-2 text-sm font-semibold outline-none focus:ring-2 focus:ring-red-600" value={filterKlasse} onChange={e => setFilterKlasse(e.target.value)}>
                                 <option value="ALL">Alle Klassen</option>
                                 {uniqueKlassen.filter(k => filterJahrgang === "ALL" || k.includes(filterJahrgang)).map(k => <option key={k} value={k}>Klasse {k}</option>)}
+                            </select>
+
+                            <select className="bg-slate-50 border rounded-xl px-4 py-2 text-sm font-semibold outline-none focus:ring-2 focus:ring-red-600" value={filterJahrgang} onChange={e => {setFilterJahrgang(e.target.value); setFilterKlasse("ALL");}}>
+                                <option value="ALL">Alle Jahrgänge</option>
+                                {uniqueJahrgaenge.map(j => <option key={j} value={j}>Jahrgang {j}</option>)}
                             </select>
 
                             <select className="bg-slate-50 border rounded-xl px-4 py-2 text-sm font-semibold outline-none focus:ring-2 focus:ring-red-600" value={filterModul} onChange={e => setFilterModul(e.target.value)}>
@@ -430,7 +441,7 @@
                             </select>
                         </div>
                         
-                        {/* Aktionsleiste Massen-Update (nur anzeigen, wenn ein spezifisches Modul UND mindestens ein weiterer Filter aktiv ist) */}
+                        {/* Aktionsleiste Massen-Update */}
                         {filterModul !== "ALL" && hasActiveFilters && (
                             <div className="max-w-7xl mx-auto mt-4 p-4 bg-red-50 rounded-2xl flex flex-wrap items-center justify-between gap-4 border border-red-100">
                                 <div>
