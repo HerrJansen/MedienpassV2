@@ -18,6 +18,7 @@
         body { font-family: 'Inter', sans-serif; background-color: #f8fafc; -webkit-tap-highlight-color: transparent; }
         .spinner { border: 3px solid rgba(0,0,0,0.1); border-left-color: var(--thomaeum-red); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body>
@@ -42,7 +43,7 @@
                 redirectUri: window.location.origin,
                 navigateToLoginRequestUrl: true // WICHTIG FÜR HANDYS
             },
-            cache: { cacheLocation: "localStorage", storeAuthStateInCookie: true } // Cookie Fallback für Safari
+            cache: { cacheLocation: "localStorage", storeAuthStateInCookie: true }
         };
         
         const msalInstance = new msal.PublicClientApplication(msalConfig);
@@ -64,8 +65,109 @@
                     setSvg(window.lucide.icons[name].toSvg({ width: size, height: size, class: className }));
                 }
             }, [name, size, className]);
-            return <span className="inline-flex items-center justify-center" dangerouslySetInnerHTML={{ __html: svg }} />;
+            return <span className={`inline-flex items-center justify-center ${className}`} dangerouslySetInnerHTML={{ __html: svg }} />;
         };
+
+        // --- DER WISSENSSPEICHER (Inhalte für die Popups) ---
+        const getModuleContent = (moduleId) => {
+            if (moduleId === 6) {
+                return (
+                    <div className="space-y-8 text-slate-700 leading-relaxed">
+                        <div className="bg-green-50 p-5 rounded-3xl border border-green-100">
+                            <h4 className="font-black text-green-800 text-lg flex items-center gap-2 mb-2"><Icon name="trophy" size={24} className="text-green-600"/> Suchmaschinen-Profi!</h4>
+                            <p className="text-sm font-medium text-green-700">Du hast dieses Modul erfolgreich freigeschaltet. Hier findest du noch einmal deine wichtigsten Superkräfte für die perfekte Suche im Internet zusammengefasst.</p>
+                        </div>
+
+                        <div>
+                            <h4 className="font-black text-xl text-slate-800 mb-3 flex items-center gap-2"><Icon name="bot" size={24} className="text-[#BF0D3E]"/> 1. Das Geheimnis der Suchmaschine</h4>
+                            <p className="text-sm mb-3 font-medium">Stell dir das Internet wie eine gigantische Bibliothek vor. Eine Suchmaschine sucht nicht "live" im ganzen Internet, wenn du auf Enter drückst – das würde viel zu lange dauern!</p>
+                            <ul className="list-none text-sm space-y-3">
+                                <li className="flex gap-3 items-start">
+                                    <div className="mt-1 w-2 h-2 rounded-full bg-[#BF0D3E] shrink-0"></div>
+                                    <p><strong>Die Spinnen (Crawler):</strong> Kleine, unsichtbare Programme der Suchmaschinen krabbeln Tag und Nacht durchs Internet und lesen Webseiten.</p>
+                                </li>
+                                <li className="flex gap-3 items-start">
+                                    <div className="mt-1 w-2 h-2 rounded-full bg-[#BF0D3E] shrink-0"></div>
+                                    <p><strong>Der Index:</strong> Sie packen alle Wörter, die sie finden, in ein riesiges Inhaltsverzeichnis (den "Index"). Wenn du suchst, suchst du eigentlich nur darin!</p>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4 className="font-black text-xl text-slate-800 mb-3 flex items-center gap-2"><Icon name="target" size={24} className="text-[#BF0D3E]"/> 2. Die perfekten Suchbegriffe</h4>
+                            <p className="text-sm mb-4 font-medium">Tippe niemals ganze Sätze oder Fragen in die Suchleiste ein! Suchmaschinen verstehen <strong>Schlagwörter (Keywords)</strong> viel besser.</p>
+                            <div className="space-y-3 bg-slate-50 p-5 rounded-2xl border border-slate-100">
+                                <div className="flex gap-3 items-center text-sm">
+                                    <span className="text-red-500 font-black text-lg">❌</span> 
+                                    <p><span className="text-slate-500 italic">Falsch:</span> "Was fressen Eisbären im Winter?"</p>
+                                </div>
+                                <div className="flex gap-3 items-center text-sm">
+                                    <span className="text-green-500 font-black text-lg">✅</span> 
+                                    <p><span className="text-slate-500 italic">Richtig:</span> <code className="bg-green-100 text-green-800 px-2 py-1 rounded-md font-bold">Eisbär Nahrung Winter</code></p>
+                                </div>
+                                <div className="flex gap-3 items-center text-sm pt-2 border-t border-slate-200 mt-2">
+                                    <span className="text-yellow-500 font-black text-lg">💡</span> 
+                                    <p>Nutze <strong>Synonyme</strong>! Finde z. B. statt "Auto" mal "KFZ" oder "Fahrzeug".</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 className="font-black text-xl text-slate-800 mb-3 flex items-center gap-2"><Icon name="wand-2" size={24} className="text-[#BF0D3E]"/> 3. Die Profi-Tricks</h4>
+                            <div className="grid gap-4 sm:grid-cols-2">
+                                <div className="bg-white border-2 border-slate-100 p-4 rounded-2xl shadow-sm">
+                                    <p className="font-black text-lg mb-1">Das Minus (-)</p>
+                                    <p className="text-xs text-slate-500 mb-2">Schließt Wörter aus. Du suchst das Tier Jaguar, keine Autos?</p>
+                                    <code className="bg-slate-100 text-[#BF0D3E] px-2 py-1 rounded font-bold text-sm">Jaguar -Auto</code>
+                                </div>
+                                <div className="bg-white border-2 border-slate-100 p-4 rounded-2xl shadow-sm">
+                                    <p className="font-black text-lg mb-1">Die Gänsefüßchen</p>
+                                    <p className="text-xs text-slate-500 mb-2">Sucht exakt diese Wortfolge im Internet.</p>
+                                    <code className="bg-slate-100 text-[#BF0D3E] px-2 py-1 rounded font-bold text-sm">"Gymnasium Thomaeum"</code>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 className="font-black text-xl text-slate-800 mb-3 flex items-center gap-2"><Icon name="search" size={24} className="text-[#BF0D3E]"/> 4. Augen auf bei der Trefferliste!</h4>
+                            <ul className="list-none text-sm space-y-3">
+                                <li className="flex gap-3 items-start">
+                                    <div className="mt-1 w-2 h-2 rounded-full bg-[#BF0D3E] shrink-0"></div>
+                                    <p><strong>Anzeigen erkennen:</strong> Firmen bezahlen Geld, um oben zu stehen. Diese Treffer haben ein kleines Wort wie <strong>"Anzeige"</strong> oder <strong>"Gesponsert"</strong> neben sich. Überspringe sie lieber!</p>
+                                </li>
+                                <li className="flex gap-3 items-start">
+                                    <div className="mt-1 w-2 h-2 rounded-full bg-[#BF0D3E] shrink-0"></div>
+                                    <p><strong>Snippets scannen:</strong> Lies dir immer erst den kurzen grauen Text unter dem blauen Link durch. So weißt du, ob die Seite deine Frage beantwortet, ohne sie anklicken zu müssen.</p>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div className="bg-red-50 p-5 rounded-3xl border border-red-100">
+                            <h4 className="font-black text-lg text-slate-800 mb-2 flex items-center gap-2"><Icon name="shield-check" size={20} className="text-[#BF0D3E]"/> 5. Sichere Alternativen zu Google</h4>
+                            <p className="text-sm mb-3">Google ist riesig, aber nicht immer die beste Wahl für Kinder. Diese Suchmaschinen filtern das Internet für dich:</p>
+                            <div className="flex flex-wrap gap-2 mb-4">
+                                <span className="bg-white px-3 py-1 rounded-full text-xs font-bold text-slate-700 shadow-sm border border-slate-200">FragFINN.de</span>
+                                <span className="bg-white px-3 py-1 rounded-full text-xs font-bold text-slate-700 shadow-sm border border-slate-200">Blinde-Kuh.de</span>
+                                <span className="bg-white px-3 py-1 rounded-full text-xs font-bold text-slate-700 shadow-sm border border-slate-200">Helles-Koepfchen.de</span>
+                            </div>
+                            <p className="text-[11px] font-medium text-slate-500 italic border-t border-red-200 pt-3">
+                                Tipp für später: Wenn du mal suchen willst, ohne dass die Suchmaschine sich merkt, wer du bist und was du suchst, probiere mal DuckDuckGo.com oder Startpage.com aus!
+                            </p>
+                        </div>
+                    </div>
+                );
+            }
+            // Fallback für alle anderen Module, die noch keinen Text haben
+            return (
+                <div className="text-center py-12 px-4">
+                    <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-300">
+                        <Icon name="book-open" size={40} />
+                    </div>
+                    <h3 className="text-xl font-black text-slate-800 mb-2">Inhalte in Arbeit</h3>
+                    <p className="text-slate-500 text-sm max-w-sm mx-auto">Der Wissensspeicher für dieses Modul wird gerade von deinen Lehrkräften geschrieben. Schau bald wieder vorbei!</p>
+                </div>
+            );
+        }
 
         const App = () => {
             const [user, setUser] = useState(null);
@@ -73,14 +175,15 @@
             const [loading, setLoading] = useState(true);
             const [authRequired, setAuthRequired] = useState(false);
             const [errorMsg, setErrorMsg] = useState("");
-            const [activeStage, setActiveStage] = useState("5-6"); // NEU: Zustand für den aktuell gewählten Jahrgang
+            const [activeStage, setActiveStage] = useState("5-6");
+            
+            // NEU: Zustand für das offene Modul (Modal)
+            const [selectedModule, setSelectedModule] = useState(null);
 
             useEffect(() => {
                 const bootstrap = async () => {
                     try {
                         await msalInitPromise;
-                        
-                        // CRITICAL FOR MOBILE: Verarbeitet die Rückkehr vom Microsoft-Login
                         await msalInstance.handleRedirectPromise();
                         
                         let activeAccount = msalInstance.getActiveAccount();
@@ -105,7 +208,6 @@
                 bootstrap();
             }, []);
 
-            // MOBILE FIX: Nur noch Redirect nutzen, keine Popups mehr!
             const handleLogin = () => {
                 setLoading(true);
                 msalInstance.loginRedirect({ scopes: ["Sites.Read.All"] });
@@ -118,14 +220,12 @@
             const fetchMyData = async (account) => {
                 try {
                     const tokenRes = await msalInstance.acquireTokenSilent({ scopes: ["Sites.Read.All"], account });
-                    
                     const url = `https://graph.microsoft.com/v1.0/sites/${MS_CONFIG.siteId}/lists/${MS_CONFIG.listId}/items?$expand=fields&$top=999`;
                     const res = await fetch(url, { headers: { Authorization: `Bearer ${tokenRes.accessToken}` }});
                     
                     if (!res.ok) throw new Error("Fehler beim Abrufen der SharePoint-Daten.");
                     const data = await res.json();
                     
-                    // Finde genau den Datensatz des eingeloggten Schülers
                     const myRecord = data.value.find(item => 
                         item.fields.Title && item.fields.Title.toLowerCase() === account.username.toLowerCase()
                     );
@@ -151,7 +251,6 @@
                     }
                 } catch (error) {
                     if (error.name === "InteractionRequiredAuthError") {
-                        // Wenn Safari zickt, erzwingen wir den Login neu
                         msalInstance.loginRedirect({ scopes: ["Sites.Read.All"] });
                     } else {
                         setErrorMsg("Fehler beim Laden deiner Daten.");
@@ -209,7 +308,31 @@
             const progressPercent = Math.round((totalCompleted / 18) * 100);
 
             return (
-                <div className="min-h-screen flex flex-col bg-slate-50 font-sans pb-10">
+                <div className="min-h-screen flex flex-col bg-slate-50 font-sans pb-10 relative">
+                    
+                    {/* OVERLAY / MODAL: Wissensspeicher */}
+                    {selectedModule && (
+                        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-900/40 backdrop-blur-sm">
+                            <div className="bg-white rounded-[2.5rem] w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
+                                {/* Modal Header */}
+                                <div className="bg-[#BF0D3E] text-white p-6 sm:p-8 flex justify-between items-center shrink-0">
+                                    <div>
+                                        <span className="text-red-200 text-[10px] font-black uppercase tracking-widest mb-1 block">Wissensspeicher • Modul {selectedModule.id}</span>
+                                        <h2 className="text-2xl sm:text-3xl font-black tracking-tight">{selectedModule.title}</h2>
+                                    </div>
+                                    <button onClick={() => setSelectedModule(null)} className="bg-white/20 hover:bg-white/30 text-white p-3 rounded-2xl transition-colors">
+                                        <Icon name="x" size={24} />
+                                    </button>
+                                </div>
+
+                                {/* Modal Body (Scrollable) */}
+                                <div className="p-6 sm:p-8 overflow-y-auto">
+                                    {getModuleContent(selectedModule.id)}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
                     {/* Header - Mobile Optimiert */}
                     <header className="bg-[#BF0D3E] text-white pt-12 pb-6 px-6 sm:px-8 shadow-md rounded-b-[2rem] sm:rounded-b-[3rem] relative z-10">
                         <div className="max-w-4xl mx-auto flex justify-between items-start">
@@ -235,10 +358,10 @@
                         </div>
                     </header>
 
-                    {/* Content / Module - Grid für Handys optimiert */}
+                    {/* Content / Module */}
                     <main className="flex-grow max-w-4xl mx-auto w-full px-4 sm:px-8 mt-[-1rem] sm:mt-[-2rem] relative z-20">
                         
-                        {/* NEU: Navigation für die Jahrgangsstufen */}
+                        {/* Navigation für die Jahrgangsstufen */}
                         <div className="flex gap-3 mb-2 overflow-x-auto pb-4 scrollbar-hide pt-4 sm:pt-6">
                             {["5-6", "7-8", "9-10"].map(stage => (
                                 <button 
@@ -258,7 +381,11 @@
                                 const dateDone = studentData?.moduleDates[modul.id];
 
                                 return (
-                                    <div key={modul.id} className={`bg-white rounded-3xl p-5 sm:p-6 border-2 transition-all ${isDone ? 'border-green-400 shadow-green-100 shadow-lg' : 'border-slate-100 shadow-sm'}`}>
+                                    <div 
+                                        key={modul.id} 
+                                        onClick={() => { if (isDone) setSelectedModule(modul); }}
+                                        className={`bg-white rounded-3xl p-5 sm:p-6 border-2 transition-all flex flex-col h-full ${isDone ? 'border-green-400 shadow-green-100 shadow-lg cursor-pointer hover:-translate-y-1 hover:shadow-xl' : 'border-slate-100 shadow-sm opacity-90'}`}
+                                    >
                                         <div className="flex justify-between items-start mb-4">
                                             <span className="text-[10px] font-black uppercase tracking-widest bg-slate-100 text-slate-500 px-3 py-1 rounded-lg">Klasse {modul.stage}</span>
                                             {isDone ? (
@@ -276,16 +403,25 @@
                                             {modul.title}
                                         </h3>
                                         
-                                        {isDone ? (
-                                            <p className="text-xs font-bold text-green-600 flex items-center gap-1 mt-3">
-                                                <Icon name="calendar-check" size={12} />
-                                                Zertifiziert am {dateDone || "—"}
-                                            </p>
-                                        ) : (
-                                            <p className="text-xs font-medium text-slate-400 mt-3">
-                                                Noch nicht freigeschaltet.
-                                            </p>
-                                        )}
+                                        <div className="mt-auto">
+                                            {isDone ? (
+                                                <div>
+                                                    <p className="text-xs font-bold text-green-600 flex items-center gap-1 mt-3 mb-4">
+                                                        <Icon name="calendar-check" size={12} />
+                                                        Am {dateDone || "—"}
+                                                    </p>
+                                                    <div className="pt-3 border-t border-slate-100 text-center">
+                                                        <span className="text-[10px] font-black uppercase tracking-widest text-[#BF0D3E] flex items-center justify-center gap-2 group-hover:text-red-700">
+                                                            <Icon name="book-open" size={14} /> Wissensspeicher öffnen
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <p className="text-xs font-medium text-slate-400 mt-3">
+                                                    Noch nicht freigeschaltet.
+                                                </p>
+                                            )}
+                                        </div>
                                     </div>
                                 );
                             })}
