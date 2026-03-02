@@ -585,7 +585,7 @@
                                             <th className="p-4 text-center">
                                                 {filterModul === "ALL" ? "Gesamtfortschritt" : `Status: Modul ${filterModul}`}
                                             </th>
-                                            <th className="p-4 text-center w-24">Ansicht</th>
+                                            <th className="p-4 text-center w-32">Ansicht</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -622,13 +622,14 @@
                                                         )}
                                                     </td>
                                                     <td className="p-4 text-center">
-                                                        {/* NEU: Button für die Schüleransicht */}
+                                                        {/* Markanterer Button für die Schüleransicht */}
                                                         <button 
                                                             onClick={() => setViewingStudent(student)}
-                                                            className="w-8 h-8 rounded-lg bg-blue-50 text-blue-500 flex items-center justify-center mx-auto hover:bg-blue-500 hover:text-white transition-all shadow-sm"
+                                                            className="flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-slate-800 text-white hover:bg-blue-600 text-[10px] font-black uppercase tracking-widest transition-all mx-auto shadow-md hover:shadow-lg hover:-translate-y-0.5"
                                                             title="Detailansicht des Schülers öffnen"
                                                         >
-                                                            <Icon name="eye" size={16} />
+                                                            <Icon name="user" size={14} />
+                                                            Profil
                                                         </button>
                                                     </td>
                                                 </tr>
