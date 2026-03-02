@@ -35,8 +35,6 @@
             clientId: "7d277b19-93c1-4df7-8f1b-d38749b3d440",
             siteId: "thomaeumde.sharepoint.com,9ef17c4d-b57b-482e-9168-3cc3bc43bc3d,d600d53b-cfd0-45f7-96a5-f1ac20222f8f",
             listId: "08da02d9-5b67-4938-9d7e-9e9dee97fa2e",
-            
-            // Objekt-ID der dynamischen Lehrergruppe aus Entra ID
             teacherGroupId: "2bbe9733-7137-4d54-a788-e988c3d56cd9" 
         };
         const THOMA_RED = "#BF0D3E";
@@ -69,7 +67,100 @@
                     setSvg(window.lucide.icons[name].toSvg({ width: size, height: size, class: className }));
                 }
             }, [name, size, className]);
-            return <span className="inline-flex items-center" dangerouslySetInnerHTML={{ __html: svg }} />;
+            return <span className="inline-flex items-center justify-center" dangerouslySetInnerHTML={{ __html: svg }} />;
+        };
+
+        // ==========================================
+        // KOMPONENTE: SCHÜLERANSICHT (Overlay)
+        // ==========================================
+        const StudentPreview = ({ student, onClose }) => {
+            const [activeStage, setActiveStage] = useState("5-6");
+            const totalCompleted = student.completedTasks.length;
+            const progressPercent = Math.round((totalCompleted / 18) * 100);
+
+            return (
+                <div className="fixed inset-0 z-50 bg-slate-50 overflow-y-auto">
+                    {/* Header - Identisch zur Schüler-App */}
+                    <header className="bg-[#BF0D3E] text-white pt-12 pb-6 px-6 sm:px-8 shadow-md rounded-b-[2rem] sm:rounded-b-[3rem] relative z-10">
+                        <div className="max-w-4xl mx-auto flex justify-between items-start">
+                            <div>
+                                <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tighter mb-1">Ansicht: {student.vorname}</h1>
+                                <p className="text-red-200 font-bold text-sm sm:text-base opacity-90">Klasse {student.klasse} • Gymnasium Thomaeum</p>
+                            </div>
+                            <button onClick={onClose} className="bg-white/20 hover:bg-white/30 text-white p-3 rounded-xl transition-colors flex items-center gap-2 font-bold text-sm">
+                                <Icon name="x" size={20} /> Schließen
+                            </button>
+                        </div>
+                        
+                        {/* Fortschrittsbalken */}
+                        <div className="max-w-4xl mx-auto mt-8 bg-black/10 p-5 rounded-3xl backdrop-blur-sm">
+                            <div className="flex justify-between items-end mb-3">
+                                <span className="font-black uppercase tracking-widest text-xs sm:text-sm text-white">Gesamtfortschritt</span>
+                                <span className="font-black text-2xl sm:text-3xl text-white">{progressPercent}%</span>
+                            </div>
+                            <div className="h-4 bg-black/20 rounded-full overflow-hidden shadow-inner">
+                                <div className="h-full bg-white rounded-full transition-all duration-1000 ease-out" style={{ width: `${progressPercent}%` }}></div>
+                            </div>
+                            <p className="text-right mt-2 text-[10px] font-bold text-red-200 uppercase">{totalCompleted} von 18 Modulen geschafft</p>
+                        </div>
+                    </header>
+
+                    {/* Content / Module */}
+                    <main className="flex-grow max-w-4xl mx-auto w-full px-4 sm:px-8 mt-[-1rem] sm:mt-[-2rem] relative z-20 pb-10">
+                        <div className="flex gap-3 mb-2 overflow-x-auto pb-4 scrollbar-hide pt-4 sm:pt-6">
+                            {["5-6", "7-8", "9-10"].map(stage => (
+                                <button 
+                                    key={stage} 
+                                    onClick={() => setActiveStage(stage)} 
+                                    className={`px-6 py-3 rounded-2xl font-black transition-all whitespace-nowrap shadow-sm ${activeStage === stage ? 'text-white shadow-md scale-105' : 'bg-white text-slate-400 border border-slate-100 hover:bg-slate-50'}`} 
+                                    style={activeStage === stage ? { backgroundColor: THOMA_RED } : {}}
+                                >
+                                    Klasse {stage}
+                                </button>
+                            ))}
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
+                            {ALL_MODULES.filter(m => m.stage === activeStage).map(modul => {
+                                const isDone = student.completedTasks.includes(modul.id);
+                                const dateDone = student.moduleDates?.[modul.id];
+
+                                return (
+                                    <div key={modul.id} className={`bg-white rounded-3xl p-5 sm:p-6 border-2 transition-all ${isDone ? 'border-green-400 shadow-green-100 shadow-lg' : 'border-slate-100 shadow-sm'}`}>
+                                        <div className="flex justify-between items-start mb-4">
+                                            <span className="text-[10px] font-black uppercase tracking-widest bg-slate-100 text-slate-500 px-3 py-1 rounded-lg">Klasse {modul.stage}</span>
+                                            {isDone ? (
+                                                <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white shadow-md">
+                                                    <Icon name="check" size={16} />
+                                                </div>
+                                            ) : (
+                                                <div className="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center text-slate-300">
+                                                    <Icon name="lock" size={14} />
+                                                </div>
+                                            )}
+                                        </div>
+                                        
+                                        <h3 className={`font-black text-lg sm:text-xl tracking-tight leading-tight mb-2 ${isDone ? 'text-slate-800' : 'text-slate-500'}`}>
+                                            {modul.title}
+                                        </h3>
+                                        
+                                        {isDone ? (
+                                            <p className="text-xs font-bold text-green-600 flex items-center gap-1 mt-3">
+                                                <Icon name="calendar-check" size={12} />
+                                                Am {dateDone || "—"}
+                                            </p>
+                                        ) : (
+                                            <p className="text-xs font-medium text-slate-400 mt-3">
+                                                Noch nicht freigeschaltet.
+                                            </p>
+                                        )}
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </main>
+                </div>
+            );
         };
 
         const App = () => {
@@ -85,6 +176,9 @@
             const [filterKlasse, setFilterKlasse] = useState("ALL");
             const [filterJahrgang, setFilterJahrgang] = useState("ALL");
             const [filterModul, setFilterModul] = useState("ALL");
+            
+            // NEU: Zustand für die Schüleransicht Overlay
+            const [viewingStudent, setViewingStudent] = useState(null);
 
             useEffect(() => {
                 const bootstrap = async () => {
@@ -120,23 +214,17 @@
                 bootstrap();
             }, []);
 
-            // NEU: DIE WARTUNGSFREIE GRUPPEN-PRÜFUNG
             const verifyTeacherStatus = async (account) => {
                 setLoading(true);
                 setDebugMsg("Prüfe Gruppenzugehörigkeit (Entra ID)...");
                 try {
-                    // Wir holen ein Token, das Gruppenmitgliedschaften lesen darf
                     const tokenRes = await msalInstance.acquireTokenSilent({ scopes: ["GroupMember.Read.All"], account });
-                    
-                    // Wir fragen Microsoft: In welchen Gruppen ist dieser User Mitglied?
                     const url = `https://graph.microsoft.com/v1.0/me/memberOf`;
                     const res = await fetch(url, { headers: { Authorization: `Bearer ${tokenRes.accessToken}` } });
                     
                     if (!res.ok) throw new Error("Graph API Gruppenabruf fehlgeschlagen");
-                    
                     const data = await res.json();
                     
-                    // Prüfen, ob die Objekt-ID eurer dynamischen Lehrergruppe in den Ergebnissen ist
                     const isTeacher = data.value.some(group => group.id === MS_CONFIG.teacherGroupId);
 
                     if (isTeacher) {
@@ -148,9 +236,6 @@
                         return false;
                     }
                 } catch (error) {
-                    console.error("Rechteprüfung Fehler:", error);
-                    // Falls das leise Token-Holen fehlschlägt (z.B. weil der Admin-Consent neu ist), 
-                    // blockieren wir hier noch nicht hart, sondern lassen den User sich neu einloggen.
                     if (error.name === "InteractionRequiredAuthError") {
                          setDebugMsg("Bitte logge dich erneut ein, um die neuen Berechtigungen zu akzeptieren.");
                     } else {
@@ -162,7 +247,6 @@
             };
 
             const handleLogin = async () => {
-                // NEU: Wir fordern beim Login direkt beide Berechtigungen an (Schreiben & Gruppen lesen)
                 const tokenRequest = { scopes: ["Sites.ReadWrite.All", "GroupMember.Read.All"], prompt: "select_account" };
                 try {
                     const response = await msalInstance.loginPopup(tokenRequest);
@@ -418,7 +502,12 @@
             }
 
             return (
-                <div className="min-h-screen flex flex-col bg-slate-50 font-sans selection:bg-red-100">
+                <div className="min-h-screen flex flex-col bg-slate-50 font-sans selection:bg-red-100 relative">
+                    {/* OVERLAY: SCHÜLERANSICHT */}
+                    {viewingStudent && (
+                        <StudentPreview student={viewingStudent} onClose={() => setViewingStudent(null)} />
+                    )}
+
                     <header className="bg-white border-b h-20 flex items-center justify-between px-8 shadow-sm sticky top-0 z-40">
                         <div className="flex items-center gap-3">
                             <div className="p-2 rounded-xl text-white shadow-lg" style={{ backgroundColor: THOMA_RED }}>
@@ -496,11 +585,12 @@
                                             <th className="p-4 text-center">
                                                 {filterModul === "ALL" ? "Gesamtfortschritt" : `Status: Modul ${filterModul}`}
                                             </th>
+                                            <th className="p-4 text-center w-24">Ansicht</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {filteredStudents.length === 0 ? (
-                                            <tr><td colSpan="4" className="p-8 text-center text-slate-400 font-bold">Keine Schüler für diesen Filter gefunden.</td></tr>
+                                            <tr><td colSpan="5" className="p-8 text-center text-slate-400 font-bold">Keine Schüler für diesen Filter gefunden.</td></tr>
                                         ) : filteredStudents.map(student => {
                                             const totalProgress = Math.round((student.completedTasks.length / 18) * 100);
                                             const isModulDone = filterModul !== "ALL" && student.completedTasks.includes(parseInt(filterModul));
@@ -530,6 +620,16 @@
                                                                 <Icon name={isModulDone ? "check" : "circle"} size={16} />
                                                             </button>
                                                         )}
+                                                    </td>
+                                                    <td className="p-4 text-center">
+                                                        {/* NEU: Button für die Schüleransicht */}
+                                                        <button 
+                                                            onClick={() => setViewingStudent(student)}
+                                                            className="w-8 h-8 rounded-lg bg-blue-50 text-blue-500 flex items-center justify-center mx-auto hover:bg-blue-500 hover:text-white transition-all shadow-sm"
+                                                            title="Detailansicht des Schülers öffnen"
+                                                        >
+                                                            <Icon name="eye" size={16} />
+                                                        </button>
                                                     </td>
                                                 </tr>
                                             );
