@@ -157,6 +157,72 @@
                     </div>
                 );
             }
+            if (moduleId === 3) {
+                return (
+                    <div className="space-y-8 text-slate-700 leading-relaxed">
+                        <div className="bg-green-50 p-5 rounded-3xl border border-green-100">
+                            <h4 className="font-black text-green-800 text-lg flex items-center gap-2 mb-2"><Icon name="trophy" size={24} className="text-green-600"/> Text-Profi in Word!</h4>
+                            <p className="text-sm font-medium text-green-700">Herzlichen Glückwunsch! Du weißt jetzt, wie man in Microsoft Word Texte tippt. Hier sind die geheimen Profi-Tricks für perfekte Referate:</p>
+                        </div>
+
+                        <div>
+                            <h4 className="font-black text-xl text-slate-800 mb-3 flex items-center gap-2"><Icon name="undo-2" size={24} className="text-[#BF0D3E]"/> 1. Der magische Lebensretter</h4>
+                            <p className="text-sm mb-3 font-medium">Oh nein! Du hast aus Versehen deinen halben Text gelöscht? Keine Panik!</p>
+                            <ul className="list-none text-sm space-y-3">
+                                <li className="flex gap-3 items-start">
+                                    <div className="mt-1 w-2 h-2 rounded-full bg-[#BF0D3E] shrink-0"></div>
+                                    <p>Klicke ganz oben links in Word auf den <strong>gebogenen Pfeil nach links</strong>.</p>
+                                </li>
+                                <li className="flex gap-3 items-start">
+                                    <div className="mt-1 w-2 h-2 rounded-full bg-[#BF0D3E] shrink-0"></div>
+                                    <p><strong>Der Profi-Trick:</strong> Drücke auf deiner Tastatur gleichzeitig <code className="bg-slate-100 text-[#BF0D3E] px-2 py-1 rounded font-bold">Strg</code> und <code className="bg-slate-100 text-[#BF0D3E] px-2 py-1 rounded font-bold">Z</code>. Schwupps! Word macht deinen Fehler sofort rückgängig.</p>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4 className="font-black text-xl text-slate-800 mb-3 flex items-center gap-2"><Icon name="list" size={24} className="text-[#BF0D3E]"/> 2. Ordnung schaffen mit Listen</h4>
+                            <p className="text-sm mb-3 font-medium">Wenn du viele Informationen hast, benutze Listen! Das liest sich viel besser als ein riesiger Textblock.</p>
+                            <ul className="list-none text-sm space-y-3">
+                                <li className="flex gap-3 items-start">
+                                    <div className="mt-1 w-2 h-2 rounded-full bg-[#BF0D3E] shrink-0"></div>
+                                    <p>Markiere deinen Text und klicke oben im Menü "Start" auf die <strong>Aufzählungszeichen</strong> (Punkte) oder auf die <strong>Nummerierung</strong> (1. 2. 3.).</p>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4 className="font-black text-xl text-slate-800 mb-3 flex items-center gap-2"><Icon name="image" size={24} className="text-[#BF0D3E]"/> 3. Bilder einfügen (ohne Chaos!)</h4>
+                            <p className="text-sm mb-3 font-medium">Oft zerreißt ein Bild deinen ganzen Text und lässt sich nicht verschieben.</p>
+                            <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 text-sm">
+                                <p><strong>Die Lösung:</strong> Klicke das Bild an. Daneben erscheint ein kleines Symbol mit Linien ("Layoutoptionen"). Klicke darauf und wähle <strong>"Quadrat"</strong>. Jetzt fließt dein Text wunderschön um das Bild herum!</p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 className="font-black text-xl text-slate-800 mb-3 flex items-center gap-2"><Icon name="file-warning" size={24} className="text-[#BF0D3E]"/> 4. Der rote Wellen-Alarm</h4>
+                            <p className="text-sm mb-3 font-medium">Wenn unter einem Wort eine rote Wellenlinie auftaucht, hat Word einen Rechtschreibfehler entdeckt.</p>
+                            <ul className="list-none text-sm space-y-3">
+                                <li className="flex gap-3 items-start">
+                                    <div className="mt-1 w-2 h-2 rounded-full bg-[#BF0D3E] shrink-0"></div>
+                                    <p><strong>So korrigierst du es:</strong> Klicke mit der <strong>rechten Maustaste</strong> auf das Wort. Wähle das richtige Wort aus dem Menü.</p>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div className="bg-red-50 p-5 rounded-3xl border border-red-100">
+                            <h4 className="font-black text-lg text-slate-800 mb-2 flex items-center gap-2"><Icon name="file-text" size={20} className="text-[#BF0D3E]"/> 5. Das PDF-Geheimnis</h4>
+                            <p className="text-sm mb-3">Damit sich deine Hausaufgaben beim Lehrer auf dem PC nicht verschieben, speichere sie immer als PDF!</p>
+                            <ul className="list-none text-sm space-y-3">
+                                <li className="flex gap-3 items-start">
+                                    <div className="mt-1 w-2 h-2 rounded-full bg-[#BF0D3E] shrink-0"></div>
+                                    <p>Klicke auf <strong>Datei -> Speichern unter</strong> und wähle bei "Dateityp" in der Liste <strong>PDF</strong> aus.</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                );
+            }
             // Fallback für alle anderen Module, die noch keinen Text haben
             return (
                 <div className="text-center py-12 px-4">
@@ -177,7 +243,7 @@
             const [errorMsg, setErrorMsg] = useState("");
             const [activeStage, setActiveStage] = useState("5-6");
             
-            // NEU: Zustand für das offene Modul (Modal)
+            // Zustand für das offene Modul (Modal)
             const [selectedModule, setSelectedModule] = useState(null);
 
             useEffect(() => {
@@ -364,134 +430,152 @@
                         {/* Navigation für die Jahrgangsstufen */}
                         <div className="flex gap-3 mb-2 overflow-x-auto pb-4 scrollbar-hide pt-4 sm:pt-6">
                             {["5-6", "7-8", "9-10"].map(stage => (
-                            <button 
-                                key={stage} 
-                                onClick={() => setActiveStage(stage)} 
-                                className={`px-6 py-3 rounded-2xl font-black transition-all whitespace-nowrap shadow-sm ${activeStage === stage ? 'text-white shadow-md scale-105' : 'bg-white text-slate-400 border border-slate-100 hover:bg-slate-50'}`} 
-                                style={activeStage === stage ? { backgroundColor: THOMA_RED } : {}}
-                            >
-                                Klasse {stage}
-                            </button>
-                        ))}
-                    </div>
-
-                    <div className="mb-10">
-                        <h3 className="text-xl font-black text-slate-800 mb-4 flex items-center gap-2">
-                            <Icon name="wrench" size={24} className="text-[#BF0D3E]" /> Skills (Anwendung)
-                        </h3>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
-                            {ALL_MODULES.filter(m => m.stage === activeStage && m.category === 'skills').map(modul => {
-                                const isDone = studentData?.completedTasks.includes(modul.id);
-                                const dateDone = studentData?.moduleDates[modul.id];
-
-                                return (
-                                    <div 
-                                        key={modul.id} 
-                                        onClick={() => { if (isDone) setSelectedModule(modul); }}
-                                        className={`bg-white rounded-3xl p-5 sm:p-6 border-2 transition-all flex flex-col h-full ${isDone ? 'border-green-400 shadow-green-100 shadow-lg cursor-pointer hover:-translate-y-1 hover:shadow-xl' : 'border-slate-100 shadow-sm opacity-90'}`}
-                                    >
-                                        <div className="flex justify-between items-start mb-4">
-                                            <span className="text-[10px] font-black uppercase tracking-widest bg-slate-100 text-slate-500 px-3 py-1 rounded-lg">Klasse {modul.stage}</span>
-                                            {isDone ? (
-                                                <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white shadow-md">
-                                                    <Icon name="check" size={16} />
-                                                </div>
-                                            ) : (
-                                                <div className="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center text-slate-300">
-                                                    <Icon name="lock" size={14} />
-                                                </div>
-                                            )}
-                                        </div>
-                                        
-                                        <h3 className={`font-black text-lg sm:text-xl tracking-tight leading-tight mb-2 ${isDone ? 'text-slate-800' : 'text-slate-500'}`}>
-                                            {modul.title}
-                                        </h3>
-                                        
-                                        <div className="mt-auto">
-                                            {isDone ? (
-                                                <div>
-                                                    <p className="text-xs font-bold text-green-600 flex items-center gap-1 mt-3 mb-4">
-                                                        <Icon name="calendar-check" size={12} />
-                                                        Am {dateDone || "—"}
-                                                    </p>
-                                                    <div className="pt-3 border-t border-slate-100 text-center">
-                                                        <span className="text-[10px] font-black uppercase tracking-widest text-[#BF0D3E] flex items-center justify-center gap-2 group-hover:text-red-700">
-                                                            <Icon name="book-open" size={14} /> Wissensspeicher öffnen
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            ) : (
-                                                <p className="text-xs font-medium text-slate-400 mt-3">
-                                                    Noch nicht freigeschaltet.
-                                                </p>
-                                            )}
-                                        </div>
-                                    </div>
-                                );
-                            })}
+                                <button 
+                                    key={stage} 
+                                    onClick={() => setActiveStage(stage)} 
+                                    className={`px-6 py-3 rounded-2xl font-black transition-all whitespace-nowrap shadow-sm ${activeStage === stage ? 'text-white shadow-md scale-105' : 'bg-white text-slate-400 border border-slate-100 hover:bg-slate-50'}`} 
+                                    style={activeStage === stage ? { backgroundColor: THOMA_RED } : {}}
+                                >
+                                    Klasse {stage}
+                                </button>
+                            ))}
                         </div>
-                    </div>
 
-                    <div className="mb-4">
-                        <h3 className="text-xl font-black text-slate-800 mb-4 flex items-center gap-2">
-                            <Icon name="brain" size={24} className="text-[#BF0D3E]" /> Reflexion (Umgang)
-                        </h3>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
-                            {ALL_MODULES.filter(m => m.stage === activeStage && m.category === 'reflexion').map(modul => {
-                                const isDone = studentData?.completedTasks.includes(modul.id);
-                                const dateDone = studentData?.moduleDates[modul.id];
+                        <div className="mb-10">
+                            <h3 className="text-xl font-black text-slate-800 mb-4 flex items-center gap-2">
+                                <Icon name="wrench" size={24} className="text-[#BF0D3E]" /> Skills (Anwendung)
+                            </h3>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
+                                {ALL_MODULES.filter(m => m.stage === activeStage && m.category === 'skills').map(modul => {
+                                    const isDone = studentData?.completedTasks.includes(modul.id);
+                                    const moduleData = studentData?.moduleDates[modul.id];
+                                    let dateDone = "—";
+                                    let teacherName = "";
+                                    if (moduleData) {
+                                        if (typeof moduleData === 'string') { dateDone = moduleData; }
+                                        else { dateDone = moduleData.datum || "—"; teacherName = moduleData.lehrer || ""; }
+                                    }
 
-                                return (
-                                    <div 
-                                        key={modul.id} 
-                                        onClick={() => { if (isDone) setSelectedModule(modul); }}
-                                        className={`bg-white rounded-3xl p-5 sm:p-6 border-2 transition-all flex flex-col h-full ${isDone ? 'border-green-400 shadow-green-100 shadow-lg cursor-pointer hover:-translate-y-1 hover:shadow-xl' : 'border-slate-100 shadow-sm opacity-90'}`}
-                                    >
-                                        <div className="flex justify-between items-start mb-4">
-                                            <span className="text-[10px] font-black uppercase tracking-widest bg-slate-100 text-slate-500 px-3 py-1 rounded-lg">Klasse {modul.stage}</span>
-                                            {isDone ? (
-                                                <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white shadow-md">
-                                                    <Icon name="check" size={16} />
-                                                </div>
-                                            ) : (
-                                                <div className="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center text-slate-300">
-                                                    <Icon name="lock" size={14} />
-                                                </div>
-                                            )}
-                                        </div>
-                                        
-                                        <h3 className={`font-black text-lg sm:text-xl tracking-tight leading-tight mb-2 ${isDone ? 'text-slate-800' : 'text-slate-500'}`}>
-                                            {modul.title}
-                                        </h3>
-                                        
-                                        <div className="mt-auto">
-                                            {isDone ? (
-                                                <div>
-                                                    <p className="text-xs font-bold text-green-600 flex items-center gap-1 mt-3 mb-4">
-                                                        <Icon name="calendar-check" size={12} />
-                                                        Am {dateDone || "—"}
-                                                    </p>
-                                                    <div className="pt-3 border-t border-slate-100 text-center">
-                                                        <span className="text-[10px] font-black uppercase tracking-widest text-[#BF0D3E] flex items-center justify-center gap-2 group-hover:text-red-700">
-                                                            <Icon name="book-open" size={14} /> Wissensspeicher öffnen
-                                                        </span>
+                                    return (
+                                        <div 
+                                            key={modul.id} 
+                                            onClick={() => { if (isDone) setSelectedModule(modul); }}
+                                            className={`bg-white rounded-3xl p-5 sm:p-6 border-2 transition-all flex flex-col h-full ${isDone ? 'border-green-400 shadow-green-100 shadow-lg cursor-pointer hover:-translate-y-1 hover:shadow-xl' : 'border-slate-100 shadow-sm opacity-90'}`}
+                                        >
+                                            <div className="flex justify-between items-start mb-4">
+                                                <span className="text-[10px] font-black uppercase tracking-widest bg-slate-100 text-slate-500 px-3 py-1 rounded-lg">Klasse {modul.stage}</span>
+                                                {isDone ? (
+                                                    <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white shadow-md">
+                                                        <Icon name="check" size={16} />
                                                     </div>
-                                                </div>
-                                            ) : (
-                                                <p className="text-xs font-medium text-slate-400 mt-3">
-                                                    Noch nicht freigeschaltet.
-                                                </p>
-                                            )}
+                                                ) : (
+                                                    <div className="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center text-slate-300">
+                                                        <Icon name="lock" size={14} />
+                                                    </div>
+                                                )}
+                                            </div>
+                                            
+                                            <h3 className={`font-black text-lg sm:text-xl tracking-tight leading-tight mb-2 ${isDone ? 'text-slate-800' : 'text-slate-500'}`}>
+                                                {modul.title}
+                                            </h3>
+                                            
+                                            <div className="mt-auto">
+                                                {isDone ? (
+                                                    <div>
+                                                        <div className="text-xs font-bold text-green-600 flex flex-col gap-0.5 mt-3 mb-4">
+                                                            <span className="flex items-center gap-1">
+                                                                <Icon name="calendar-check" size={12} />
+                                                                Zertifiziert am {dateDone}
+                                                            </span>
+                                                            {teacherName && <span className="text-[10px] text-green-700 ml-4">durch {teacherName}</span>}
+                                                        </div>
+                                                        <div className="pt-3 border-t border-slate-100 text-center">
+                                                            <span className="text-[10px] font-black uppercase tracking-widest text-[#BF0D3E] flex items-center justify-center gap-2 group-hover:text-red-700">
+                                                                <Icon name="book-open" size={14} /> Wissensspeicher öffnen
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                ) : (
+                                                    <p className="text-xs font-medium text-slate-400 mt-3">
+                                                        Noch nicht freigeschaltet.
+                                                    </p>
+                                                )}
+                                            </div>
                                         </div>
-                                    </div>
-                                );
-                            })}
+                                    );
+                                })}
+                            </div>
                         </div>
-                    </div>
-                </main>
-            </div>
-        );
-    };
+
+                        <div className="mb-4">
+                            <h3 className="text-xl font-black text-slate-800 mb-4 flex items-center gap-2">
+                                <Icon name="brain" size={24} className="text-[#BF0D3E]" /> Reflexion (Umgang)
+                            </h3>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
+                                {ALL_MODULES.filter(m => m.stage === activeStage && m.category === 'reflexion').map(modul => {
+                                    const isDone = studentData?.completedTasks.includes(modul.id);
+                                    const moduleData = studentData?.moduleDates[modul.id];
+                                    let dateDone = "—";
+                                    let teacherName = "";
+                                    if (moduleData) {
+                                        if (typeof moduleData === 'string') { dateDone = moduleData; }
+                                        else { dateDone = moduleData.datum || "—"; teacherName = moduleData.lehrer || ""; }
+                                    }
+
+                                    return (
+                                        <div 
+                                            key={modul.id} 
+                                            onClick={() => { if (isDone) setSelectedModule(modul); }}
+                                            className={`bg-white rounded-3xl p-5 sm:p-6 border-2 transition-all flex flex-col h-full ${isDone ? 'border-green-400 shadow-green-100 shadow-lg cursor-pointer hover:-translate-y-1 hover:shadow-xl' : 'border-slate-100 shadow-sm opacity-90'}`}
+                                        >
+                                            <div className="flex justify-between items-start mb-4">
+                                                <span className="text-[10px] font-black uppercase tracking-widest bg-slate-100 text-slate-500 px-3 py-1 rounded-lg">Klasse {modul.stage}</span>
+                                                {isDone ? (
+                                                    <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white shadow-md">
+                                                        <Icon name="check" size={16} />
+                                                    </div>
+                                                ) : (
+                                                    <div className="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center text-slate-300">
+                                                        <Icon name="lock" size={14} />
+                                                    </div>
+                                                )}
+                                            </div>
+                                            
+                                            <h3 className={`font-black text-lg sm:text-xl tracking-tight leading-tight mb-2 ${isDone ? 'text-slate-800' : 'text-slate-500'}`}>
+                                                {modul.title}
+                                            </h3>
+                                            
+                                            <div className="mt-auto">
+                                                {isDone ? (
+                                                    <div>
+                                                        <div className="text-xs font-bold text-green-600 flex flex-col gap-0.5 mt-3 mb-4">
+                                                            <span className="flex items-center gap-1">
+                                                                <Icon name="calendar-check" size={12} />
+                                                                Zertifiziert am {dateDone}
+                                                            </span>
+                                                            {teacherName && <span className="text-[10px] text-green-700 ml-4">durch {teacherName}</span>}
+                                                        </div>
+                                                        <div className="pt-3 border-t border-slate-100 text-center">
+                                                            <span className="text-[10px] font-black uppercase tracking-widest text-[#BF0D3E] flex items-center justify-center gap-2 group-hover:text-red-700">
+                                                                <Icon name="book-open" size={14} /> Wissensspeicher öffnen
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                ) : (
+                                                    <p className="text-xs font-medium text-slate-400 mt-3">
+                                                        Noch nicht freigeschaltet.
+                                                    </p>
+                                                )}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            );
+        };
 
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
