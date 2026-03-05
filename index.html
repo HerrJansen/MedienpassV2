@@ -70,6 +70,68 @@
 
         // --- DER WISSENSSPEICHER (Inhalte für die Popups) ---
         const getModuleContent = (moduleId) => {
+            if (moduleId === 4) {
+                return (
+                    <div className="space-y-8 text-slate-700 leading-relaxed">
+                        <div className="bg-green-50 p-5 rounded-3xl border border-green-100">
+                            <h4 className="font-black text-green-800 text-lg flex items-center gap-2 mb-2"><Icon name="trophy" size={24} className="text-green-600"/> Netiquette-Profi!</h4>
+                            <p className="text-sm font-medium text-green-700">Herzlichen Glückwunsch! Du weißt jetzt, wie man sich im Internet und in Klassen-Chats fair und respektvoll verhält. Hier sind die wichtigsten Regeln:</p>
+                        </div>
+
+                        <div>
+                            <h4 className="font-black text-xl text-slate-800 mb-3 flex items-center gap-2"><Icon name="heart" size={24} className="text-[#BF0D3E]"/> 1. Der Mensch am anderen Ende</h4>
+                            <p className="text-sm mb-3 font-medium">Vergiss nie: Hinter jedem Profilbild und Chatnamen steckt ein echter Mensch mit echten Gefühlen!</p>
+                            <ul className="list-none text-sm space-y-3">
+                                <li className="flex gap-3 items-start">
+                                    <div className="mt-1 w-2 h-2 rounded-full bg-[#BF0D3E] shrink-0"></div>
+                                    <p><strong>Die goldene Regel:</strong> Schreibe im Internet nur das, was du der Person auch mutig direkt ins Gesicht sagen würdest.</p>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4 className="font-black text-xl text-slate-800 mb-3 flex items-center gap-2"><Icon name="volume-2" size={24} className="text-[#BF0D3E]"/> 2. BITTE NICHT SCHREIEN!</h4>
+                            <p className="text-sm mb-3 font-medium">Wusstest du, dass Großbuchstaben im Internet eine besondere Bedeutung haben?</p>
+                            <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 text-sm">
+                                <p>Wenn du <code className="bg-slate-200 text-slate-800 px-2 py-1 rounded font-bold">ALLES GROSS SCHREIBST</code>, bedeutet das in der Chat-Sprache, dass du brüllst. Nutze das also nur, wenn du wirklich Begeisterung oder Lautstärke ausdrücken willst!</p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 className="font-black text-xl text-slate-800 mb-3 flex items-center gap-2"><Icon name="smile" size={24} className="text-[#BF0D3E]"/> 3. Achtung bei Witzen und Ironie</h4>
+                            <p className="text-sm mb-3 font-medium">Im Chat kann man dein Lachen nicht hören und dein Gesicht nicht sehen. Witze werden deshalb oft falsch verstanden und wirken auf andere plötzlich fies oder gemein.</p>
+                            <ul className="list-none text-sm space-y-3">
+                                <li className="flex gap-3 items-start">
+                                    <div className="mt-1 w-2 h-2 rounded-full bg-[#BF0D3E] shrink-0"></div>
+                                    <p><strong>Die Lösung:</strong> Nutze passende Emojis (😂, 😜, 🙈), um zu zeigen, wie ein Satz gemeint ist. Aber übertreibe es nicht – ein bis zwei Emojis reichen völlig!</p>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4 className="font-black text-xl text-slate-800 mb-3 flex items-center gap-2"><Icon name="camera" size={24} className="text-[#BF0D3E]"/> 4. Keine ungefragten Fotos!</h4>
+                            <p className="text-sm mb-3 font-medium">Jeder Mensch hat das "Recht am eigenen Bild". Das ist in Deutschland sogar ein Gesetz!</p>
+                            <ul className="list-none text-sm space-y-3">
+                                <li className="flex gap-3 items-start">
+                                    <div className="mt-1 w-2 h-2 rounded-full bg-[#BF0D3E] shrink-0"></div>
+                                    <p>Du darfst Bilder, auf denen andere Personen zu erkennen sind (auch witzige Schnappschüsse auf dem Schulhof), <strong>niemals ohne ihre Erlaubnis</strong> in eine Gruppe posten oder weiterverschicken.</p>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div className="bg-red-50 p-5 rounded-3xl border border-red-100">
+                            <h4 className="font-black text-lg text-slate-800 mb-2 flex items-center gap-2"><Icon name="eye" size={20} className="text-[#BF0D3E]"/> 5. Erst denken, dann posten</h4>
+                            <p className="text-sm mb-3">Das Internet vergisst nicht. Bevor du wütend eine Nachricht abschickst, lege das Handy weg und atme tief durch.</p>
+                            <ul className="list-none text-sm space-y-3">
+                                <li className="flex gap-3 items-start">
+                                    <div className="mt-1 w-2 h-2 rounded-full bg-[#BF0D3E] shrink-0"></div>
+                                    <p>Auch wenn du eine Nachricht bei WhatsApp "für alle löschst": Jemand könnte in der Zwischenzeit schon einen Screenshot (Bildschirmfoto) davon gemacht haben. Es gibt im Internet oft kein echtes Zurück!</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                );
+            }
             if (moduleId === 6) {
                 return (
                     <div className="space-y-8 text-slate-700 leading-relaxed">
