@@ -37,6 +37,7 @@
             siteId: "thomaeumde.sharepoint.com,9ef17c4d-b57b-482e-9168-3cc3bc43bc3d,d600d53b-cfd0-45f7-96a5-f1ac20222f8f",
             listId: "08da02d9-5b67-4938-9d7e-9e9dee97fa2e"
         };
+        const THOMA_RED = "#BF0D3E";
 
         const msalConfig = {
             auth: {
@@ -52,66 +53,60 @@
         const msalInitPromise = msalInstance.initialize();
 
         const ALL_MODULES = [
-            // Klasse 5-6
-            { id: 1, title: "Word-Schulung und Dateimanagement", stage: "5-6", category: "skills", icon: "file-text" },
-            { id: 3, title: "Power-Point-Schulung", stage: "5-6", category: "skills", icon: "presentation" },
-            { id: 2, title: "Sicher im Netz", stage: "5-6", category: "reflexion", icon: "shield-check" },
-            { id: 4, title: "Klassen-Kodex", stage: "5-6", category: "reflexion", icon: "users" },
-            
-            // Klasse 7-8
-            { id: 5, title: "Digitale Kunst & Design", stage: "7-8", category: "skills", icon: "palette" },
-            { id: 6, title: "Tabellenkalkulation & Datenanalyse", stage: "7-8", category: "skills", icon: "table" },
-            { id: 7, title: "Geschichte 2.0", stage: "7-8", category: "reflexion", icon: "landmark" },
-            { id: 8, title: "Digitale Identität", stage: "7-8", category: "reflexion", icon: "user-circle" },
-
-            // Klasse 9-10
-            { id: 9, title: "Audio-Studio", stage: "9-10", category: "skills", icon: "mic" },
-            { id: 10, title: "KI im Alltag", stage: "9-10", category: "skills", icon: "cpu" },
-            { id: 11, title: "Ethik der Algorithmen", stage: "9-10", category: "reflexion", icon: "scale" },
-            { id: 12, title: "Der Gläserne Mensch", stage: "9-10", category: "reflexion", icon: "eye" },
-            { id: 13, title: "Digitale Ökonomie", stage: "9-10", category: "reflexion", icon: "trending-up" }
+            { id: 1, title: "Hardware-Führerschein", stage: "5-6", category: "skills", icon: "monitor" }, 
+            { id: 2, title: "Dateimanagement", stage: "5-6", category: "skills", icon: "folder" }, 
+            { id: 3, title: "Umgang mit Word", stage: "5-6", category: "skills", icon: "file-text" },
+            { id: 7, title: "Präsentationsprofi", stage: "5-6", category: "skills", icon: "presentation" },
+            { id: 4, title: "Netiquette", stage: "5-6", category: "reflexion", icon: "message-square" }, 
+            { id: 5, title: "Prävention", stage: "5-6", category: "reflexion", icon: "shield-alert" }, 
+            { id: 6, title: "Suchmaschinen", stage: "5-6", category: "reflexion", icon: "search" },
+            { id: 19, title: "Sichere Passwörter", stage: "5-6", category: "reflexion", icon: "key" },
+            { id: 8, title: "Medienproduktion", stage: "7-8", category: "skills", icon: "video" }, 
+            { id: 9, title: "Tabellenkalkulation", stage: "7-8", category: "skills", icon: "table" },
+            { id: 20, title: "Bildbearbeitung", stage: "7-8", category: "skills", icon: "image" },
+            { id: 21, title: "Audio & Podcasts", stage: "7-8", category: "skills", icon: "mic" },
+            { id: 10, title: "Urheberrecht", stage: "7-8", category: "reflexion", icon: "copyright" }, 
+            { id: 11, title: "Quellenkritik", stage: "7-8", category: "reflexion", icon: "check-circle" }, 
+            { id: 12, title: "Datenschutz", stage: "7-8", category: "reflexion", icon: "lock" },
+            { id: 22, title: "Social Media Check", stage: "7-8", category: "reflexion", icon: "smartphone" },
+            { id: 13, title: "KI-Produktivität", stage: "9-10", category: "skills", icon: "cpu" }, 
+            { id: 14, title: "Digitale Bewerbung", stage: "9-10", category: "skills", icon: "briefcase" }, 
+            { id: 15, title: "Projektmanagement", stage: "9-10", category: "skills", icon: "kanban" },
+            { id: 23, title: "Webdesign Basics", stage: "9-10", category: "skills", icon: "globe" },
+            { id: 16, title: "KI-Ethik", stage: "9-10", category: "reflexion", icon: "scale" }, 
+            { id: 17, title: "Zivilcourage", stage: "9-10", category: "reflexion", icon: "users" }, 
+            { id: 18, title: "Digitaler Fußabdruck", stage: "9-10", category: "reflexion", icon: "footprint" },
+            { id: 24, title: "Datenökonomie", stage: "9-10", category: "reflexion", icon: "database" }
         ];
 
         const MODULE_CONTENT_DATA = {
             1: {
                 sections: [
-                    { title: "1. Technische Bedienung", intro: "Dein PC ist wie ein Rucksack: Ohne Ordnung findest du nichts wieder.", blocks: [
-                        { type: 'standard', title: 'Der Windows Explorer', text: 'Drücke `Win` + `E`, um deine Ordner zu sehen. Erstelle Ordner für jedes Fach über **Rechtsklick > Neu > Ordner**.' },
-                        { type: 'tip', title: 'Word-Profi', text: 'Nutze für Überschriften die **Formatvorlagen**. So erkennt Word automatisch, was eine Überschrift ist.' },
-                        { type: 'warning', title: 'Lebensretter', text: 'Drücke oft `Strg` + `S`. Wenn du etwas löschst, drücke `Strg` + `Z` zum Rückgängigmachen.' }
-                    ]},
-                    { title: "2. Kriterien für Qualität", intro: "Ein guter Dateiname rettet dir vor der Arbeit die Note.", blocks: [
-                        { type: 'info', title: 'Namensregeln', text: 'Nenne Dateien sinnvoll: `Datum_Fach_Thema`. Vermeide Zeichen wie `? : * < >` im Namen.' },
-                        { type: 'success', title: 'PDF Export', text: 'Speichere fertige Hausaufgaben als **PDF**. So verschiebt sich nichts mehr.' }
-                    ]}
+                    { title: "1. Technische Bedienung", intro: "Dein Computer macht genau das, was du ihm sagst.", blocks: [{ type: 'standard', title: 'Maus & Tastatur', text: 'Nutze den **Linksklick** zum Auswählen und den **Rechtsklick** für Optionen. Mit der **Shift-Taste** schreibst du Buchstaben groß.' }] },
+                    { title: "2. Kriterien für Qualität", intro: "Sicherheit und Haltung sind das A und O.", blocks: [{ type: 'info', title: 'Ergonomie', text: 'Sitze gerade und achte darauf, dass deine Augen auf Höhe der Bildschirmoberkante sind.' }] }
                 ],
-                missions: ["Erstelle einen Ordner 'Schule' auf dem Desktop.", "Erstelle darin Unterordner für Deutsch und Mathe.", "Benenne eine Datei nach dem Muster '2026-Bio-Pflanze' um.", "Schreibe einen Satz in Word und mache ein Wort fett.", "Speichere ein Dokument testweise als PDF."]
+                missions: ["Erstelle eine Textdatei.", "Schreibe deinen Namen groß.", "Nutze einen Rechtsklick.", "Prüfe deine Sitzhöhe.", "Sperre den PC."]
+            },
+            2: {
+                sections: [
+                    { title: "1. Technische Bedienung", intro: "Ordnung ist der halbe Erfolg.", blocks: [{ type: 'standard', title: 'Ordner & Cloud', text: 'Erstelle Ordner mit Rechtsklick > Neu. Nutze OneDrive für deine Hausaufgaben.' }] },
+                    { title: "2. Kriterien für Qualität", intro: "So findest du alles wieder.", blocks: [{ type: 'success', title: 'Benennung', text: 'Nutze Namen wie `Datum_Fach_Thema.docx`.' }] }
+                ],
+                missions: ["Erstelle Ordner 'Schule'.", "Erstelle Fach-Unterordner.", "Benenne eine Datei um.", "Verschiebe Dateien.", "Leere den Papierkorb."]
             },
             3: {
                 sections: [
-                    { title: "1. Technische Bedienung", intro: "Präsentationen sind das digitale Plakat von heute.", blocks: [
-                        { type: 'standard', title: 'Layout-Wahl', text: 'Wähle für neue Folien immer ein passendes Layout (z.B. "Titel und Inhalt"). So bleibt alles an seinem Platz.' },
-                        { type: 'tip', title: 'Design-Ideen', text: 'Nutze den integrierten **Designer**, um deine Folien mit einem Klick professionell aussehen zu lassen.' }
-                    ]},
-                    { title: "2. Kriterien für Qualität", intro: "Das Publikum soll dir zuhören, nicht nur lesen.", blocks: [
-                        { type: 'warning', title: 'Text-Limit', text: 'Schreibe niemals ganze Sätze auf Folien! Nutze Stichpunkte: Maximal 5 Punkte pro Folie.' },
-                        { type: 'info', title: 'Bilder-Wirkung', text: 'Ein großes, scharfes Bild ist besser als fünf kleine. Ziehe Bilder immer nur an den Ecken groß.' }
-                    ]}
+                    { title: "1. Technische Bedienung", intro: "Texte professionell gestalten.", blocks: [{ type: 'standard', title: 'Formatierung', text: 'Nutze Formatvorlagen für Überschriften. Drücke `Strg+S` zum Speichern.' }] },
+                    { title: "2. Kriterien für Qualität", intro: "Lesbarkeit ist entscheidend.", blocks: [{ type: 'success', title: 'PDF Export', text: 'Speichere fertige Arbeiten als PDF.' }] }
                 ],
-                missions: ["Erstelle eine Titelfolie mit deinem Namen.", "Füge ein Bild ein und nutze den Designer.", "Schreibe 3 kurze Stichpunkte auf eine Folie.", "Starte den Präsentationsmodus mit F5.", "Übe das freie Sprechen zu einer Folie für 30 Sekunden."]
+                missions: ["Schreibe einen Satz fett.", "Nutze Überschrift 1.", "Nutze Strg+Z.", "Füge ein Bild ein.", "Exportiere als PDF."]
             },
             6: {
                 sections: [
-                    { title: "1. Technische Bedienung", intro: "Excel ist ein Taschenrechner für Riesen-Tabellen.", blocks: [
-                        { type: 'standard', title: 'Formeln nutzen', text: 'Jede Rechnung in Excel beginnt mit einem `=`. Beispiel: `=A1+A2`.' },
-                        { type: 'tip', title: 'Blitz-Summe', text: 'Markiere Zahlen und klicke auf das Summen-Symbol (Σ), um sie sofort zusammenzurechnen.' }
-                    ]},
-                    { title: "2. Kriterien für Qualität", intro: "Diagramme machen Daten sichtbar.", blocks: [
-                        { type: 'info', title: 'Säule oder Kreis?', text: 'Nutze Säulendiagramme für Vergleiche und Kreisdiagramme für Anteile (Prozente).' },
-                        { type: 'success', title: 'Beschriftung', text: 'Ein Diagramm braucht immer einen Titel und benannte Achsen.' }
-                    ]}
+                    { title: "1. Technische Bedienung", intro: "Suchen wie ein Profi.", blocks: [{ type: 'tip', title: 'Keywords', text: 'Nutze Schlagwörter statt ganzer Sätze. Nutze `""` für exakte Suchen.' }] },
+                    { title: "2. Kriterien für Qualität", intro: "Quellen prüfen.", blocks: [{ type: 'warning', title: 'Werbung', text: 'Meide Treffer, die als Anzeige markiert sind.' }] }
                 ],
-                missions: ["Trage 5 Zahlen untereinander in Excel ein.", "Berechne die Summe dieser Zahlen mit einer Formel.", "Erstelle aus den Zahlen ein Säulendiagramm.", "Gib dem Diagramm einen Titel.", "Formatiere die Tabellenköpfe fett."]
+                missions: ["Suche auf Blinde-Kuh.", "Nutze den Minus-Operator.", "Erkenne Werbe-Links.", "Finde das Gründungsjahr.", "Lies das Snippet."]
             }
         };
 
@@ -135,50 +130,35 @@
                 </div>
             );
 
-            const theme = {
-                "5-6": { accent: "bg-green-500", border: "border-green-100", text: "text-green-900" },
-                "7-8": { accent: "bg-blue-500", border: "border-blue-100", text: "text-blue-900" },
-                "9-10": { accent: "bg-slate-700", border: "border-slate-200", text: "text-slate-900" }
-            }[module.stage];
-
             return (
                 <div className="space-y-10">
                     {data.sections.map((sec, i) => (
                         <div key={i}>
                             <h4 className="font-black text-lg text-slate-800 mb-4 flex items-center gap-2">
-                                <span className={`w-8 h-8 rounded-lg ${theme.accent} text-white flex items-center justify-center text-xs`}>{i+1}</span>
+                                <span className="w-8 h-8 rounded-lg bg-[#BF0D3E] text-white flex items-center justify-center text-xs">{i+1}</span>
                                 {sec.title}
                             </h4>
-                            <p className="text-sm text-slate-500 mb-4 px-2">{sec.intro}</p>
+                            <p className="text-sm text-slate-500 mb-4">{sec.intro}</p>
                             <div className="space-y-3">
-                                {sec.blocks.map((block, bi) => {
-                                    let colors = "bg-white border-slate-100";
-                                    let icon = "check-circle";
-                                    if(block.type === 'tip') { colors = "bg-amber-50 border-amber-100"; icon = "lightbulb"; }
-                                    if(block.type === 'warning') { colors = "bg-red-50 border-red-100"; icon = "alert-triangle"; }
-                                    if(block.type === 'info') { colors = "bg-blue-50 border-blue-100"; icon = "info"; }
-                                    if(block.type === 'success') { colors = "bg-green-50 border-green-100"; icon = "zap"; }
-                                    
-                                    return (
-                                        <div key={bi} className={`p-4 rounded-2xl border-2 ${colors} flex gap-3 shadow-sm`}>
-                                            <Icon name={icon} size={18} className="shrink-0 mt-0.5" />
-                                            <div>
-                                                <p className="font-bold text-sm mb-1">{block.title}</p>
-                                                <p className="text-xs leading-relaxed opacity-80" dangerouslySetInnerHTML={{ __html: block.text.replace(/`([^`]+)`/g, '<code class="bg-black/5 px-1 rounded font-bold">$1</code>') }} />
-                                            </div>
+                                {sec.blocks.map((block, bi) => (
+                                    <div key={bi} className="p-4 rounded-2xl border-2 border-slate-100 flex gap-3 shadow-sm bg-slate-50">
+                                        <Icon name={block.type === 'warning' ? 'alert-triangle' : 'info'} size={18} className="shrink-0 mt-0.5 text-[#BF0D3E]" />
+                                        <div>
+                                            <p className="font-bold text-sm mb-1">{block.title}</p>
+                                            <p className="text-xs opacity-80" dangerouslySetInnerHTML={{ __html: block.text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }} />
                                         </div>
-                                    )
-                                })}
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     ))}
-                    <div className="bg-slate-900 text-white p-6 rounded-[2rem] shadow-xl">
-                        <h4 className="font-black uppercase tracking-widest text-xs text-amber-400 mb-4 flex items-center gap-2">
+                    <div className="bg-amber-50 p-6 rounded-[2rem] border-2 border-amber-100">
+                        <h4 className="font-black uppercase tracking-widest text-xs text-amber-600 mb-4 flex items-center gap-2">
                             <Icon name="rocket" size={16}/> Deine Missionen
                         </h4>
                         <ul className="space-y-3">
                             {data.missions.map((m, mi) => (
-                                <li key={mi} className="text-xs flex gap-3 opacity-90 leading-snug">
+                                <li key={mi} className="text-xs flex gap-3 text-amber-900 font-medium">
                                     <span className="text-amber-400 font-black">•</span> {m}
                                 </li>
                             ))}
@@ -224,7 +204,8 @@
                             vorname: record.fields.Vorname,
                             nachname: record.fields.Nachname,
                             klasse: record.fields.Klasse,
-                            completed: record.fields.Erledigte_Module ? record.fields.Erledigte_Module.split(',').map(m => parseInt(m.trim())) : []
+                            completed: record.fields.Erledigte_Module ? record.fields.Erledigte_Module.split(',').map(m => parseInt(m.trim())) : [],
+                            moduleDates: record.fields.Modul_Daten ? JSON.parse(record.fields.Modul_Daten) : {}
                         });
                     }
                 } catch (e) {} finally { setLoading(false); }
@@ -233,6 +214,10 @@
             const handleLogin = () => {
                 setLoading(true);
                 msalInstance.loginRedirect({ scopes: ["Sites.Read.All"] });
+            };
+
+            const handleLogout = () => {
+                msalInstance.logoutRedirect({ postLogoutRedirectUri: window.location.origin });
             };
 
             if (loading) return <div className="min-h-screen flex items-center justify-center bg-slate-50"><div className="spinner"></div></div>;
@@ -248,11 +233,10 @@
                 </div>
             );
 
-            const progress = Math.round(((studentData?.completed?.length || 0) / 13) * 100);
+            const progress = Math.round(((studentData?.completed?.length || 0) / 24) * 100);
 
             return (
-                <div className="min-h-screen pb-20">
-                    {}
+                <div className="min-h-screen pb-20 relative">
                     {selectedModule && (
                         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
                             <div className="bg-white rounded-[2.5rem] w-full max-w-3xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
@@ -267,7 +251,6 @@
                         </div>
                     )}
 
-                    {}
                     <header className="bg-[#BF0D3E] text-white pt-12 pb-24 px-8 rounded-b-[3rem] shadow-lg">
                         <div className="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
                             <div className="text-center md:text-left">
@@ -282,12 +265,12 @@
                                     <div className="absolute top-0 bottom-0 left-[33%] w-px bg-white/20"></div>
                                     <div className="absolute top-0 bottom-0 left-[66%] w-px bg-white/20"></div>
                                 </div>
-                                <p className="text-[9px] font-bold uppercase mt-2 opacity-50 tracking-tight">{studentData?.completed?.length || 0} von 13 Modulen zertifiziert</p>
+                                <p className="text-[9px] font-bold uppercase mt-2 opacity-50 tracking-tight">{studentData?.completed?.length || 0} von 24 Modulen zertifiziert</p>
                             </div>
                         </div>
+                        <button onClick={handleLogout} className="absolute top-6 right-6 p-3 bg-white/10 rounded-2xl hover:bg-white/20 transition-all border border-white/10"><Icon name="log-out" size={20}/></button>
                     </header>
 
-                    {}
                     <main className="max-w-5xl mx-auto px-6 -mt-12 relative z-20">
                         <div className="flex gap-2 mb-10 overflow-x-auto pb-4 scrollbar-hide">
                             {["5-6", "7-8", "9-10"].map(s => (
@@ -301,7 +284,6 @@
                             ))}
                         </div>
 
-                        {}
                         {["skills", "reflexion"].map(cat => (
                             <div key={cat} className="mb-12">
                                 <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-6 flex items-center gap-2">
@@ -311,13 +293,28 @@
                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                                     {ALL_MODULES.filter(m => m.stage === activeStage && m.category === cat).map(m => {
                                         const done = studentData?.completed?.includes(m.id);
+                                        const moduleData = studentData?.moduleDates?.[m.id];
+                                        let dateDone = null;
+                                        let teacherName = null;
+                                        if (moduleData) {
+                                            if (typeof moduleData === 'string') { dateDone = moduleData; }
+                                            else { dateDone = moduleData.datum; teacherName = moduleData.lehrer; }
+                                        }
+
                                         return (
                                             <div key={m.id} onClick={() => done && setSelectedModule(m)} className={`p-6 rounded-[2.5rem] border-2 transition-all flex flex-col h-full relative ${done ? 'bg-white border-green-500 shadow-xl shadow-green-100 cursor-pointer hover:-translate-y-1' : 'bg-white/50 border-slate-100 opacity-60'}`}>
                                                 <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-4 ${done ? 'bg-green-50 text-green-600' : 'bg-slate-100 text-slate-300'}`}>
                                                     <Icon name={m.icon} size={28} />
                                                 </div>
                                                 <h4 className={`font-black text-xs sm:text-sm leading-tight uppercase ${done ? 'text-slate-800' : 'text-slate-400'}`}>{m.title}</h4>
-                                                {done ? <div className="mt-auto pt-4 flex items-center gap-2 text-[10px] font-black text-green-600 uppercase tracking-widest"><Icon name="check-circle" size={14} /> Zertifiziert</div> : <div className="mt-auto pt-4 text-[10px] font-black text-slate-300 uppercase tracking-widest">Offen</div>}
+                                                {done ? (
+                                                    <div className="mt-auto pt-4 border-t border-slate-50">
+                                                        <div className="text-[9px] font-black text-green-600 uppercase flex items-center gap-1 mb-1"><Icon name="check-circle" size={12} /> Zertifiziert</div>
+                                                        <div className="text-[8px] text-slate-400 font-bold leading-tight">am {dateDone}<br/>durch {teacherName || 'Lehrkraft'}</div>
+                                                    </div>
+                                                ) : (
+                                                    <div className="mt-auto pt-4 text-[9px] font-black text-slate-300 uppercase tracking-widest">Offen</div>
+                                                )}
                                             </div>
                                         )
                                     })}
