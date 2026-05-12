@@ -51,16 +51,6 @@
         const msalInstance = new msal.PublicClientApplication(msalConfig);
         const msalInitPromise = msalInstance.initialize();
 
-        const Icon = ({ name, size = 20, className = "" }) => {
-            const [svg, setSvg] = useState("");
-            useEffect(() => {
-                if (window.lucide && window.lucide.icons[name]) {
-                    setSvg(window.lucide.icons[name].toSvg({ width: size, height: size, class: className }));
-                }
-            }, [name, size, className]);
-            return <span className={`inline-flex items-center justify-center ${className}`} dangerouslySetInnerHTML={{ __html: svg }} />;
-        };
-
         const ALL_MODULES = [
             // Klasse 5-6
             { id: 1, title: "Word-Schulung und Dateimanagement", stage: "5-6", category: "skills", icon: "file-text" },
@@ -92,7 +82,7 @@
                     ]},
                     { title: "2. Kriterien für Qualität", intro: "Ein guter Dateiname rettet dir vor der Arbeit die Note.", blocks: [
                         { type: 'info', title: 'Namensregeln', text: 'Nenne Dateien sinnvoll: `Datum_Fach_Thema`. Vermeide Zeichen wie `? : * < >` im Namen.' },
-                        { type: 'success', title: 'PDF Export', text: 'Speichere fertige Texte als **PDF**. So verschiebt sich nichts mehr.' }
+                        { type: 'success', title: 'PDF Export', text: 'Speichere fertige Hausaufgaben als **PDF**. So verschiebt sich nichts mehr.' }
                     ]}
                 ],
                 missions: ["Erstelle einen Ordner 'Schule' auf dem Desktop.", "Erstelle darin Unterordner für Deutsch und Mathe.", "Benenne eine Datei nach dem Muster '2026-Bio-Pflanze' um.", "Schreibe einen Satz in Word und mache ein Wort fett.", "Speichere ein Dokument testweise als PDF."]
@@ -123,6 +113,16 @@
                 ],
                 missions: ["Trage 5 Zahlen untereinander in Excel ein.", "Berechne die Summe dieser Zahlen mit einer Formel.", "Erstelle aus den Zahlen ein Säulendiagramm.", "Gib dem Diagramm einen Titel.", "Formatiere die Tabellenköpfe fett."]
             }
+        };
+
+        const Icon = ({ name, size = 20, className = "" }) => {
+            const [svg, setSvg] = useState("");
+            useEffect(() => {
+                if (window.lucide && window.lucide.icons[name]) {
+                    setSvg(window.lucide.icons[name].toSvg({ width: size, height: size, class: className }));
+                }
+            }, [name, size, className]);
+            return <span className={`inline-flex items-center justify-center ${className}`} dangerouslySetInnerHTML={{ __html: svg }} />;
         };
 
         const RenderWissensspeicher = ({ module }) => {
@@ -252,13 +252,13 @@
 
             return (
                 <div className="min-h-screen pb-20">
-                    {/* Wissensspeicher Overlay */}
+                    {}
                     {selectedModule && (
                         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
                             <div className="bg-white rounded-[2.5rem] w-full max-w-3xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
                                 <div className="bg-[#BF0D3E] text-white p-6 sm:p-8 flex justify-between items-center shrink-0">
                                     <h2 className="text-xl sm:text-2xl font-black tracking-tight uppercase">{selectedModule.title}</h2>
-                                    <button onClick={() => setSelectedModule(null)} className="bg-white/20 p-2 rounded-xl"><Icon name="x" size={24} /></button>
+                                    <button onClick={() => setSelectedModule(null)} className="bg-white/20 p-2 rounded-xl hover:bg-white/30 transition-all"><Icon name="x" size={24} /></button>
                                 </div>
                                 <div className="p-6 sm:p-10 overflow-y-auto custom-scroll">
                                     <RenderWissensspeicher module={selectedModule} />
@@ -267,35 +267,41 @@
                         </div>
                     )}
 
-                    {/* Header mit Fortschritt */}
-                    <header className="bg-[#BF0D3E] text-white pt-12 pb-16 px-8 rounded-b-[3rem] shadow-lg">
+                    {}
+                    <header className="bg-[#BF0D3E] text-white pt-12 pb-24 px-8 rounded-b-[3rem] shadow-lg">
                         <div className="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
                             <div className="text-center md:text-left">
                                 <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tighter">Hallo {studentData?.vorname}!</h1>
                                 <p className="text-red-200 font-bold opacity-80">Klasse {studentData?.klasse} • Gymnasium Thomaeum</p>
                             </div>
-                            <div className="bg-white/10 p-5 rounded-[2.5rem] backdrop-blur-md border border-white/20 text-center min-w-[200px] shadow-inner">
-                                <p className="text-[10px] font-black uppercase tracking-widest mb-1 opacity-70">Dein Fortschritt</p>
-                                <p className="text-4xl font-black">{progress}%</p>
-                                <div className="h-2 w-full bg-white/20 rounded-full mt-3 overflow-hidden relative">
-                                    <div className="bg-white h-full transition-all duration-1000" style={{width: `${progress}%`}}></div>
+                            <div className="bg-white/10 p-5 rounded-[2.5rem] backdrop-blur-md border border-white/20 text-center min-w-[280px] shadow-inner">
+                                <p className="text-[10px] font-black uppercase tracking-widest mb-1 opacity-70">Gesamtfortschritt</p>
+                                <p className="text-5xl font-black">{progress}%</p>
+                                <div className="h-3 w-full bg-white/20 rounded-full mt-4 overflow-hidden relative">
+                                    <div className="bg-white h-full transition-all duration-1000 ease-out" style={{width: `${progress}%`}}></div>
                                     <div className="absolute top-0 bottom-0 left-[33%] w-px bg-white/20"></div>
                                     <div className="absolute top-0 bottom-0 left-[66%] w-px bg-white/20"></div>
                                 </div>
+                                <p className="text-[9px] font-bold uppercase mt-2 opacity-50 tracking-tight">{studentData?.completed?.length || 0} von 13 Modulen zertifiziert</p>
                             </div>
                         </div>
                     </header>
 
-                    {/* Main Content mit Reitern */}
-                    <main className="max-w-5xl mx-auto px-6 -mt-8 relative z-20">
-                        <div className="flex gap-2 mb-8 overflow-x-auto pb-4 scrollbar-hide">
+                    {}
+                    <main className="max-w-5xl mx-auto px-6 -mt-12 relative z-20">
+                        <div className="flex gap-2 mb-10 overflow-x-auto pb-4 scrollbar-hide">
                             {["5-6", "7-8", "9-10"].map(s => (
-                                <button key={s} onClick={() => setActiveStage(s)} className={`px-10 py-5 rounded-[2rem] font-black transition-all shadow-sm flex-shrink-0 ${activeStage === s ? 'bg-white text-[#BF0D3E] scale-105 shadow-md' : 'bg-[#BF0D3E]/10 text-[#BF0D3E]/40'}`}>
+                                <button 
+                                    key={s} 
+                                    onClick={() => setActiveStage(s)} 
+                                    className={`px-10 py-5 rounded-[2rem] font-black transition-all shadow-md flex-shrink-0 border-2 ${activeStage === s ? 'bg-white text-[#BF0D3E] border-white scale-105 shadow-xl' : 'bg-[#BF0D3E] text-white border-white/30 hover:bg-red-700'}`}
+                                >
                                     KLASSE {s}
                                 </button>
                             ))}
                         </div>
 
+                        {}
                         {["skills", "reflexion"].map(cat => (
                             <div key={cat} className="mb-12">
                                 <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-6 flex items-center gap-2">
@@ -310,7 +316,7 @@
                                                 <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-4 ${done ? 'bg-green-50 text-green-600' : 'bg-slate-100 text-slate-300'}`}>
                                                     <Icon name={m.icon} size={28} />
                                                 </div>
-                                                <h4 className={`font-black text-sm leading-tight uppercase ${done ? 'text-slate-800' : 'text-slate-400'}`}>{m.title}</h4>
+                                                <h4 className={`font-black text-xs sm:text-sm leading-tight uppercase ${done ? 'text-slate-800' : 'text-slate-400'}`}>{m.title}</h4>
                                                 {done ? <div className="mt-auto pt-4 flex items-center gap-2 text-[10px] font-black text-green-600 uppercase tracking-widest"><Icon name="check-circle" size={14} /> Zertifiziert</div> : <div className="mt-auto pt-4 text-[10px] font-black text-slate-300 uppercase tracking-widest">Offen</div>}
                                             </div>
                                         )
