@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -31,7 +30,7 @@
             clientId: "7d277b19-93c1-4df7-8f1b-d38749b3d440",
             siteId: "thomaeumde.sharepoint.com,9ef17c4d-b57b-482e-9168-3cc3bc43bc3d,d600d53b-cfd0-45f7-96a5-f1ac20222f8f",
             listId: "08da02d9-5b67-4938-9d7e-9e9dee97fa2e",
-            teacherGroupId: "2bbe9733-7137-4d54-a788-e988c3d56cd9"
+            teacherGroupId: "2bbe9733-7137-4d54-a788-e988c3d56cd9" // Entra ID Gruppe für Lehrer
         };
         const THOMA_RED = "#BF0D3E";
 
@@ -47,10 +46,11 @@
         const msalInstance = new msal.PublicClientApplication(msalConfig);
         const msalInitPromise = msalInstance.initialize();
 
-        // --- MODULE ---
-        // ÄNDERUNG: Module 1, 2, 3 wurden zu einem Modul zusammengefasst (analog zur Schülerapp).
+        // --- NEUE 24 MODULE FÜR DIE LEHRER-APP ---
         const ALL_MODULES = [
-            { id: 1, title: "Word-Führerschein und Dateimanagement", stage: "5-6", category: "skills", icon: "file-text" },
+            { id: 1, title: "Hardware-Führerschein", stage: "5-6", category: "skills", icon: "monitor" },
+            { id: 2, title: "Dateimanagement", stage: "5-6", category: "skills", icon: "folder" },
+            { id: 3, title: "Umgang mit Word", stage: "5-6", category: "skills", icon: "file-text" },
             { id: 7, title: "Präsentationsprofi", stage: "5-6", category: "skills", icon: "presentation" },
             { id: 4, title: "Netiquette", stage: "5-6", category: "reflexion", icon: "message-square" },
             { id: 5, title: "Prävention", stage: "5-6", category: "reflexion", icon: "shield-alert" },
@@ -203,6 +203,7 @@
             const [debugMsg, setDebugMsg] = useState("");
             const [isUpdating, setIsUpdating] = useState(false);
 
+            // Filters
             const [searchName, setSearchName] = useState("");
             const [filterKlasse, setFilterKlasse] = useState("ALL");
             const [filterJahrgang, setFilterJahrgang] = useState("ALL");
@@ -243,6 +244,7 @@
                 bootstrap();
             }, []);
 
+            // STRIKTER TÜRSTEHER (Sichert die App ab!)
             const verifyTeacherStatus = async (account) => {
                 setLoading(true);
                 setDebugMsg("Prüfe Lehrer-Rechte (Entra ID)...");
@@ -330,7 +332,7 @@
                             completedTasks: completedArray,
                             moduleDates: parsedDates 
                         };
-                    }).filter(s => s.vorname && s.nachname);
+                    }).filter(s => s.vorname && s.nachname); // Leere Dummy-Einträge filtern
                     
                     parsedStudents.sort((a, b) => a.nachname.localeCompare(b.nachname));
                     setStudents(parsedStudents);
@@ -484,6 +486,7 @@
 
             const hasActiveFilters = searchName.trim() !== "" || filterJahrgang !== "ALL" || filterKlasse !== "ALL" || filterModul !== "ALL";
 
+            // SCREEN: ZUGRIFF VERWEIGERT (SICHERHEITSSPERRE)
             if (accessDenied) {
                 return (
                     <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 p-6 relative">
@@ -501,6 +504,7 @@
                 );
             }
 
+            // SCREEN: LOGIN
             if (authRequired) {
                 return (
                     <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 p-6 relative">
@@ -518,6 +522,7 @@
                 );
             }
 
+            // SCREEN: LÄDT
             if (loading) {
                 return (
                     <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50">
@@ -531,6 +536,7 @@
 
             return (
                 <div className="min-h-screen flex flex-col bg-slate-50 font-sans selection:bg-red-100 relative">
+                    {/* Overlay: Schüler-Profilansicht */}
                     {currentViewingStudent && (
                         <StudentPreview 
                             student={currentViewingStudent} 
@@ -559,6 +565,7 @@
                         </div>
                     </header>
 
+                    {/* Filter-Leiste */}
                     <div className="bg-white border-b shadow-sm p-4 sticky top-20 z-30">
                         <div className="max-w-7xl mx-auto flex flex-wrap gap-4 items-center">
                             <div className="relative flex-grow min-w-[200px]">
@@ -582,6 +589,7 @@
                             </select>
                         </div>
                         
+                        {/* Massen-Bearbeitungs-Feld */}
                         {filterModul !== "ALL" && hasActiveFilters && (
                             <div className="max-w-7xl mx-auto mt-4 p-4 bg-red-50 rounded-2xl flex flex-wrap items-center justify-between gap-4 border border-red-100">
                                 <div>
