@@ -80,8 +80,7 @@
             { id: 9, title: "Tabellenkalkulation", stage: "7-8", category: "skills", icon: "table" },
             { id: 21, title: "Audio & Podcasts", stage: "9-10", category: "skills", icon: "mic" },
             { id: 10, title: "Digitale Quellenarbeit", stage: "7-8", category: "reflexion", icon: "search-check" }, 
-            { id: 12, title: "Datenschutz", stage: "7-8", category: "reflexion", icon: "lock" },
-            { id: 22, title: "Social Media Check", stage: "7-8", category: "reflexion", icon: "smartphone" },
+            { id: 12, title: "Digitale Selbstbestimmung", stage: "7-8", category: "reflexion", icon: "shield-check" },
             { id: 13, title: "KI-Produktivität", stage: "9-10", category: "skills", icon: "cpu" }, 
             { id: 14, title: "Digitale Bewerbung", stage: "9-10", category: "skills", icon: "briefcase" }, 
             { id: 15, title: "Projektmanagement", stage: "9-10", category: "skills", icon: "kanban" },
@@ -358,31 +357,30 @@
             },
             12: {
                 sections: [
-                    { title: "Der Preis des 'Kostenlosen'", intro: "Wenn ein digitales Produkt kostenlos ist, bist DU das Produkt.", blocks: [
-                        { type: 'warning', title: 'Das unsichtbare Geschäft', text: 'Instagram, TikTok und YouTube sind nicht gratis. Sie sammeln ununterbrochen Daten darüber, wie lange du dir was ansiehst, was du likest und wer deine Freunde sind, um ein extrem wertvolles Werbe-Profil von dir zu erstellen.' },
-                        { type: 'info', title: 'Tracker (Die unsichtbaren Spione)', text: 'Unsichtbare kleine Programme (Tracker und Cookies) verfolgen dich quer durch das gesamte Internet über verschiedene Webseiten hinweg. Deshalb siehst du auf Instagram plötzlich Werbung für Schuhe, die du dir gestern auf einer ganz anderen Webseite angesehen hast.' }
+                    { title: "1. Der Preis des 'Kostenlosen'", intro: "Instagram, TikTok und YouTube sind keine sozialen Dienste – sie sind Werbeunternehmen. Wer das versteht, kann bewusster damit umgehen.", blocks: [
+                        { type: 'warning', title: 'Du bist das Produkt', text: 'Wenn ein digitales Angebot kostenlos ist, bezahlst du mit deinen Daten. Soziale Netzwerke sammeln ununterbrochen, wie lange du was ansiehst, was du likest und wer deine Freunde sind – um daraus ein wertvolles Werbeprofil zu erstellen.' },
+                        { type: 'info', title: 'Tracker und Cookies', text: 'Unsichtbare Programme (Tracker und Cookies) verfolgen dich quer durch das gesamte Internet. Deshalb siehst du auf Instagram plötzlich Werbung für Schuhe, die du dir gestern auf einer ganz anderen Webseite angeschaut hast.' },
+                        { type: 'tip', title: 'Cookie-Banner richtig nutzen', text: 'Klicke auf neuen Webseiten nicht blindlings auf **„Alle akzeptieren"**. Nimm dir die drei Sekunden, um auf „Nur essenzielle" oder „Ablehnen" zu klicken – das reduziert, wie viele Daten über dich gesammelt werden.' }
                     ]},
-                    { title: "Deine Privatsphäre schützen", intro: "Du kannst nicht alles verhindern, aber du kannst es den Firmen deutlich schwerer machen.", blocks: [
-                        { type: 'success', title: 'Cookie-Banner richtig nutzen', text: 'Klicke auf neuen Webseiten nicht blindlings auf "Alle akzeptieren", nur damit das nervige Fenster verschwindet. Nimm dir die 3 Sekunden Zeit, um auf "Nur essenzielle" oder "Ablehnen" zu klicken.', image: '' },
-                        { type: 'tip', title: 'Profile auf Privat stellen', text: 'Stelle deine Social-Media-Accounts zwingend so ein, dass nur deine bestätigten Freunde deine Bilder und Videos sehen können. Ein öffentliches Profil ist wie ein offenes Tagebuch auf dem Marktplatz.' }
+                    { title: "2. Der Algorithmus und du", intro: "Social-Media-Apps haben nur ein Ziel: deine Zeit. Dafür nutzen sie psychologische Tricks, die du kennen solltest.", blocks: [
+                        { type: 'warning', title: 'Endless Scroll und Zeitverlust', text: 'Früher hatten Webseiten Seitenumbrüche. Heute gibt es in Apps kein Ende mehr – wenn du nach unten scrollst, lädt sofort neuer Inhalt nach. Das trickst unser Gehirn aus und lässt uns das Zeitgefühl verlieren.', image: '' },
+                        { type: 'standard', title: 'Die Filterblase', text: 'Algorithmen zeigen dir bevorzugt Inhalte, bei denen du länger verweilst. Das klingt praktisch, hat aber einen Haken: Du bekommst immer mehr von dem, was du ohnehin schon denkst – und verlierst den Blick für andere Perspektiven. Dieses Phänomen nennt man **Filterblase** oder **Echokammer**.' },
+                        { type: 'tip', title: 'Digital Wellbeing', text: 'Nimm die Kontrolle zurück! Nutze die **„Bildschirmzeit"**-Funktion deines Handys, um zu sehen, wie viel Zeit du wirklich in welcher App verbringst – und setze dir dort harte, feste App-Limits.' }
+                    ]},
+                    { title: "3. Deine Privatsphäre schützen", intro: "Du kannst nicht alles verhindern – aber du kannst es Firmen und Fremden deutlich schwerer machen.", blocks: [
+                        { type: 'success', title: 'Profile auf Privat stellen', text: 'Stelle deine Social-Media-Accounts so ein, dass nur deine bestätigten Freunde deine Bilder und Videos sehen können. Ein öffentliches Profil ist wie ein offenes Tagebuch auf dem Marktplatz.' },
+                        { type: 'info', title: 'App-Berechtigungen prüfen', text: 'Viele Apps verlangen Zugriff auf Standort, Mikrofon oder Kamera, obwohl sie das für ihre Kernfunktion gar nicht brauchen. Prüfe in den Einstellungen deines Smartphones regelmäßig, welche App welche Berechtigung hat – und entziehe alles, was nicht nötig ist.' },
+                        { type: 'warning', title: 'Browserdaten löschen', text: 'Dein Browser speichert deinen Verlauf, Cookies und Anmeldedaten. Lösche diese Daten regelmäßig – besonders auf gemeinsam genutzten Geräten. Die Funktion findest du in den Einstellungen jedes Browsers unter **„Browserdaten löschen"**.' }
                     ]}
                 ],
-                missions: ["Öffne eine beliebige große Nachrichten-Website und lehne im aufploppenden Cookie-Banner alles ab, was nicht zwingend nötig ist.", "Prüfe in den Einstellungen deines Smartphones, welche Apps aktuell Zugriff auf deinen Standort (GPS) haben.", "Entziehe einer App, die deinen Standort eigentlich gar nicht braucht (z.B. ein einfaches Spiel), diese Berechtigung.", "Überprüfe, ob dein primäres Instagram/TikTok-Konto auf 'Privat' oder für die ganze Welt 'Öffentlich' steht.", "Finde die Einstellung und lösche einmal komplett den Verlauf und die Cookies in deinem Webbrowser."]
+                missions: [
+                    "Öffne eine große Nachrichtenwebseite und lehne im Cookie-Banner bewusst alles ab, was nicht zwingend nötig ist.",
+                    "Prüfe in den Einstellungen deines Smartphones, welche Apps aktuell Zugriff auf deinen Standort haben – und entziehe mindestens einer App diese Berechtigung.",
+                    "Finde die Bildschirmzeit-Statistik auf deinem Handy: Welche App hast du diese Woche am längsten genutzt?",
+                    "Setze dir für deine meistgenutzte App ein tägliches Zeitlimit von 45 Minuten.",
+                    "Überprüfe dein Instagram- oder TikTok-Profil: Steht es auf 'Öffentlich' oder 'Privat'? Passe es ggf. an."
+                ]
             },
-            22: {
-                sections: [
-                    { title: "Die Macht des Algorithmus", intro: "Social Media Apps wollen nur eins: Deine Lebenszeit. Dafür nutzen sie psychologische Tricks.", blocks: [
-                        { type: 'warning', title: 'Der Endless Scroll', text: 'Früher hatten Webseiten "Seiten", man musste umblättern. Heute gibt es in Apps kein "Ende" mehr. Wenn du nach unten wischst, lädt sofort neuer Inhalt nach. Das trickst unser Gehirn aus und wir verlieren das Zeitgefühl komplett.', image: '' },
-                        { type: 'info', title: 'Analysiert in Millisekunden', text: 'Algorithmen auf TikTok oder Insta analysieren jede Millisekunde deines Verhaltens. Bleibst du bei einem Katzenvideo nur 2 Sekunden länger hängen als bei anderen, flutet dich die App danach mit Katzenvideos, um dich bloß am Screen zu halten.' }
-                    ]},
-                    { title: "Die Filterblase", intro: "Das Internet zeigt dir nicht die ganze Welt, sondern nur das, was dir gefällt.", blocks: [
-                        { type: 'standard', title: 'Die Echokammer', text: 'Weil der Algorithmus dir nur Meinungen zeigt, die du ohnehin gut findest (damit du die App nicht genervt schließt), verlierst du den Blick für andere Sichtweisen. Du lebst in einer unsichtbaren "Filterblase" oder "Echokammer".' },
-                        { type: 'tip', title: 'Digital Wellbeing (Gegenmaßnahmen)', text: 'Nimm die Kontrolle zurück! Nutze die "Bildschirmzeit"-Funktion deines Handys, um dir harte, unumstößliche App-Limits setzen (z.B. maximal 1 Stunde TikTok am Tag).' }
-                    ]}
-                ],
-                missions: ["Finde in den Einstellungen deines Handys die detaillierte Statistik zur 'Bildschirmzeit' (Digital Wellbeing).", "Notiere dir ehrlich, welche App du diese Woche am allerlängsten genutzt hast.", "Setze dir in den Einstellungen testweise ein App-Limit von 30 Minuten für deine absolut meistgenutzte App.", "Like heute auf Social Media absichtlich 3 Beiträge zu einem Thema, das dich eigentlich überhaupt nicht interessiert.", "Beobachte morgen: Hat sich dein Video-Feed durch diese 3 falschen Likes bereits merklich verändert?"]
-            },
-
             // ================== KLASSE 9-10 ==================
             13: {
                 sections: [
