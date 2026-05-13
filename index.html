@@ -71,18 +71,18 @@
         // ÄNDERUNG: Module 1, 2, 3 wurden zu einem Modul zusammengefasst.
         const ALL_MODULES = [
             { id: 1,  title: "Word-Führerschein und Dateimanagement", stage: "5-6",  category: "skills",    icon: "file-text",     description: "Hardware-Grundlagen, Ordnerstrukturen und Dateinamen – plus die wichtigsten Word-Funktionen für den Schulalltag." },
-            { id: 7,  title: "Umgang mit PowerPoint",                 stage: "5-6",  category: "skills",    icon: "presentation",  description: "Folien professionell gestalten, den Designer nutzen und frei vor Publikum sprechen statt ablesen." },
-            { id: 4,  title: "Digitale Verantwortung",                stage: "5-6",  category: "reflexion", icon: "heart-handshake", description: "Respektvoller Umgang im Netz, Netiquette im Klassenchat und richtiges Reagieren bei Cybermobbing." },
-            { id: 6,  title: "Suchmaschinen",                         stage: "5-6",  category: "reflexion", icon: "search",        description: "Clever googeln mit Keywords und Suchoperatoren, Werbung erkennen und sichere Kindersuchmaschinen kennenlernen." },
-            { id: 19, title: "Sichere Passwörter",                    stage: "5-6",  category: "reflexion", icon: "key",           description: "Was ein starkes Passwort ausmacht, der Merksatz-Trick – und warum du es niemals teilen solltest." },
-            { id: 8,  title: "Digitale Kunst & Design",               stage: "7-8",  category: "skills",    icon: "palette",       description: "Bilder professionell bearbeiten und Videos schneiden – von Crop und Kontrast bis zur fertigen MP4-Datei." },
-            { id: 9,  title: "Tabellenkalkulation",                   stage: "7-8",  category: "skills",    icon: "table",         description: "Mit Excel oder Calc Daten erfassen, Formeln anwenden und Ergebnisse als Diagramm visualisieren." },
-            { id: 21, title: "Audio & Podcasts",                      stage: "9-10", category: "skills",    icon: "mic",           description: "Professionelle Aufnahmetechnik, mehrspurige Produktion und dramaturgischer Aufbau einer eigenen Podcast-Episode." },
-            { id: 10, title: "Digitale Quellenarbeit",                stage: "7-8",  category: "reflexion", icon: "search-check",  description: "Fake News erkennen, Bilder rückwärts suchen und fremde Inhalte korrekt zitieren und lizenzieren." },
-            { id: 12, title: "Digitale Selbstbestimmung",             stage: "7-8",  category: "reflexion", icon: "shield-check",  description: "Wie Algorithmen und Tracker funktionieren, die Filterblase verstehen und die eigene Privatsphäre schützen." },
-            { id: 13, title: "KI-Produktivität",                      stage: "9-10", category: "skills",    icon: "cpu",           description: "Effektives Prompting mit der Rolle-Aufgabe-Format-Methode, Halluzinationen erkennen und KI transparent einsetzen." },
-            { id: 16, title: "Digitale Mündigkeit",                   stage: "9-10", category: "reflexion", icon: "brain",         description: "Den eigenen digitalen Fußabdruck kennen, KI-Bias und Deepfakes verstehen und mündig mit Algorithmen umgehen." },
-            { id: 24, title: "Datenökonomie",                         stage: "9-10", category: "reflexion", icon: "database",      description: "Das Geschäftsmodell der Tech-Giganten, Micro-Targeting und psychologische Dark Patterns entlarven." }
+            { id: 2,  title: "Umgang mit PowerPoint",                 stage: "5-6",  category: "skills",    icon: "presentation",  description: "Folien professionell gestalten, den Designer nutzen und frei vor Publikum sprechen statt ablesen." },
+            { id: 3,  title: "Digitale Verantwortung",                stage: "5-6",  category: "reflexion", icon: "heart-handshake", description: "Respektvoller Umgang im Netz, Netiquette im Klassenchat und richtiges Reagieren bei Cybermobbing." },
+            { id: 4,  title: "Suchmaschinen",                         stage: "5-6",  category: "reflexion", icon: "search",        description: "Clever googeln mit Keywords und Suchoperatoren, Werbung erkennen und sichere Kindersuchmaschinen kennenlernen." },
+            { id: 5,  title: "Sichere Passwörter",                    stage: "5-6",  category: "reflexion", icon: "key",           description: "Was ein starkes Passwort ausmacht, der Merksatz-Trick – und warum du es niemals teilen solltest." },
+            { id: 6,  title: "Digitale Kunst & Design",               stage: "7-8",  category: "skills",    icon: "palette",       description: "Bilder professionell bearbeiten und Videos schneiden – von Crop und Kontrast bis zur fertigen MP4-Datei." },
+            { id: 7,  title: "Tabellenkalkulation",                   stage: "7-8",  category: "skills",    icon: "table",         description: "Mit Excel oder Calc Daten erfassen, Formeln anwenden und Ergebnisse als Diagramm visualisieren." },
+            { id: 8,  title: "Audio & Podcasts",                      stage: "9-10", category: "skills",    icon: "mic",           description: "Professionelle Aufnahmetechnik, mehrspurige Produktion und dramaturgischer Aufbau einer eigenen Podcast-Episode." },
+            { id: 9,  title: "Digitale Quellenarbeit",                stage: "7-8",  category: "reflexion", icon: "search-check",  description: "Fake News erkennen, Bilder rückwärts suchen und fremde Inhalte korrekt zitieren und lizenzieren." },
+            { id: 10, title: "Digitale Selbstbestimmung",             stage: "7-8",  category: "reflexion", icon: "shield-check",  description: "Wie Algorithmen und Tracker funktionieren, die Filterblase verstehen und die eigene Privatsphäre schützen." },
+            { id: 11, title: "KI-Produktivität",                      stage: "9-10", category: "skills",    icon: "cpu",           description: "Effektives Prompting mit der Rolle-Aufgabe-Format-Methode, Halluzinationen erkennen und KI transparent einsetzen." },
+            { id: 12, title: "Digitale Mündigkeit",                   stage: "9-10", category: "reflexion", icon: "brain",         description: "Den eigenen digitalen Fußabdruck kennen, KI-Bias und Deepfakes verstehen und mündig mit Algorithmen umgehen." },
+            { id: 13, title: "Datenökonomie",                         stage: "9-10", category: "reflexion", icon: "database",      description: "Das Geschäftsmodell der Tech-Giganten, Micro-Targeting und psychologische Dark Patterns entlarven." }
         ];
 
         // --- ZENTRALE DATENBANK FÜR INHALTE & MISSIONEN ---
@@ -189,7 +189,7 @@
                 ]
             },
 
-            7: {
+            2: {
                 sections: [
                     { title: "1. Technische Bedienung", intro: "Egal ob PowerPoint oder Keynote – Präsentationen zu bauen macht Spaß, wenn man die Kniffe kennt.", blocks: [
                         { type: 'standard', title: 'Neue Folien und Bilder', text: 'Klicke auf "Neue Folie" und wähle direkt das passende Layout (z.B. "Titel und Inhalt"). So verrutschen die Textfelder nicht. Bilder fügst du über "Einfügen > Bilder" ein. Verändere die Größe von Bildern **immer nur an den Ecken**, sonst quetschst du das Bild!', image: '' },
@@ -202,7 +202,7 @@
                 ],
                 missions: ["Erstelle eine Titelfolie mit deinem Namen und dem Thema 'Mein Lieblingstier'.", "Füge eine zweite Folie hinzu und schreibe exakt 3 extrem kurze Stichpunkte auf.", "Füge ein Foto deines Lieblingstiers ein und ziehe es groß.", "Klicke den 'Designer' an und wähle einen coolen Vorschlag für deine Folie.", "Teste den Präsentations-Modus (Vollbild) und wechsle die Folien mit der Tastatur."]
             },
-            4: {
+            3: {
                 sections: [
                     { title: "1. Netiquette – Respekt im digitalen Alltag", intro: "Das Internet ist kein rechtsfreier Raum. Auch wenn man sich nicht in die Augen schaut, gelten klare Regeln – und hinter jedem Bildschirm sitzt ein echter Mensch.", blocks: [
                         { type: 'info', title: 'Die goldene Regel', text: 'Schreibe im Internet niemals etwas, das du der Person nicht auch direkt ins Gesicht sagen würdest. Hinter jedem Profilbild und Chatnamen steckt ein echter Mensch mit echten Gefühlen.' },
@@ -225,7 +225,7 @@
                     "Notiere die Telefonnummer der Nummer gegen Kummer (116 111) in deinen Kontakten."
                 ]
             },
-            6: {
+            4: {
                 sections: [
                     { title: "Clever suchen", intro: "Stell dir das Internet wie eine gigantische Bibliothek vor. Eine Suchmaschine sucht nicht 'live', wenn du auf Enter drückst!", blocks: [
                         { type: 'info', title: 'Die Spinnen und der Index', text: 'Kleine, unsichtbare Programme der Suchmaschinen (Crawler oder Spinnen) krabbeln Tag und Nacht durchs Internet und lesen Webseiten. Sie packen alle Wörter in ein riesiges Inhaltsverzeichnis (den **Index**). Du suchst also nur in diesem Index, deshalb geht es so schnell!', image: '' },
@@ -239,7 +239,7 @@
                 ],
                 missions: ["Suche auf Blinde-Kuh.de nach Informationen über den Planeten Mars.", "Nutze bei Google den Minus-Trick: Suche nach 'Römer -Auto'.", "Suche bei Google nach dem Wort 'Schuhe' und zähle, wie viele Ergebnisse oben als 'Anzeige' markiert sind.", "Finde durch eine clevere Suche heraus, an welchem genauen Datum die Schule 'Gymnasium Thomaeum' gegründet wurde.", "Erkläre deinem Sitznachbarn in einem Satz, warum der erste Treffer bei Google nicht immer der beste ist."]
             },
-            19: {
+            5: {
                 sections: [
                     { title: "Warum Passwörter wichtig sind", intro: "Dein Passwort ist der digitale Haustürschlüssel zu deinem Leben. Wenn er zu simpel ist, können Fremde einfach eintreten.", blocks: [
                         { type: 'warning', title: 'Was Hacker lieben', text: 'Ein schlechtes Passwort (wie `123456`, `hallo` oder der Name deines Hundes) lässt sich von speziellen Computerprogrammen in weniger als einer Sekunde knacken. Diese Programme probieren einfach Millionen Wörter pro Sekunde aus.', image: '' },
@@ -254,7 +254,7 @@
             },
 
             // ================== KLASSE 7-8 ==================
-            8: {
+            6: {
                 sections: [
                     { title: "1. Bildbearbeitung", intro: "Ein gutes Foto entsteht nicht nur mit der Kamera – oft ist die Nachbearbeitung entscheidend. Hier lernst du die wichtigsten Werkzeuge kennen.", blocks: [
                         { type: 'standard', title: 'Zuschneiden (Crop)', text: 'Das wichtigste Werkzeug der Bildbearbeitung! Schneide störende Ränder oder ablenkende Hintergrundelemente weg, um den Fokus des Betrachters gezielt auf dein Hauptmotiv zu lenken.', image: '' },
@@ -280,7 +280,7 @@
                     "Exportiere dein fertiges Video als .MP4 und vergleiche die Dateigröße mit der ursprünglichen Projektdatei."
                 ]
             },
-            9: {
+            7: {
                 sections: [
                     { title: "1. Technische Bedienung", intro: "Excel und Calc wirken auf den ersten Blick wie riesige, unübersichtliche Gitter. Aber sie nehmen dir all die harte Rechenarbeit ab.", blocks: [
                         { type: 'info', title: 'Das Koordinatensystem', text: 'Jedes Kästchen (Zelle) hat eine eindeutige Adresse, bestehend aus der Spalte (Buchstabe) und der Zeile (Zahl), z.B. **B4**.' },
@@ -294,7 +294,7 @@
                 ],
                 missions: ["Öffne Excel/Calc und trage in Spalte A untereinander deine 3 Lieblingsessen ein.", "Trage in Spalte B fiktive Preise für diese Essen ein.", "Berechne in einer neuen Zelle die Summe der Preise mit der Formel `=SUMME()`.", "Markiere die Essen und die Preise und erstelle ein Säulendiagramm.", "Gib deinem Diagramm einen passenden Titel (z.B. 'Meine Essenskosten')."]
             },
-            21: {
+            8: {
                 sections: [
                     { title: "1. Professionelle Aufnahmetechnik", intro: "Gute Audio-Produktionen scheitern fast immer an technischen Grundfehlern. Wer diese kennt und vermeidet, klingt sofort professionell.", blocks: [
                         { type: 'warning', title: 'Pegel und Übersteuerung', text: 'Der Aufnahmepegel sollte dauerhaft bei ca. **-12 dB** liegen – nicht am oberen Limit. Berührt der Ausschlag die rote Linie (0 dB), übersteuert die Aufnahme und das Signal verzerrt dauerhaft. Das ist im Nachhinein nicht mehr korrigierbar. Nutze in Audacity oder GarageBand immer die Pegelanzeige als Kontrolle.', image: '' },
@@ -317,7 +317,7 @@
                     "Exportiere das fertige Ergebnis als MP3 (192 kbps) und lass eine andere Person zuhören – hol dir gezieltes Feedback zu Tempo, Verständlichkeit und Struktur."
                 ]
             },
-            10: {
+            9: {
                 sections: [
                     { title: "1. Quellen finden und bewerten", intro: "Im Geschichtsunterricht lernst du, Quellen kritisch zu analysieren. Dasselbe Handwerkszeug brauchst du im digitalen Alltag – denn im Internet kann jeder alles behaupten.", blocks: [
                         { type: 'info', title: 'Was ist überhaupt eine Quelle?', text: 'Eine Quelle ist alles, woraus du Informationen beziehst: ein Wikipedia-Artikel, ein YouTube-Video, ein Zeitungsartikel, ein Foto oder ein historisches Dokument. Entscheidend ist immer die Frage: **Wer hat das erstellt, wann, und mit welchem Ziel?**' },
@@ -344,7 +344,7 @@
                     "Lade ein Bild aus den Nachrichten bei der Google Bilderrückwärtssuche hoch und schaue, in welchem ursprünglichen Kontext es aufgetaucht ist."
                 ]
             },
-            12: {
+            10: {
                 sections: [
                     { title: "1. Der Preis des 'Kostenlosen'", intro: "Instagram, TikTok und YouTube sind keine sozialen Dienste – sie sind Werbeunternehmen. Wer das versteht, kann bewusster damit umgehen.", blocks: [
                         { type: 'warning', title: 'Du bist das Produkt', text: 'Wenn ein digitales Angebot kostenlos ist, bezahlst du mit deinen Daten. Soziale Netzwerke sammeln ununterbrochen, wie lange du was ansiehst, was du likest und wer deine Freunde sind – um daraus ein wertvolles Werbeprofil zu erstellen.' },
@@ -371,7 +371,7 @@
                 ]
             },
             // ================== KLASSE 9-10 ==================
-            13: {
+            11: {
                 sections: [
                     { title: "1. Technische Bedienung", intro: "Die Kommunikation mit einer KI (wie ChatGPT) nennt man Prompting. Es ist wie Programmieren mit normaler Sprache.", blocks: [
                         { type: 'standard', title: 'Die Profi-Formel (Rolle + Aufgabe + Format)', text: 'Ein "Prompt" ist dein Befehl. Sag der KI extrem präzise, was sie tun soll. Beispiel: "Handle als Historiker (Rolle). Fasse den 2. Weltkrieg (Aufgabe) in 3 kurzen Stichpunkten zusammen (Format)."', image: '' },
@@ -385,7 +385,7 @@
                 ],
                 missions: ["Schreibe einen sehr kurzen, schlechten Prompt (z.B. 'Erkläre die Photosynthese').", "Schreibe den Prompt nun nach der Profi-Formel um: 'Handle als Bio-Lehrer. Erkläre die Photosynthese für einen 10-Jährigen in 3 sehr kurzen Sätzen'.", "Vergleiche die Ergebnisse (im Kopf oder real): Warum ist der zweite Prompt massiv besser?", "Bitte eine KI, dir ein echtes Sachbuch als Quelle für ein spezielles Fachthema zu nennen.", "Prüfe per normaler Google-Suche, ob dieses von der KI genannte Buch in der Realität wirklich existiert oder frei erfunden wurde."]
             },
-            16: {
+            12: {
                 sections: [
                     { title: "1. Dein digitaler Fußabdruck", intro: "Jede Handlung im Netz hinterlässt Spuren – ob du willst oder nicht. Wer das weiß, handelt bewusster.", blocks: [
                         { type: 'warning', title: 'Das Internet vergisst nicht', text: 'Jeder Klick, jedes gelikte Foto und jeder Kommentar aus deiner Jugendzeit hinterlässt einen fast unlöschbaren digitalen Fußabdruck. Arbeitgeber und Universitäten googeln Bewerber heute routinemäßig vor dem ersten Gespräch. Ein peinliches öffentliches Foto von heute kann in vier Jahren deinen Traumjob kosten.', image: '' },
@@ -410,7 +410,7 @@
                     "Diskutiert in der Klasse: Wem gehören Kunstwerke, die eine KI aus Millionen fremder Bilder erzeugt hat – und ist das fair gegenüber den ursprünglichen Künstlern?"
                 ]
             },
-            24: {
+            13: {
                 sections: [
                     { title: "Daten sind das neue Öl", intro: "Das knallharte Geschäftsmodell der mächtigen Tech-Giganten.", blocks: [
                         { type: 'warning', title: 'Du bist das Produkt', text: 'Konzerne wie Meta (Instagram, WhatsApp) und Google sind keine sozialen, netten Dienste, sondern die größten und mächtigsten Werbeagenturen der Welt. Da du für die Apps kein Geld bezahlst, bist DU (bzw. deine Aufmerksamkeit) das Produkt, das an Werbekunden verkauft wird.' },
