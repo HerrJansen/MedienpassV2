@@ -81,8 +81,6 @@
             { id: 10, title: "Digitale Quellenarbeit", stage: "7-8", category: "reflexion", icon: "search-check" }, 
             { id: 12, title: "Digitale Selbstbestimmung", stage: "7-8", category: "reflexion", icon: "shield-check" },
             { id: 13, title: "KI-Produktivität", stage: "9-10", category: "skills", icon: "cpu" }, 
-            { id: 15, title: "Projektmanagement", stage: "9-10", category: "skills", icon: "kanban" },
-            { id: 23, title: "Webdesign Basics", stage: "9-10", category: "skills", icon: "globe" },
             { id: 16, title: "KI-Ethik", stage: "9-10", category: "reflexion", icon: "scale" }, 
             { id: 17, title: "Zivilcourage", stage: "9-10", category: "reflexion", icon: "users" }, 
             { id: 18, title: "Digitaler Fußabdruck", stage: "9-10", category: "reflexion", icon: "footprint" },
@@ -388,36 +386,6 @@
                     ]}
                 ],
                 missions: ["Schreibe einen sehr kurzen, schlechten Prompt (z.B. 'Erkläre die Photosynthese').", "Schreibe den Prompt nun nach der Profi-Formel um: 'Handle als Bio-Lehrer. Erkläre die Photosynthese für einen 10-Jährigen in 3 sehr kurzen Sätzen'.", "Vergleiche die Ergebnisse (im Kopf oder real): Warum ist der zweite Prompt massiv besser?", "Bitte eine KI, dir ein echtes Sachbuch als Quelle für ein spezielles Fachthema zu nennen.", "Prüfe per normaler Google-Suche, ob dieses von der KI genannte Buch in der Realität wirklich existiert oder frei erfunden wurde."]
-            },
-            15: {
-                sections: [
-                    { title: "1. Technische Bedienung", intro: "Gutes Teamwork scheitert meistens an der technischen Organisation und an Kommunikationsproblemen.", blocks: [
-                        { type: 'standard', title: 'Cloud-Dokumente nutzen', text: 'Schickt euch bei Gruppenarbeiten niemals Word-Dateien per Mail hin und her! Nutzt Office 365 (oder Google Docs), um gemeinsam und gleichzeitig im selben Cloud-Dokument zu schreiben.' },
-                        { type: 'info', title: 'Kanban-Boards (Agil arbeiten)', text: 'Nutzt Tools wie Trello oder Microsoft Planner für die Aufgabenverteilung. Organisiert alle Aufgaben des Projekts in drei simplen Spalten: **Zu tun**, **In Arbeit**, **Erledigt**. So sieht jeder im Team sofort, was gerade Phase ist.', image: '' },
-                        { type: 'warning', title: 'Versionierung von Dateien', text: 'Wenn ihr offline Dateien speichern müsst, gebt ihnen klare Versionsnummern, z.B. `Referat_v1`, `Referat_v2`. Nennt Dateien niemals `Referat_fertig_wirklich_final`.' }
-                    ]},
-                    { title: "2. Kriterien für Qualität", intro: "Warum Gruppen-Projekte in der Schule (und im Beruf) so oft scheitern.", blocks: [
-                        { type: 'warning', title: 'Klare Verantwortlichkeiten', text: 'Jede noch so kleine Aufgabe braucht genau EINE Person im Team, die dafür hauptverantwortlich ist. Wenn jemand sagt: "Das machen wir alle zusammen", bedeutet das meistens, dass es am Ende niemand macht.' },
-                        { type: 'tip', title: 'Harte Deadlines setzen', text: 'Aufgaben ohne ein konkretes Enddatum werden fast immer auf den allerletzten Tag vor der Abgabe verschoben. Setzt euch als Team Zwischenziele (Meilensteine).' },
-                        { type: 'success', title: 'Klare Kommunikation', text: 'Lieber einmal zu viel im Gruppenchat nach dem aktuellen Zwischenstand fragen, als am Ende komplett ohne Ergebnisse dazustehen. Probleme müssen sofort offen angesprochen werden.' }
-                    ]}
-                ],
-                missions: ["Lege auf einem leeren Blatt Papier ein kleines Kanban-Board an (Zeichne 3 Spalten: To Do, Doing, Done).", "Schreibe 3 Aufgaben für dein nächstes, fiktives Schulprojekt auf Post-its und klebe sie unter die Spalte 'To Do'.", "Verschiebe ein Post-it physisch in die 'Doing'-Spalte, um den Workflow visuell zu simulieren.", "Finde in Word/Office heraus, wo sich der 'Teilen'-Button befindet, um ein Dokument live für einen Mitschüler freizugeben.", "Diskutiert in der Gruppe: Warum ist ein Dateiname wie 'Referat_final_fertig_v3' in einem Projektteam absolut furchtbar?"]
-            },
-            23: {
-                sections: [
-                    { title: "1. Technische Bedienung", intro: "Wie das moderne World Wide Web technisch funktioniert und aufgebaut ist.", blocks: [
-                        { type: 'info', title: 'Die drei Sprachen des Webs', text: '**HTML** ist das nackte Gerüst (Texte, Bilder) einer Webseite, **CSS** ist die Farbe und das optische Design, **JavaScript** sorgt für Interaktion und Bewegung.' },
-                        { type: 'standard', title: 'Baukästen (CMS)', text: 'Heute muss man kein Coder mehr sein. Webseiten baut man sehr oft mit Content Management Systemen (CMS) wie WordPress, WIX oder Jimdo per Drag & Drop.' },
-                        { type: 'tip', title: 'Responsive Design', text: 'Eine moderne Webseite muss so programmiert sein, dass sie sich automatisch ("responsiv") perfekt anpasst – egal ob man sie auf einem kleinen Smartphone oder auf einem riesigen Monitor ansieht.' }
-                    ]},
-                    { title: "2. Kriterien für Qualität", intro: "User Experience (UX) – Wie sich eine Webseite für den Nutzer anfühlen muss.", blocks: [
-                        { type: 'warning', title: 'Mobile First!', text: 'Da heutzutage über 80% der Nutzer Webseiten auf dem Handy ansehen, muss das Design zwingend zuerst für kleine Bildschirme entworfen werden. Der Desktop ist zweitrangig geworden.', image: '' },
-                        { type: 'warning', title: 'Ladezeiten sind entscheidend', text: 'Riesige, unkomprimierte Bilder machen eine Seite extrem langsam. Untersuchungen zeigen: Wenn eine Seite am Handy länger als 3 Sekunden lädt, brechen die meisten Nutzer ab und gehen zur Konkurrenz.' },
-                        { type: 'success', title: 'Call to Action (Handlungsaufruf)', text: 'Der Besucher muss in der allerersten Sekunde wissen, worum es auf der Seite geht und wo er klicken soll. Der wichtigste Button (z.B. "Jetzt kaufen" oder "Kontakt") muss farblich extrem herausstechen.' }
-                    ]}
-                ],
-                missions: ["Gehe auf deine absolute Lieblingswebseite und drücke am PC die Taste 'F12' (Entwicklertools).", "Schau dir den völlig unübersichtlichen Code-Salat an – das ist das nackte HTML! Schließe das Fenster danach wieder.", "Öffne die Homepage deiner Schule auf dem Handy und parallel auf dem PC. Vergleiche genau, wie sich das Menü anpasst (Responsive).", "Skizziere mit einem Stift auf einem Zettel grob eine Startseite für ein fiktives, neues Startup-Unternehmen.", "Achte bei deiner Skizze darauf, dass der allerwichtigste Button (der 'Call to Action') sofort ins Auge fällt."]
             },
             16: {
                 sections: [
