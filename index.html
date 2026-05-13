@@ -81,9 +81,7 @@
             { id: 10, title: "Digitale Quellenarbeit", stage: "7-8", category: "reflexion", icon: "search-check" }, 
             { id: 12, title: "Digitale Selbstbestimmung", stage: "7-8", category: "reflexion", icon: "shield-check" },
             { id: 13, title: "KI-Produktivität", stage: "9-10", category: "skills", icon: "cpu" }, 
-            { id: 16, title: "KI-Ethik", stage: "9-10", category: "reflexion", icon: "scale" }, 
-            { id: 17, title: "Zivilcourage", stage: "9-10", category: "reflexion", icon: "users" }, 
-            { id: 18, title: "Digitaler Fußabdruck", stage: "9-10", category: "reflexion", icon: "footprint" },
+            { id: 16, title: "Digitale Mündigkeit", stage: "9-10", category: "reflexion", icon: "brain" },
             { id: 24, title: "Datenökonomie", stage: "9-10", category: "reflexion", icon: "database" }
         ];
 
@@ -389,42 +387,28 @@
             },
             16: {
                 sections: [
-                    { title: "Bias (Vorurteile) in Algorithmen", intro: "Künstliche Intelligenz ist eine Maschine, aber sie ist niemals objektiv oder neutral.", blocks: [
-                        { type: 'warning', title: 'Die KI lernt von uns', text: 'KI lernt ausschließlich aus alten Daten, die von Menschen produziert wurden. Wenn diese historischen Daten im Internet rassistisch, unfair oder sexistisch waren, übernimmt die KI diese Vorurteile unbemerkt in ihre Berechnungen.' },
-                        { type: 'info', title: 'Beispiel aus der Realität', text: 'Ein KI-Bewerbungs-Algorithmus bei einem großen Tech-Konzern hat mal Frauen systematisch benachteiligt und aussortiert. Warum? Weil die KI aus alten Personaldaten der letzten 10 Jahre gelernt hatte, dass IT-Führungskräfte in der Vergangenheit fast immer männlich waren.' }
+                    { title: "1. Dein digitaler Fußabdruck", intro: "Jede Handlung im Netz hinterlässt Spuren – ob du willst oder nicht. Wer das weiß, handelt bewusster.", blocks: [
+                        { type: 'warning', title: 'Das Internet vergisst nicht', text: 'Jeder Klick, jedes gelikte Foto und jeder Kommentar aus deiner Jugendzeit hinterlässt einen fast unlöschbaren digitalen Fußabdruck. Arbeitgeber und Universitäten googeln Bewerber heute routinemäßig vor dem ersten Gespräch. Ein peinliches öffentliches Foto von heute kann in vier Jahren deinen Traumjob kosten.', image: '' },
+                        { type: 'tip', title: 'Ego-Googling', text: 'Suche regelmäßig deinen eigenen Namen in Anführungszeichen bei Google (z.B. `"Max Mustermann"`) und prüfe auch die Bildersuche. Was würde ein Fremder über dich denken, wenn er diese Ergebnisse sieht?' },
+                        { type: 'success', title: 'Aufräumen und Recht am eigenen Bild', text: 'Wenn andere peinliche Fotos von dir gepostet haben, kannst du deren Löschung verlangen – du hast ein gesetzliches **Recht am eigenen Bild**. Bei Google kannst du außerdem einen offiziellen Antrag stellen, bestimmte Suchergebnisse zu entfernen.' }
                     ]},
-                    { title: "Deepfakes & die Wahrheit", intro: "Der massive Angriff auf unsere Wahrnehmung der Realität.", blocks: [
-                        { type: 'warning', title: 'Täuschend echte Fälschungen', text: 'Künstliche Intelligenz kann heute täuschend echte Videos und Stimmen von Politikern oder Prominenten erzeugen (sogenannte Deepfakes). Man kann Leuten Dinge in den Mund legen, die sie in der Realität niemals gesagt haben.', image: '' },
-                        { type: 'success', title: 'Die kritische Folge', text: 'Das blinde Vertrauen in digitale Medien und Nachrichten sinkt massiv. Du musst als moderner Bürger lernen, viel kritischer denn je zu hinterfragen, was ein Foto oder ein "Beweisvideo" im Internet eigentlich noch wert ist.' }
+                    { title: "2. KI-Ethik: Chancen und Risiken", intro: "Künstliche Intelligenz verändert unsere Gesellschaft grundlegend. Wer mündig damit umgehen will, muss ihre Grenzen und Gefahren kennen.", blocks: [
+                        { type: 'warning', title: 'Bias – Vorurteile in Algorithmen', text: 'KI lernt ausschließlich aus alten, von Menschen produzierten Daten. Waren diese Daten rassistisch, sexistisch oder einseitig, übernimmt die KI diese Vorurteile unbemerkt. Ein reales Beispiel: Ein Bewerbungsalgorithmus eines großen Tech-Konzerns benachteiligte systematisch Frauen – weil er aus historischen Daten gelernt hatte, dass Führungskräfte bisher fast immer männlich waren.' },
+                        { type: 'warning', title: 'Deepfakes und die Wahrheit', text: 'KI kann heute täuschend echte Videos und Stimmen von Personen erzeugen (Deepfakes). Man kann Menschen Dinge in den Mund legen, die sie nie gesagt haben. Das stellt unser Vertrauen in digitale Medien fundamental in Frage – und ist eine ernste Bedrohung für demokratische Prozesse.', image: '' },
+                        { type: 'info', title: 'Wem gehört KI-Kunst?', text: 'KI-Systeme werden mit Millionen fremder Bilder, Texte und Musikstücke trainiert – oft ohne Zustimmung der Urheber. Wenn eine KI dann ein neues Bild erzeugt, ist unklar: Wem gehört es? Dem Nutzer, dem Unternehmen oder den Künstlern, deren Werke als Training dienten? Diese Fragen sind rechtlich noch nicht abschließend geklärt.' }
+                    ]},
+                    { title: "3. Mündig handeln", intro: "Digitale Mündigkeit bedeutet nicht, Technik abzulehnen – sondern sie bewusst, kritisch und verantwortungsvoll zu nutzen.", blocks: [
+                        { type: 'success', title: 'KI als Werkzeug, nicht als Autorität', text: 'KI-Tools wie ChatGPT können nützliche Assistenten sein – aber sie irren sich, erfinden Fakten und haben keinen eigenen Verstand. Überprüfe wichtige Aussagen immer mit echten Quellen. Du bist derjenige, der denkt und entscheidet – nicht die Maschine.' },
+                        { type: 'tip', title: 'Transparenz und Verantwortung', text: 'Gib in der Schule offen an, wenn und wie du KI genutzt hast. Digitale Mündigkeit bedeutet auch, die eigene Verantwortung nicht an Algorithmen abzugeben – weder beim Schreiben, beim Urteilen noch beim Handeln.' }
                     ]}
                 ],
-                missions: ["Recherchiere im Netz den Begriff 'Deepfake' und finde ein prominentes, erschreckendes Beispiel.", "Diskutiere mit einem Freund: Welche konkrete Gefahr stellen Deepfakes für demokratische Wahlen dar?", "Gib einer kostenlosen Bild-KI (falls verfügbar) den Prompt 'Zeige einen typischen Firmen-Chef'. Welches Geschlecht und Alter hat die Person auf dem Bild meistens?", "Was bedeutet der englische Begriff 'Bias' in der Informatik genau?", "Denkaufgabe: Wem gehören eigentlich moralisch und rechtlich die Rechte an einem Kunstwerk, das eine KI aus Millionen von fremden Bildern gemischt hat?"]
-            },
-            17: {
-                sections: [
-                    { title: "Hate Speech im Netz", intro: "Das Internet ist kein rechtsfreier Raum. Worte sind gefährliche Waffen.", blocks: [
-                        { type: 'warning', title: 'Keine freie Meinungsäußerung', text: 'Hassrede im Netz (Rassismus, Sexismus, Antisemitismus oder konkrete Gewaltandrohungen) ist keine "freie Meinung", sondern sehr oft eine handfeste, verfolgbare Straftat.' },
-                        { type: 'info', title: 'Der Echo-Kammer-Effekt', text: 'In extremen Facebook- oder Telegram-Gruppen schaukeln sich Menschen gegenseitig hoch, weil ihnen in ihrer Blase niemand widerspricht. Die Hemmschwelle für verbale und echte Gewalt sinkt dadurch drastisch.' }
-                    ]},
-                    { title: "Zivilcourage zeigen", intro: "Wie du das Klima im Netz aktiv verbessern kannst.", blocks: [
-                        { type: 'success', title: 'Gegenrede (Counter Speech)', text: 'Schweigen im Netz wird von radikalen Tätern oft als schweigende Zustimmung der Masse gewertet. Es ist extrem wichtig, sachlich gegenzuhalten ("Counter Speech"), um stummen Mitlesern zu zeigen, dass dieser Hass nicht von der Gesellschaft toleriert wird.', image: '' },
-                        { type: 'tip', title: 'Melden & Blockieren', text: 'Diskutiere nicht mit Trollen. Nutze die Melde-Funktionen der sozialen Netzwerke aktiv, um strafbare Inhalte löschen zu lassen. Bei schweren Androhungen von Gewalt: Screenshot machen und sofort die echte Polizei (Internetwache) einschalten!' }
-                    ]}
-                ],
-                missions: ["Finde auf Instagram oder TikTok heraus, wo genau in den Untermenüs sich der 'Beitrag melden'-Button versteckt.", "Recherchiere: Welche harten Strafen stehen in Deutschland auf Volksverhetzung oder schwere Beleidigung im Internet?", "Überlege dir eine sachliche, absolut nicht-aggressive Antwort (Counter Speech) auf einen fiktiven, hetzerischen Hasskommentar.", "Was ist eigentlich die 'Internetwache' der Polizei und wofür genau kann man sie nutzen?", "Diskutiert in der Klasse: Ab wann ist ein harter Kommentar keine freie Meinung mehr, sondern echte Hassrede?"]
-            },
-            18: {
-                sections: [
-                    { title: "Dein Profil im Netz", intro: "Das Internet ist dein ewiger, unfreiwilliger Lebenslauf.", blocks: [
-                        { type: 'warning', title: 'Der digitale Fußabdruck', text: 'Jeder Klick, jedes gelikte Foto, jeder dumme oder wütende Kommentar aus deiner Jugendzeit hinterlässt einen fast unlöschbaren digitalen Fußabdruck im Netz.', image: '' },
-                        { type: 'info', title: 'Der Background-Check der Chefs', text: 'Arbeitgeber und Universitäten scannen (googlen) Bewerber heutzutage fast immer vor dem ersten Vorstellungsgespräch. Ein extrem peinliches, öffentliches Party-Foto von vor 4 Jahren kann dich heute deinen Traumjob kosten.' }
-                    ]},
-                    { title: "Digitale Hygiene betreiben", intro: "Aufräumen in der eigenen Vergangenheit.", blocks: [
-                        { type: 'tip', title: 'Ego-Googling', text: 'Suche regelmäßig deinen eigenen Namen (unbedingt in Anführungszeichen setzen, z.B. `"Max Mustermann"`) bei Google und checke dabei auch intensiv die Google Bildersuche.' },
-                        { type: 'success', title: 'Inhalte löschen lassen', text: 'Wenn andere Leute peinliche Fotos von dir gepostet haben, fordere sie unmissverständlich auf, diese sofort zu löschen (Du hast ein gesetzliches "Recht am eigenen Bild", auch gegenüber deinen Freunden!).' }
-                    ]}
-                ],
-                missions: ["Setze deinen Vor- und Nachnamen in Anführungszeichen und suche dich selbst bei Google.", "Klicke dabei auch intensiv auf die Google-Bildersuche. Bist du mit den Ergebnissen voll zufrieden?", "Prüfe sofort die Privatsphäre-Einstellungen deines allerältesten Social-Media-Accounts.", "Recherchiere, wie man bei Google einen offiziellen Antrag stellt, dass ein bestimmtes, privates Suchergebnis gelöscht wird.", "Lösche noch heute einen richtig alten, peinlichen Beitrag oder ein schlechtes Foto von dir auf Insta oder TikTok."]
+                missions: [
+                    "Suche deinen eigenen Namen in Anführungszeichen bei Google und öffne auch die Bildersuche: Bist du mit den Ergebnissen zufrieden?",
+                    "Recherchiere den Begriff 'Deepfake' und finde ein bekanntes Beispiel – diskutiere mit einer Mitschülerin oder einem Mitschüler, welche Gefahr es für Wahlen darstellt.",
+                    "Gib einer Bild-KI den Prompt 'Zeige einen typischen Firmenchef': Welches Geschlecht und Alter hat die Person meistens? Was sagt das über den Trainingsdatensatz aus?",
+                    "Lösche noch heute einen alten, peinlichen Beitrag oder ein schlechtes Foto von dir auf Instagram oder TikTok.",
+                    "Diskutiert in der Klasse: Wem gehören Kunstwerke, die eine KI aus Millionen fremder Bilder erzeugt hat – und ist das fair gegenüber den ursprünglichen Künstlern?"
+                ]
             },
             24: {
                 sections: [
