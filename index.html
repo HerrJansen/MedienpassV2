@@ -4,33 +4,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Lehrer-Konsole | Medienpass Thomaeum</title>
+    <title>Mein Medienpass | Gymnasium Thomaeum</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script type="text/javascript" src="https://alcdn.msauth.net/browser/2.32.2/js/msal-browser.min.js"></script>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
         :root { --thomaeum-red: #BF0D3E; }
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
-        .spinner { border: 3px solid rgba(0,0,0,0.1); border-left-color: var(--thomaeum-red); border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; }
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; -webkit-tap-highlight-color: transparent; }
+        .spinner { border: 3px solid rgba(0,0,0,0.1); border-left-color: var(--thomaeum-red); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
+        
+        /* Custom Scrollbar für die Modul-Inhalte */
+        .custom-scroll::-webkit-scrollbar { width: 8px; }
+        .custom-scroll::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 10px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .custom-scroll::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     </style>
 </head>
 <body>
     <div id="root"></div>
-    <script type="text/babel">
-        const { useState, useEffect, useMemo } = React;
 
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // --- KONFIGURATION ---
         const MS_CONFIG = {
             tenantId: "09c4bd58-1b8c-410d-930e-816015e61028",
             clientId: "7d277b19-93c1-4df7-8f1b-d38749b3d440",
             siteId: "thomaeumde.sharepoint.com,9ef17c4d-b57b-482e-9168-3cc3bc43bc3d,d600d53b-cfd0-45f7-96a5-f1ac20222f8f",
-            listId: "08da02d9-5b67-4938-9d7e-9e9dee97fa2e",
-            teacherGroupId: "2bbe9733-7137-4d54-a788-e988c3d56cd9"
+            listId: "08da02d9-5b67-4938-9d7e-9e9dee97fa2e"
         };
         const THOMA_RED = "#BF0D3E";
 
@@ -39,36 +48,15 @@
                 clientId: MS_CONFIG.clientId,
                 authority: `https://login.microsoftonline.com/${MS_CONFIG.tenantId}`,
                 redirectUri: window.location.origin,
-                navigateToLoginRequestUrl: false
+                navigateToLoginRequestUrl: true
             },
             cache: { cacheLocation: "localStorage", storeAuthStateInCookie: true }
         };
+        
         const msalInstance = new msal.PublicClientApplication(msalConfig);
         const msalInitPromise = msalInstance.initialize();
 
-        // ÄNDERUNG: Module 1, 2, 3 zusammengefasst (analog zur Schülerapp)
-        const ALL_MODULES = [
-            { id: 1, title: "Word-Führerschein und Dateimanagement", stage: "5-6", category: "skills", icon: "file-text" },
-            { id: 7, title: "Umgang mit PowerPoint", stage: "5-6", category: "skills", icon: "presentation" },
-            { id: 4, title: "Netiquette", stage: "5-6", category: "reflexion", icon: "message-square" },
-            { id: 5, title: "Prävention", stage: "5-6", category: "reflexion", icon: "shield-alert" },
-            { id: 6, title: "Suchmaschinen", stage: "5-6", category: "reflexion", icon: "search" },
-            { id: 19, title: "Sichere Passwörter", stage: "5-6", category: "reflexion", icon: "key" },
-            { id: 8, title: "Digitale Kunst & Design", stage: "7-8", category: "skills", icon: "palette" },
-            { id: 9, title: "Tabellenkalkulation", stage: "7-8", category: "skills", icon: "table" },
-            { id: 21, title: "Audio & Podcasts", stage: "9-10", category: "skills", icon: "mic" },
-            { id: 10, title: "Digitale Quellenarbeit", stage: "7-8", category: "reflexion", icon: "search-check" },
-            { id: 12, title: "Digitale Selbstbestimmung", stage: "7-8", category: "reflexion", icon: "shield-check" },
-            { id: 13, title: "KI-Produktivität", stage: "9-10", category: "skills", icon: "cpu" },
-            { id: 14, title: "Digitale Bewerbung", stage: "9-10", category: "skills", icon: "briefcase" },
-            { id: 15, title: "Projektmanagement", stage: "9-10", category: "skills", icon: "kanban" },
-            { id: 23, title: "Webdesign Basics", stage: "9-10", category: "skills", icon: "globe" },
-            { id: 16, title: "KI-Ethik", stage: "9-10", category: "reflexion", icon: "scale" },
-            { id: 17, title: "Zivilcourage", stage: "9-10", category: "reflexion", icon: "users" },
-            { id: 18, title: "Digitaler Fußabdruck", stage: "9-10", category: "reflexion", icon: "footprint" },
-            { id: 24, title: "Datenökonomie", stage: "9-10", category: "reflexion", icon: "database" }
-        ];
-
+        // --- HILFS-KOMPONENTE FÜR ICONS ---
         const Icon = ({ name, size = 20, className = "" }) => {
             const [svg, setSvg] = useState("");
             useEffect(() => {
@@ -79,450 +67,909 @@
             return <span className={`inline-flex items-center justify-center ${className}`} dangerouslySetInnerHTML={{ __html: svg }} />;
         };
 
-        const StudentPreview = ({ student, onClose, onToggleModule, isUpdating }) => {
-            const [activeStage, setActiveStage] = useState("5-6");
-            const totalCompleted = student.completedTasks.length;
-            const progressPercent = Math.round((totalCompleted / ALL_MODULES.length) * 100);
+        // --- MODULE BASIS-DATEN ---
+        // ÄNDERUNG: Module 1, 2, 3 wurden zu einem Modul zusammengefasst.
+        const ALL_MODULES = [
+            { id: 1, title: "Word-Führerschein und Dateimanagement", stage: "5-6", category: "skills", icon: "file-text" },
+            { id: 7, title: "Umgang mit PowerPoint", stage: "5-6", category: "skills", icon: "presentation" },
+            { id: 4, title: "Digitale Verantwortung", stage: "5-6", category: "reflexion", icon: "heart-handshake" },
+            { id: 6, title: "Suchmaschinen", stage: "5-6", category: "reflexion", icon: "search" },
+            { id: 19, title: "Sichere Passwörter", stage: "5-6", category: "reflexion", icon: "key" },
+            { id: 8, title: "Digitale Kunst & Design", stage: "7-8", category: "skills", icon: "palette" }, 
+            { id: 9, title: "Tabellenkalkulation", stage: "7-8", category: "skills", icon: "table" },
+            { id: 21, title: "Audio & Podcasts", stage: "9-10", category: "skills", icon: "mic" },
+            { id: 10, title: "Digitale Quellenarbeit", stage: "7-8", category: "reflexion", icon: "search-check" }, 
+            { id: 12, title: "Digitale Selbstbestimmung", stage: "7-8", category: "reflexion", icon: "shield-check" },
+            { id: 13, title: "KI-Produktivität", stage: "9-10", category: "skills", icon: "cpu" }, 
+            { id: 14, title: "Digitale Bewerbung", stage: "9-10", category: "skills", icon: "briefcase" }, 
+            { id: 15, title: "Projektmanagement", stage: "9-10", category: "skills", icon: "kanban" },
+            { id: 23, title: "Webdesign Basics", stage: "9-10", category: "skills", icon: "globe" },
+            { id: 16, title: "KI-Ethik", stage: "9-10", category: "reflexion", icon: "scale" }, 
+            { id: 17, title: "Zivilcourage", stage: "9-10", category: "reflexion", icon: "users" }, 
+            { id: 18, title: "Digitaler Fußabdruck", stage: "9-10", category: "reflexion", icon: "footprint" },
+            { id: 24, title: "Datenökonomie", stage: "9-10", category: "reflexion", icon: "database" }
+        ];
+
+        // --- ZENTRALE DATENBANK FÜR INHALTE & MISSIONEN ---
+        const MODULE_CONTENT_DATA = {
+
+            // ================== KLASSE 5-6 ==================
+
+            // NEUES ZUSAMMENGEFASSTES MODUL: Word-Führerschein und Dateimanagement
+            // (vormals: Hardware-Führerschein [1], Dateimanagement [2], Umgang mit Word [3])
+            1: {
+                sections: [
+                    {
+                        title: "1. Hardware & Bedienung",
+                        intro: "Bevor wir richtig loslegen, müssen wir unser Werkzeug beherrschen. Ein Computer macht immer genau das, was du ihm sagst – du musst nur wissen wie!",
+                        blocks: [
+                            {
+                                type: 'standard',
+                                title: 'Maus & Tastatur',
+                                text: 'Der **Linksklick** wählt Dinge aus oder öffnet Programme. Der **Rechtsklick** öffnet ein verstecktes Kontextmenü mit weiteren Optionen (z.B. Kopieren, Umbenennen, Löschen). Halte die **Shift-Taste** gedrückt, um einzelne Buchstaben groß zu schreiben. Die **Caps-Lock-Taste** macht dauerhaft alles groß – drücke sie sofort wieder, wenn du sie aus Versehen erwischt hast!',
+                                image: ''
+                            },
+                            {
+                                type: 'warning',
+                                title: 'Kabel und Anschlüsse richtig behandeln',
+                                text: 'Ziehe Stecker (USB, Kopfhörer, Strom) immer am dicken Plastikkopf heraus – niemals am weichen Kabel. Sonst brechen die feinen Drähte im Inneren und das Gerät ist dauerhaft kaputt.'
+                            },
+                            {
+                                type: 'info',
+                                title: 'Ergonomie und Sicherheit am Arbeitsplatz',
+                                text: 'Stelle deinen Stuhl so ein, dass deine Augen ungefähr auf Höhe des oberen Bildschirmrands sind. Essen und Trinken gehören nicht direkt neben die Tastatur! Wenn du deinen Platz verlässt, sperre den Bildschirm mit der Tastenkombination `Windows + L`.'
+                            }
+                        ]
+                    },
+                    {
+                        title: "2. Dateimanagement",
+                        intro: "Dein Computer ist wie ein riesiges Zimmer – ohne Ordnung findest du nie etwas wieder. Hier sind die wichtigsten Profi-Regeln für perfekte Ordnung.",
+                        blocks: [
+                            {
+                                type: 'info',
+                                title: 'Deine Kommandozentrale: Der Windows Explorer',
+                                text: 'Der **Windows Explorer** zeigt dir alle Ordner und Dateien auf deinem Computer wie die Äste eines Baumes. Öffne ihn blitzschnell mit `Windows + E`. Auf der linken Seite siehst du die großen Hauptordner, rechts deren Inhalt.',
+                                image: ''
+                            },
+                            {
+                                type: 'tip',
+                                title: 'Professionelle Dateinamen – die 3 goldenen Regeln',
+                                text: 'Nenne Dateien niemals `Unbenannt` oder `asdf`. **1. Sei genau:** Schreibe Fach und Thema hinein (z.B. `Deutsch_Referat.docx`). **2. Das Datum gehört an den Anfang** – und zwar umgekehrt: `2026-05-12_...`. So sortiert der Computer alle Dateien automatisch in der richtigen Reihenfolge. **3. Keine Sonderzeichen** wie `? / \\ * : < > |` im Dateinamen.'
+                            },
+                            {
+                                type: 'standard',
+                                title: 'Kopieren, Ausschneiden und Einfügen',
+                                text: 'Nutze lieber Tastaturkürzel als Drag & Drop, um ungewollte Kopien zu vermeiden: **`Strg + C`** kopiert eine Datei, **`Strg + X`** schneidet sie aus (= verschiebt sie) und **`Strg + V`** fügt sie am Zielort ein.',
+                                image: ''
+                            },
+                            {
+                                type: 'warning',
+                                title: 'Der Papierkorb bringt sich nicht selbst raus',
+                                text: 'Wenn du die `Entf`-Taste drückst, landet die Datei nur im Papierkorb – der Speicherplatz ist noch belegt. Erst wenn du mit Rechtsklick auf den Papierkorb **„Papierkorb leeren"** wählst, wird der Platz wirklich frei.'
+                            }
+                        ]
+                    },
+                    {
+                        title: "3. Arbeiten mit Word",
+                        intro: "Microsoft Word ist dein wichtigstes Werkzeug für Hausaufgaben, Referate und alle längeren Texte. Diese Grundlagen musst du sitzen!",
+                        blocks: [
+                            {
+                                type: 'warning',
+                                title: 'Speichern und Retten',
+                                text: 'Drücke während des Schreibens regelmäßig `Strg + S` (Speichern), damit nichts verloren geht. Wenn du aus Versehen Text gelöscht hast: Keine Panik! Mit `Strg + Z` machst du den letzten Schritt rückgängig – das funktioniert mehrfach hintereinander.',
+                                image: ''
+                            },
+                            {
+                                type: 'tip',
+                                title: 'Formatvorlagen richtig nutzen',
+                                text: 'Mache eine Überschrift nicht einfach nur groß und fett. Markiere das Wort und wähle oben in der Leiste die **Formatvorlage „Überschrift 1"**. Nur so weiß Word, dass es sich wirklich um eine Überschrift handelt – das ist wichtig für automatisch erstellte Inhaltsverzeichnisse!'
+                            },
+                            {
+                                type: 'info',
+                                title: 'Lesbarkeit und Schrift',
+                                text: 'Wähle eine ruhige, gut lesbare Schrift (z.B. **Arial** oder **Calibri**) in der Größe 11 oder 12. Nutze keine verschnörkelten Schriften für längere Texte! Drücke nach einem abgeschlossenen Gedanken die Enter-Taste, um einen neuen Absatz zu beginnen. Das Auge des Lesers braucht Pausen.'
+                            },
+                            {
+                                type: 'standard',
+                                title: 'Bilder einfügen ohne Chaos',
+                                text: 'Oft zerreißt ein eingefügtes Bild den gesamten Text. Klicke das Bild an, wähle die kleinen **Layoutoptionen** daneben und stelle **„Quadrat"** ein. Jetzt fließt dein Text wunderschön um das Bild herum.',
+                                image: ''
+                            },
+                            {
+                                type: 'success',
+                                title: 'Fertige Dokumente immer als PDF speichern',
+                                text: 'Speichere abgegebene Hausaufgaben immer als **PDF** ab (Datei → Speichern unter → PDF). Ein PDF ist wie ein digitales Foto deines Textes – so verschiebt sich beim Öffnen auf einem anderen Computer absolut nichts mehr.'
+                            }
+                        ]
+                    }
+                ],
+                missions: [
+                    "Mache einen Rechtsklick auf den leeren Desktop und erstelle darüber einen neuen Ordner namens 'Test'.",
+                    "Sperre deinen Bildschirm mit der Tastenkombination Windows + L und entsperre ihn anschließend wieder.",
+                    "Öffne den Windows Explorer mit Win + E und erstelle eine Ordnerstruktur: einen Hauptordner 'Schule' mit je einem Unterordner für drei deiner Fächer.",
+                    "Suche eine vorhandene Datei auf dem Computer und benenne sie nach den Profi-Regeln um: Datum (umgekehrt) + Fach + Thema.",
+                    "Öffne Word, tippe einen kurzen Text über dein Lieblingstier und speichere ihn regelmäßig mit Strg + S.",
+                    "Formatiere eine Überschrift in deinem Dokument mit der Formatvorlage 'Überschrift 1'.",
+                    "Speichere dein fertiges Word-Dokument als PDF-Datei ab und vergleiche beide Versionen miteinander."
+                ]
+            },
+
+            7: {
+                sections: [
+                    { title: "1. Technische Bedienung", intro: "Egal ob PowerPoint oder Keynote – Präsentationen zu bauen macht Spaß, wenn man die Kniffe kennt.", blocks: [
+                        { type: 'standard', title: 'Neue Folien und Bilder', text: 'Klicke auf "Neue Folie" und wähle direkt das passende Layout (z.B. "Titel und Inhalt"). So verrutschen die Textfelder nicht. Bilder fügst du über "Einfügen > Bilder" ein. Verändere die Größe von Bildern **immer nur an den Ecken**, sonst quetschst du das Bild!', image: '' },
+                        { type: 'tip', title: 'Design leicht gemacht', text: 'Du musst kein Künstler sein. Nutze den eingebauten **Designer** (in PowerPoint oft rechts an der Seite zu finden). Er schlägt dir automatisch professionelle und wunderschöne Layouts für deine eingefügten Texte und Bilder vor.' }
+                    ]},
+                    { title: "2. Kriterien für Qualität", intro: "Die schlimmste Präsentation ist die, die komplett mit Text vollgeschrieben ist.", blocks: [
+                        { type: 'warning', title: 'Wenig Text, große Bilder', text: 'Auf Folien gehören nur extrem kurze Stichpunkte, niemals ganze Sätze! Ein starkes, großes Bild ist viel besser als zehn Zeilen Text. Die Folie soll unterstützen, was du sagst, nicht deinen Text ersetzen.' },
+                        { type: 'info', title: 'Du bist der Star!', text: 'Lies niemals einfach den Text von der Folie ab. Das Publikum kann selbst lesen. Nutze kleine Karteikarten für deine Sätze und sprich frei zum Publikum. Die Aufmerksamkeit gehört dir, nicht der Wand hinter dir.', image: '' }
+                    ]}
+                ],
+                missions: ["Erstelle eine Titelfolie mit deinem Namen und dem Thema 'Mein Lieblingstier'.", "Füge eine zweite Folie hinzu und schreibe exakt 3 extrem kurze Stichpunkte auf.", "Füge ein Foto deines Lieblingstiers ein und ziehe es groß.", "Klicke den 'Designer' an und wähle einen coolen Vorschlag für deine Folie.", "Teste den Präsentations-Modus (Vollbild) und wechsle die Folien mit der Tastatur."]
+            },
+            4: {
+                sections: [
+                    { title: "1. Netiquette – Respekt im digitalen Alltag", intro: "Das Internet ist kein rechtsfreier Raum. Auch wenn man sich nicht in die Augen schaut, gelten klare Regeln – und hinter jedem Bildschirm sitzt ein echter Mensch.", blocks: [
+                        { type: 'info', title: 'Die goldene Regel', text: 'Schreibe im Internet niemals etwas, das du der Person nicht auch direkt ins Gesicht sagen würdest. Hinter jedem Profilbild und Chatnamen steckt ein echter Mensch mit echten Gefühlen.' },
+                        { type: 'warning', title: 'BITTE NICHT SCHREIEN!', text: 'Großbuchstaben bedeuten in der Chat-Sprache, dass du brüllst: `ICH BIN SO WÜTEND` wirkt aggressiv, selbst wenn du es gar nicht so meinst. Nutze Großbuchstaben nur für echte Begeisterung – und auch dann sparsam.' },
+                        { type: 'standard', title: 'Ironie und Missverständnisse', text: 'Im Chat kann niemand dein Lachen hören oder dein Augenzwinkern sehen. Witze werden deshalb oft falsch verstanden und wirken plötzlich gemein. Nutze passende Emojis (😄, 😜), um zu zeigen, wie ein Satz gemeint ist – aber übertreibe es nicht.' },
+                        { type: 'success', title: 'Erst denken, dann posten', text: 'Das Internet vergisst nicht. Auch wenn du eine Nachricht „für alle löschst" – jemand könnte bereits einen Screenshot gemacht haben. Wenn du wütend bist: Leg das Gerät weg, atme durch und schreibe erst morgen.' }
+                    ]},
+                    { title: "2. Cybermobbing – erkennen, reagieren, helfen", intro: "Cybermobbing ist mehr als ein blöder Kommentar. Es hört nach der Schule nicht auf, sondern verfolgt das Opfer bis ins eigene Zimmer.", blocks: [
+                        { type: 'warning', title: 'Was ist Cybermobbing?', text: 'Wenn jemand online absichtlich, wiederholt und über längere Zeit fertiggemacht wird – durch Beleidigungen, peinliche Fotos, Lügen oder bewusstes Ausschließen aus Gruppen – ist das Cybermobbing. Es ist kein Spaß, sondern kann echten psychischen Schaden anrichten.' },
+                        { type: 'standard', title: 'Beweise sichern', text: 'Der erste Impuls ist oft, fiese Nachrichten schnell zu löschen. **Falsch!** Mache sofort Screenshots von allem, bevor der Täter es löschen kann. Diese Beweise sind wichtig, wenn du dich Erwachsenen oder der Schule anvertraust.', image: '' },
+                        { type: 'tip', title: 'Nicht zurückbeleidigen', text: 'Lass dich nicht auf das Niveau der Täter herab. Wer zurückbeleidigt, macht die Situation oft schlimmer und macht sich selbst angreifbar. Blockieren ist stärker als Antworten.' },
+                        { type: 'success', title: 'Hilfe holen ist mutig', text: 'Sprich sofort mit deinen Eltern, Lehrerinnen oder dem Schulsozialarbeiter. Wenn du das (noch) nicht möchtest, kannst du dich anonym bei der **Nummer gegen Kummer (116 111)** melden. Wegschauen hilft nur den Tätern – auch als Zuschauer trägst du Verantwortung.' }
+                    ]}
+                ],
+                missions: [
+                    "Schreibe eine freundliche, motivierende Nachricht an eine Mitschülerin oder einen Mitschüler – achte bewusst auf Ton und Formulierung.",
+                    "Schreibe denselben Satz einmal normal und einmal komplett in GROSSBUCHSTABEN: Wie verändert sich die Wirkung?",
+                    "Lies deine letzten drei Nachrichten in einem Klassenchat durch: Waren sie respektvoll? Würdest du sie auch direkt so sagen?",
+                    "Finde heraus, wie man bei WhatsApp, Instagram oder TikTok jemanden blockiert und einen Inhalt meldet.",
+                    "Notiere die Telefonnummer der Nummer gegen Kummer (116 111) in deinen Kontakten."
+                ]
+            },
+            6: {
+                sections: [
+                    { title: "Clever suchen", intro: "Stell dir das Internet wie eine gigantische Bibliothek vor. Eine Suchmaschine sucht nicht 'live', wenn du auf Enter drückst!", blocks: [
+                        { type: 'info', title: 'Die Spinnen und der Index', text: 'Kleine, unsichtbare Programme der Suchmaschinen (Crawler oder Spinnen) krabbeln Tag und Nacht durchs Internet und lesen Webseiten. Sie packen alle Wörter in ein riesiges Inhaltsverzeichnis (den **Index**). Du suchst also nur in diesem Index, deshalb geht es so schnell!', image: '' },
+                        { type: 'tip', title: 'Die perfekten Keywords', text: 'Tippe niemals ganze Sätze in die Suchleiste ein! Suchmaschinen verstehen Schlagwörter (Keywords) viel besser. \n❌ Falsch: *Was fressen Eisbären im Winter?* \n✅ Richtig: `Eisbär Nahrung Winter`' },
+                        { type: 'standard', title: 'Suchoperatoren (Profi-Tricks)', text: 'Mit dem **Minus-Zeichen (-)** schließt du Wörter aus. Beispiel: `Jaguar -Auto` findet nur das Tier. Mit **Anführungszeichen (" ")** suchst du nach exakt dieser Wortfolge, z.B. `"Gymnasium Thomaeum"`.' }
+                    ]},
+                    { title: "Treffer bewerten", intro: "Nicht alles was ganz oben steht, ist auch wahr oder für dich geeignet.", blocks: [
+                        { type: 'warning', title: 'Werbung erkennen', text: 'Der erste Treffer ist nicht immer der beste! Firmen bezahlen viel Geld, um ganz oben zu stehen. Diese gekaufte Treffer haben ein kleines Wort wie **"Anzeige"** oder **"Gesponsert"** neben sich. Überspringe sie lieber.', image: '' },
+                        { type: 'success', title: 'Sichere Alternativen für Kinder', text: 'Google ist ein Riese, aber oft unübersichtlich. Nutze Suchmaschinen, die das Internet filtern und dir nur sichere, leicht verständliche und werbefreie Seiten zeigen: **FragFINN.de**, **Blinde-Kuh.de** oder **Helles-Koepfchen.de**.' }
+                    ]}
+                ],
+                missions: ["Suche auf Blinde-Kuh.de nach Informationen über den Planeten Mars.", "Nutze bei Google den Minus-Trick: Suche nach 'Römer -Auto'.", "Suche bei Google nach dem Wort 'Schuhe' und zähle, wie viele Ergebnisse oben als 'Anzeige' markiert sind.", "Finde durch eine clevere Suche heraus, an welchem genauen Datum die Schule 'Gymnasium Thomaeum' gegründet wurde.", "Erkläre deinem Sitznachbarn in einem Satz, warum der erste Treffer bei Google nicht immer der beste ist."]
+            },
+            19: {
+                sections: [
+                    { title: "Warum Passwörter wichtig sind", intro: "Dein Passwort ist der digitale Haustürschlüssel zu deinem Leben. Wenn er zu simpel ist, können Fremde einfach eintreten.", blocks: [
+                        { type: 'warning', title: 'Was Hacker lieben', text: 'Ein schlechtes Passwort (wie `123456`, `hallo` oder der Name deines Hundes) lässt sich von speziellen Computerprogrammen in weniger als einer Sekunde knacken. Diese Programme probieren einfach Millionen Wörter pro Sekunde aus.', image: '' },
+                        { type: 'info', title: 'Streng geheim!', text: 'Verrate dein Passwort niemals deinen Freunden! Auch nicht deiner besten Freundin. Wenn ihr euch mal streitet, kann das böse enden. Nur du und im Notfall deine Eltern sollten es kennen.' }
+                    ]},
+                    { title: "Das perfekte Passwort", intro: "Ein gutes Passwort ist lang, aber trotzdem leicht zu merken.", blocks: [
+                        { type: 'standard', title: 'Länge schlägt Komplexität', text: 'Ein Passwort sollte mindestens **12 Zeichen** lang sein. Je länger es ist, desto exponentiell länger braucht ein Computer, um es zu erraten.' },
+                        { type: 'tip', title: 'Der Merksatz-Trick', text: 'Denke dir einen völlig verrückten Quatsch-Satz aus, den du dir gut merken kannst. Zum Beispiel: *Ich esse jeden Morgen 3 grüne Äpfel!* Nimm nun nur die Anfangsbuchstaben und die Satzzeichen: `IejM3gÄ!` – und schon hast du ein Passwort, das extrem sicher ist.', image: '' }
+                    ]}
+                ],
+                missions: ["Erfinde einen richtig verrückten, witzigen Merksatz für ein neues Passwort.", "Wandle diesen Merksatz in ein sicheres Passwort um (Anfangsbuchstaben, Zahlen und Sonderzeichen).", "Prüfe gedanklich dein aktuelles Passwort für die Schule: Ist es wirklich länger als 8 Zeichen?", "Überlege dir, warum 'Passwort123' das unsicherste Passwort der Welt ist.", "Finde durch eine Internetsuche heraus, was ein 'Passwort-Manager' ist und wie er helfen kann."]
+            },
+
+            // ================== KLASSE 7-8 ==================
+            8: {
+                sections: [
+                    { title: "1. Bildbearbeitung", intro: "Ein gutes Foto entsteht nicht nur mit der Kamera – oft ist die Nachbearbeitung entscheidend. Hier lernst du die wichtigsten Werkzeuge kennen.", blocks: [
+                        { type: 'standard', title: 'Zuschneiden (Crop)', text: 'Das wichtigste Werkzeug der Bildbearbeitung! Schneide störende Ränder oder ablenkende Hintergrundelemente weg, um den Fokus des Betrachters gezielt auf dein Hauptmotiv zu lenken.', image: '' },
+                        { type: 'info', title: 'Helligkeit, Kontrast und Farbe', text: 'Ein flaues Bild rettest du durch mehr Kontrast. Aber Vorsicht: Zu viel Helligkeit lässt helle Flächen "ausbrennen" – sie werden komplett weiß und verlieren alle Details. Nutze den Regler **Weißabgleich** (Temperatur), um Farbstiche zu korrigieren: Ein zu gelbes Kunstlicht-Foto wird durch einen Zug ins Blaue neutralisiert.' },
+                        { type: 'warning', title: 'Weniger ist mehr', text: 'Ein Instagram-Filter auf 100% wirkt oft künstlich und billig. Reduziere die Deckkraft auf 30–50% für einen professionellen Look. Und: Verändere niemals Körperproportionen von Menschen – das erzeugt gefährliche und unrealistische Schönheitsideale.', image: '' }
+                    ]},
+                    { title: "2. Videobearbeitung", intro: "Ein gutes Video entsteht nicht beim Filmen, sondern beim Schnitt. Wer schneiden kann, kann Geschichten erzählen.", blocks: [
+                        { type: 'standard', title: 'Die Zeitleiste (Timeline)', text: 'Schnitt-Programme wie iMovie oder CapCut arbeiten mit einer Zeitleiste. Du importierst deine Clips und legst sie nacheinander ab. Mit dem **Split-Werkzeug** zerschneidest du Clips, um Pausen oder Versprecher herauszulöschen.', image: '' },
+                        { type: 'tip', title: 'Audio und Musik', text: 'Lege Hintergrundmusik auf eine zweite Audio-Spur unter dein Video. Nutze **Ducking** (Lautstärke senken), damit die Musik leiser wird, sobald jemand spricht. So klingt das Ergebnis professionell und ausgewogen.' },
+                        { type: 'warning', title: 'Exportieren nicht vergessen', text: 'Wenn du fertig bist, musst du das Video exportieren (rendern). Speichere immer als **.MP4** – die Projektdatei des Schnittprogramms kann niemand anderes öffnen!' }
+                    ]},
+                    { title: "3. Kriterien für Qualität", intro: "Was unterscheidet professionelle digitale Medien von schnell hingepfuschten Ergebnissen?", blocks: [
+                        { type: 'success', title: 'Der rote Faden (Storytelling)', text: 'Egal ob Bild oder Video – jede gute Produktion erzählt eine Geschichte. Ein starkes Bild hat ein klares Hauptmotiv. Ein gutes Video hat einen **Hook** (spannender Einstieg), einen informativen Hauptteil und ein klares Ende.' },
+                        { type: 'tip', title: 'Kurz und knackig', text: 'Beim Videoschnitt gilt: Sei gnadenlos. Entferne alles, was die Geschichte nicht voranbringt. Ein 2-minütiges, spannendes Video ist immer besser als ein 10-minütiges, langatmiges.' },
+                        { type: 'info', title: 'Ethik in der Bildbearbeitung', text: 'Digitale Medien können täuschen. Überlege bei jeder Bearbeitung: Optimiere ich ein Bild, oder manipuliere ich es? Das Verfälschen von Nachrichtenbildern oder das Retuschieren von Körpern ist nicht nur unethisch, sondern kann echten Schaden anrichten.' }
+                    ]}
+                ],
+                missions: [
+                    "Mache ein Foto von einem Gegenstand in deiner Nähe und schneide alle störenden Ränder weg.",
+                    "Bearbeite dasselbe Foto: Erhöhe den Kontrast leicht und korrigiere ggf. einen Farbstich mit dem Weißabgleich.",
+                    "Nimm ein kurzes, 15-sekündiges Video auf und schneide mindestens eine Pause oder einen Versprecher heraus.",
+                    "Lege eine kurze, lizenzfreie Hintergrundmusik unter dein Video und senke ihre Lautstärke auf ein angenehmes Niveau.",
+                    "Exportiere dein fertiges Video als .MP4 und vergleiche die Dateigröße mit der ursprünglichen Projektdatei."
+                ]
+            },
+            9: {
+                sections: [
+                    { title: "1. Technische Bedienung", intro: "Excel und Calc wirken auf den ersten Blick wie riesige, unübersichtliche Gitter. Aber sie nehmen dir all die harte Rechenarbeit ab.", blocks: [
+                        { type: 'info', title: 'Das Koordinatensystem', text: 'Jedes Kästchen (Zelle) hat eine eindeutige Adresse, bestehend aus der Spalte (Buchstabe) und der Zeile (Zahl), z.B. **B4**.' },
+                        { type: 'warning', title: 'Formeln richtig starten', text: 'Wenn Excel für dich rechnen soll, MUSS in der Zelle immer zuerst ein **Gleichheitszeichen (=)** stehen. Ohne das `=` denkt Excel, du schreibst einfach nur normalen Text.' },
+                        { type: 'standard', title: 'Die Summen-Funktion', text: 'Um viele Zahlen blitzschnell zusammenzurechnen, tippe `=SUMME(A1:A5)`. Das rechnet alle Werte von Zelle A1 bis A5 zusammen. Ändert sich später eine Zahl, passt sich die Summe magisch automatisch an!' }
+                    ]},
+                    { title: "2. Kriterien für Qualität", intro: "Rohe Zahlenkolonnen sind für den Betrachter extrem langweilig. Du musst sie visualisieren.", blocks: [
+                        { type: 'tip', title: 'Übersichtlichkeit schaffen', text: 'Mache Spalten-Überschriften immer fett und gib ihnen eine leichte Hintergrundfarbe. Nutze die Rahmen-Funktion, um echte Tabellenlinien zu ziehen, sonst sieht es beim Ausdrucken furchtbar aus.' },
+                        { type: 'success', title: 'Diagramme sprechen lassen', text: 'Markiere deine Daten und erstelle ein Kreisdiagramm (für Prozentanteile) oder ein Säulendiagramm (für Vergleiche). WICHTIG: Ein Diagramm ohne aussagekräftigen Titel und beschriftete Achsen ist absolut wertlos!', image: '' }
+                    ]}
+                ],
+                missions: ["Öffne Excel/Calc und trage in Spalte A untereinander deine 3 Lieblingsessen ein.", "Trage in Spalte B fiktive Preise für diese Essen ein.", "Berechne in einer neuen Zelle die Summe der Preise mit der Formel `=SUMME()`.", "Markiere die Essen und die Preise und erstelle ein Säulendiagramm.", "Gib deinem Diagramm einen passenden Titel (z.B. 'Meine Essenskosten')."]
+            },
+            21: {
+                sections: [
+                    { title: "1. Professionelle Aufnahmetechnik", intro: "Gute Audio-Produktionen scheitern fast immer an technischen Grundfehlern. Wer diese kennt und vermeidet, klingt sofort professionell.", blocks: [
+                        { type: 'warning', title: 'Pegel und Übersteuerung', text: 'Der Aufnahmepegel sollte dauerhaft bei ca. **-12 dB** liegen – nicht am oberen Limit. Berührt der Ausschlag die rote Linie (0 dB), übersteuert die Aufnahme und das Signal verzerrt dauerhaft. Das ist im Nachhinein nicht mehr korrigierbar. Nutze in Audacity oder GarageBand immer die Pegelanzeige als Kontrolle.', image: '' },
+                        { type: 'standard', title: 'Akustik und Raumklang', text: 'Professionelle Studios sind mit schallschluckenden Materialien ausgekleidet. Zu Hause gilt: Aufnahmen in kleinen, vollgestellten Räumen mit Teppich und Vorhängen klingen deutlich trockener und wärmer als in leeren Zimmern. Ein einfacher Trick: Nimm unter einer dicken Bettdecke auf – das schluckt nahezu jeglichen Hall.' },
+                        { type: 'info', title: 'Mehrspurige Produktion', text: 'Professionelle Podcasts bestehen aus mindestens drei Spuren: **Stimme**, **Hintergrundmusik** und ggf. **Soundeffekte**. Arbeite in einem Programm wie Audacity oder GarageBand mit getrennten Spuren, damit du Lautstärken unabhängig voneinander regeln kannst. Die Musik sollte während des Sprechens auf ca. **-20 dB** abgesenkt sein (Ducking).' },
+                        { type: 'tip', title: 'Exportformate und Qualität', text: 'Für die Veröffentlichung gilt: **MP3 mit 192 kbps** ist der Standard für Podcasts – gute Qualität bei überschaubarer Dateigröße. Für die Archivierung oder Weiterbearbeitung speicherst du immer als unkomprimiertes **WAV**. Niemals eine bereits komprimierte MP3 erneut als MP3 exportieren – das verschlechtert die Qualität jedes Mal.' }
+                    ]},
+                    { title: "2. Dramaturgie und Inhalt", intro: "Technik allein macht noch keinen guten Podcast. Entscheidend ist, wie du deinen Inhalt strukturierst und präsentierst.", blocks: [
+                        { type: 'standard', title: 'Das 3-Akt-Modell für Podcasts', text: 'Jede gute Podcast-Episode folgt einer klaren Dramaturgie: **Akt 1 (Hook):** Die ersten 60 Sekunden entscheiden, ob jemand weiterhört. Stelle sofort die zentrale Frage oder These, die du in der Folge beantwortest. **Akt 2 (Hauptteil):** Belege, Argumente, Perspektiven – strukturiert und mit Übergängen. **Akt 3 (Fazit):** Fasse die Kernaussage in einem Satz zusammen und gib einen Ausblick auf die nächste Folge.' },
+                        { type: 'tip', title: 'Scripten vs. freies Sprechen', text: 'Ein vollständig ausgeschriebenes Skript klingt oft abgelesen und leblos. Profis arbeiten mit einem **Stichwort-Skript**: Die Struktur und alle wichtigen Fakten stehen fest, die genaue Formulierung entsteht im Moment des Sprechens. Das klingt natürlicher und spontaner.' },
+                        { type: 'info', title: 'Podcast als journalistisches Medium', text: 'Podcasts sind heute ein ernstzunehmendes journalistisches Format. Wenn du Fakten nennst, Personen zitierst oder Statistiken verwendest, gelten dieselben journalistischen Sorgfaltspflichten wie in einem Zeitungsartikel: Quellen prüfen, Aussagen belegen, unterschiedliche Perspektiven abbilden.' },
+                        { type: 'warning', title: 'Urheberrecht bei Musik und Tönen', text: 'Musik aus Spotify oder YouTube ist urheberrechtlich geschützt und darf nicht einfach als Podcast-Untermalung genutzt werden – auch nicht für "nicht-kommerzielle" Projekte. Nutze ausschließlich lizenzfreie Musik von Plattformen wie **ccmixter.org**, **freemusicarchive.org** oder die **YouTube Audio Library**.' }
+                    ]}
+                ],
+                missions: [
+                    "Recherchiere drei Podcasts zu einem Thema, das dich wirklich interessiert, und analysiere deren Struktur: Wie lang ist der Hook? Gibt es ein festes Intro?",
+                    "Erstelle ein Stichwort-Skript für eine 3-minütige Podcast-Episode zu einem selbst gewählten Thema.",
+                    "Nimm die Episode auf und überprüfe den Pegel: Liegt er konstant bei ca. -12 dB?",
+                    "Bearbeite die Aufnahme in Audacity: Entferne störende Pausen und Versprecher und lege eine lizenzfreie Hintergrundmusik auf eine zweite Spur.",
+                    "Exportiere das fertige Ergebnis als MP3 (192 kbps) und lass eine andere Person zuhören – hol dir gezieltes Feedback zu Tempo, Verständlichkeit und Struktur."
+                ]
+            },
+            10: {
+                sections: [
+                    { title: "1. Quellen finden und bewerten", intro: "Im Geschichtsunterricht lernst du, Quellen kritisch zu analysieren. Dasselbe Handwerkszeug brauchst du im digitalen Alltag – denn im Internet kann jeder alles behaupten.", blocks: [
+                        { type: 'info', title: 'Was ist überhaupt eine Quelle?', text: 'Eine Quelle ist alles, woraus du Informationen beziehst: ein Wikipedia-Artikel, ein YouTube-Video, ein Zeitungsartikel, ein Foto oder ein historisches Dokument. Entscheidend ist immer die Frage: **Wer hat das erstellt, wann, und mit welchem Ziel?**' },
+                        { type: 'warning', title: 'Fake News erkennen', text: 'Absichtlich erfundene oder verfälschte Nachrichten (Fake News) sollen Leser emotional aufregen, Klicks generieren oder politische Gegner schädigen. Ein sicheres Warnsignal: reißerische Überschriften mit Ausrufezeichen, extreme Emotionalisierung oder fehlende Quellenangaben. Seriöse Medien wie die Tagesschau verzichten auf solche Mittel.', image: '' },
+                        { type: 'standard', title: 'Die 2-Quellen-Regel', text: 'Lies eine schockierende Behauptung? Suche dasselbe Thema bei Google News. Berichten auch andere, unabhängige und seriöse Medien darüber? Wenn nicht, ist es mit hoher Wahrscheinlichkeit falsch oder stark übertrieben.' },
+                        { type: 'tip', title: 'Bilder-Rückwärtssuche', text: 'Oft werden echte Fotos aus einem anderen Kontext herausgerissen und neu interpretiert. Lade ein verdächtiges Bild bei der **Google Bilderrückwärtssuche** hoch – Google zeigt dir, wann und wo es zum ersten Mal auftauchte.' }
+                    ]},
+                    { title: "2. Quellen legal nutzen und zitieren", intro: "Wer Quellen findet, muss wissen, was er damit tun darf – und was nicht. Das Urheberrecht schützt die Arbeit anderer Menschen.", blocks: [
+                        { type: 'warning', title: 'Das Internet ist kein Selbstbedienungsladen', text: 'Bilder, Texte, Videos und Musik aus dem Internet gehören rechtlich dem, der sie erstellt hat (dem Urheber). Ein Bild aus der Google-Bildersuche einfach in eine Präsentation zu kopieren ist eine Urheberrechtsverletzung – auch in der Schule.' },
+                        { type: 'info', title: 'Zitieren ist Pflicht', text: 'Du darfst kurze Abschnitte aus fremden Texten nutzen, aber du musst sie zwingend in **„Anführungszeichen"** setzen und direkt danach angeben, von wem der Text stammt und wo du ihn gefunden hast. Das gilt für Wikipedia genauso wie für gedruckte Bücher.' },
+                        { type: 'success', title: 'Freie Quellen nutzen', text: 'Viele Inhalte sind explizit zur freien Nutzung freigegeben. Für Bilder: **Pixabay.com**, **Unsplash.com** oder **Pexels.com**. Für Texte und historische Dokumente: **Wikimedia Commons** oder das **Deutsche Digitale Archiv**. Für Musik: **ccmixter.org** oder die **YouTube Audio Library**.' },
+                        { type: 'tip', title: 'Creative Commons (CC)', text: 'Viele Urheber stellen ihre Werke unter Creative-Commons-Lizenzen. Die häufigste lautet **CC BY** – du darfst das Werk frei nutzen, musst aber den Namen des Urhebers nennen. Achte beim Download immer auf das Lizenzkürzel.' }
+                    ]},
+                    { title: "3. Sauber dokumentieren", intro: "Eine korrekte Quellenangabe ist keine Formalie – sie zeigt, dass du sorgfältig und ehrlich gearbeitet hast.", blocks: [
+                        { type: 'standard', title: 'So sieht eine vollständige Quellenangabe aus', text: 'Eine Quellenangabe enthält immer: **Autor oder Urheber** (falls bekannt) – **Titel des Werkes** – **Erscheinungsjahr** – **URL** (bei Online-Quellen) – **Datum des Abrufs**. Beispiel: *Bundeszentrale für politische Bildung: „Was sind Fake News?", 2022, www.bpb.de, abgerufen am 12.05.2026.*' },
+                        { type: 'info', title: 'Das Impressum als Qualitätsmerkmal', text: 'Seriöse Webseiten haben ein **Impressum** – eine gesetzlich vorgeschriebene Seite, die angibt, wer rechtlich für den Inhalt verantwortlich ist. Fehlt das Impressum, ist das ein starkes Warnsignal für eine unseriöse oder anonyme Quelle.' }
+                    ]}
+                ],
+                missions: [
+                    "Suche eine aktuelle Schlagzeile auf tagesschau.de und prüfe mit der 2-Quellen-Regel, ob andere seriöse Medien dasselbe berichten.",
+                    "Finde ein Bild auf Pixabay.com zu einem Thema aus dem Geschichtsunterricht und notiere die genaue Lizenzangabe.",
+                    "Kopiere einen Satz aus einem Wikipedia-Artikel in ein Textdokument und schreibe darunter eine vollständige Quellenangabe.",
+                    "Öffne eine beliebige Nachrichtenwebseite und suche das Impressum: Wer ist dort als Verantwortlicher eingetragen?",
+                    "Lade ein Bild aus den Nachrichten bei der Google Bilderrückwärtssuche hoch und schaue, in welchem ursprünglichen Kontext es aufgetaucht ist."
+                ]
+            },
+            12: {
+                sections: [
+                    { title: "1. Der Preis des 'Kostenlosen'", intro: "Instagram, TikTok und YouTube sind keine sozialen Dienste – sie sind Werbeunternehmen. Wer das versteht, kann bewusster damit umgehen.", blocks: [
+                        { type: 'warning', title: 'Du bist das Produkt', text: 'Wenn ein digitales Angebot kostenlos ist, bezahlst du mit deinen Daten. Soziale Netzwerke sammeln ununterbrochen, wie lange du was ansiehst, was du likest und wer deine Freunde sind – um daraus ein wertvolles Werbeprofil zu erstellen.' },
+                        { type: 'info', title: 'Tracker und Cookies', text: 'Unsichtbare Programme (Tracker und Cookies) verfolgen dich quer durch das gesamte Internet. Deshalb siehst du auf Instagram plötzlich Werbung für Schuhe, die du dir gestern auf einer ganz anderen Webseite angeschaut hast.' },
+                        { type: 'tip', title: 'Cookie-Banner richtig nutzen', text: 'Klicke auf neuen Webseiten nicht blindlings auf **„Alle akzeptieren"**. Nimm dir die drei Sekunden, um auf „Nur essenzielle" oder „Ablehnen" zu klicken – das reduziert, wie viele Daten über dich gesammelt werden.' }
+                    ]},
+                    { title: "2. Der Algorithmus und du", intro: "Social-Media-Apps haben nur ein Ziel: deine Zeit. Dafür nutzen sie psychologische Tricks, die du kennen solltest.", blocks: [
+                        { type: 'warning', title: 'Endless Scroll und Zeitverlust', text: 'Früher hatten Webseiten Seitenumbrüche. Heute gibt es in Apps kein Ende mehr – wenn du nach unten scrollst, lädt sofort neuer Inhalt nach. Das trickst unser Gehirn aus und lässt uns das Zeitgefühl verlieren.', image: '' },
+                        { type: 'standard', title: 'Die Filterblase', text: 'Algorithmen zeigen dir bevorzugt Inhalte, bei denen du länger verweilst. Das klingt praktisch, hat aber einen Haken: Du bekommst immer mehr von dem, was du ohnehin schon denkst – und verlierst den Blick für andere Perspektiven. Dieses Phänomen nennt man **Filterblase** oder **Echokammer**.' },
+                        { type: 'tip', title: 'Digital Wellbeing', text: 'Nimm die Kontrolle zurück! Nutze die **„Bildschirmzeit"**-Funktion deines Handys, um zu sehen, wie viel Zeit du wirklich in welcher App verbringst – und setze dir dort harte, feste App-Limits.' }
+                    ]},
+                    { title: "3. Deine Privatsphäre schützen", intro: "Du kannst nicht alles verhindern – aber du kannst es Firmen und Fremden deutlich schwerer machen.", blocks: [
+                        { type: 'success', title: 'Profile auf Privat stellen', text: 'Stelle deine Social-Media-Accounts so ein, dass nur deine bestätigten Freunde deine Bilder und Videos sehen können. Ein öffentliches Profil ist wie ein offenes Tagebuch auf dem Marktplatz.' },
+                        { type: 'info', title: 'App-Berechtigungen prüfen', text: 'Viele Apps verlangen Zugriff auf Standort, Mikrofon oder Kamera, obwohl sie das für ihre Kernfunktion gar nicht brauchen. Prüfe in den Einstellungen deines Smartphones regelmäßig, welche App welche Berechtigung hat – und entziehe alles, was nicht nötig ist.' },
+                        { type: 'warning', title: 'Browserdaten löschen', text: 'Dein Browser speichert deinen Verlauf, Cookies und Anmeldedaten. Lösche diese Daten regelmäßig – besonders auf gemeinsam genutzten Geräten. Die Funktion findest du in den Einstellungen jedes Browsers unter **„Browserdaten löschen"**.' }
+                    ]}
+                ],
+                missions: [
+                    "Öffne eine große Nachrichtenwebseite und lehne im Cookie-Banner bewusst alles ab, was nicht zwingend nötig ist.",
+                    "Prüfe in den Einstellungen deines Smartphones, welche Apps aktuell Zugriff auf deinen Standort haben – und entziehe mindestens einer App diese Berechtigung.",
+                    "Finde die Bildschirmzeit-Statistik auf deinem Handy: Welche App hast du diese Woche am längsten genutzt?",
+                    "Setze dir für deine meistgenutzte App ein tägliches Zeitlimit von 45 Minuten.",
+                    "Überprüfe dein Instagram- oder TikTok-Profil: Steht es auf 'Öffentlich' oder 'Privat'? Passe es ggf. an."
+                ]
+            },
+            // ================== KLASSE 9-10 ==================
+            13: {
+                sections: [
+                    { title: "1. Technische Bedienung", intro: "Die Kommunikation mit einer KI (wie ChatGPT) nennt man Prompting. Es ist wie Programmieren mit normaler Sprache.", blocks: [
+                        { type: 'standard', title: 'Die Profi-Formel (Rolle + Aufgabe + Format)', text: 'Ein "Prompt" ist dein Befehl. Sag der KI extrem präzise, was sie tun soll. Beispiel: "Handle als Historiker (Rolle). Fasse den 2. Weltkrieg (Aufgabe) in 3 kurzen Stichpunkten zusammen (Format)."', image: '' },
+                        { type: 'tip', title: 'Iteratives Arbeiten', text: 'Gib dich nie mit der ersten Antwort der KI zufrieden. Das ist erst der Rohentwurf! Gib der KI kritisches Feedback: "Das war zu kompliziert formuliert, schreibe es einfacher." oder "Kürze den zweiten Absatz." Mach sie zu deinem Assistenten.' }
+                    ]},
+                    { title: "2. Kriterien für Qualität", intro: "Künstliche Intelligenz ist mächtig, aber dumm. Sie weiß nicht, was die Wahrheit ist.", blocks: [
+                        { type: 'warning', title: 'Halluzinationen (KIs lügen!)', text: 'KIs schlagen Fakten nicht nach, sie raten mathematisch das wahrscheinlichste nächste Wort. Wenn sie etwas nicht wissen, erfinden sie oft extrem überzeugend klingende Fakten ("Halluzinationen"). Überprüfe wichtige Fakten IMMER mit einer echten Suchmaschine!' },
+                        { type: 'info', title: 'Der eigene Stil', text: 'KI-Texte klingen oft schrecklich langweilig, seelenlos oder benutzen immer exakt dieselben Phrasen ("Zusammenfassend lässt sich sagen..."). Ein Lehrer erkennt das sofort. Formuliere KI-Texte immer in deinen völlig eigenen Stil um.' },
+                        { type: 'success', title: 'Transparenz ist Pflicht', text: 'Gib in der Schule bei Hausarbeiten oder Referaten immer mutig und offen an, wenn (und für welche Teilschritte) du eine KI zur Hilfe genutzt hast.' }
+                    ]}
+                ],
+                missions: ["Schreibe einen sehr kurzen, schlechten Prompt (z.B. 'Erkläre die Photosynthese').", "Schreibe den Prompt nun nach der Profi-Formel um: 'Handle als Bio-Lehrer. Erkläre die Photosynthese für einen 10-Jährigen in 3 sehr kurzen Sätzen'.", "Vergleiche die Ergebnisse (im Kopf oder real): Warum ist der zweite Prompt massiv besser?", "Bitte eine KI, dir ein echtes Sachbuch als Quelle für ein spezielles Fachthema zu nennen.", "Prüfe per normaler Google-Suche, ob dieses von der KI genannte Buch in der Realität wirklich existiert oder frei erfunden wurde."]
+            },
+            14: {
+                sections: [
+                    { title: "1. Technische Bedienung", intro: "Die digitale Bewerbungsmappe ist dein Aushängeschild für Praktika und Jobs.", blocks: [
+                        { type: 'standard', title: 'PDFs zusammenfügen (Merge)', text: 'Bei Online-Bewerbungen darfst du nicht 5 einzelne Dateien schicken. Du musst Anschreiben, Lebenslauf und alle Zeugnisse in *eine einzige* saubere PDF-Datei mergen. Nutze dafür kostenlose Tools wie PDF24 oder Adobe Acrobat Online.', image: '' },
+                        { type: 'warning', title: 'Dateigröße beachten', text: 'Eine Bewerbungs-PDF sollte niemals größer als 5 MB sein. Firmen-Server blockieren riesige Dateien oft. Komprimiere große eingescannte Bilder vorher oder nutze die Funktion "PDF komprimieren".' },
+                        { type: 'info', title: 'E-Mail-Etikette', text: 'Die Betreffzeile deiner E-Mail muss kurz und absolut eindeutig sein (z.B. "Bewerbung als Praktikant - Max Mustermann"). Im Textfeld schreibst du nur eine kurze, höfliche Einleitung und verweist auf die PDF-Datei im Anhang.' }
+                    ]},
+                    { title: "2. Kriterien für Qualität", intro: "Personalchefs sortieren gnadenlos aus. Der erste Eindruck entscheidet in Sekunden.", blocks: [
+                        { type: 'warning', title: 'Die seriöse E-Mail-Adresse', text: 'Nutze für Bewerbungen NIEMALS E-Mail-Adressen wie `unicorn-fan2010@web.de` oder `playa99@gmx.de`. Erstelle dir eine seriöse, kostenlose Adresse nach dem klaren Muster `vorname.nachname@domain.de`.' },
+                        { type: 'tip', title: 'Professionelle Netzwerke', text: 'Falls du berufliche Netzwerke (wie LinkedIn) nutzt: Ein sauberes Profil mit einem professionellen Foto wirkt bei Firmen Wunder. Urlaubs- oder Partybilder sind hier ein absolutes No-Go.' },
+                        { type: 'success', title: 'Absolute Fehlerfreiheit', text: 'Lass dein Bewerbungsanschreiben IMMER von zwei anderen erwachsenen Personen auf Rechtschreibung und Grammatik gegenlesen. Ein grober Tippfehler im ersten Satz kann das sofortige Aus bedeuten.' }
+                    ]}
+                ],
+                missions: ["Erstelle testweise eine PDF-Datei aus einem völlig leeren Word-Dokument.", "Recherchiere online ein kostenloses, sicheres Tool zum 'PDF zusammenfügen' (Merge PDF).", "Formuliere einen seriösen, perfekten E-Mail-Betreff für eine fiktive Bewerbung als Praktikant im örtlichen Krankenhaus.", "Prüfe deine aktuell genutzte, private E-Mail-Adresse: Wäre sie seriös genug für eine echte Bewerbung?", "Googel dich selbst: Gibt es öffentliche Bilder oder Texte von dir, die ein zukünftiger Chef besser nicht sehen sollte?"]
+            },
+            15: {
+                sections: [
+                    { title: "1. Technische Bedienung", intro: "Gutes Teamwork scheitert meistens an der technischen Organisation und an Kommunikationsproblemen.", blocks: [
+                        { type: 'standard', title: 'Cloud-Dokumente nutzen', text: 'Schickt euch bei Gruppenarbeiten niemals Word-Dateien per Mail hin und her! Nutzt Office 365 (oder Google Docs), um gemeinsam und gleichzeitig im selben Cloud-Dokument zu schreiben.' },
+                        { type: 'info', title: 'Kanban-Boards (Agil arbeiten)', text: 'Nutzt Tools wie Trello oder Microsoft Planner für die Aufgabenverteilung. Organisiert alle Aufgaben des Projekts in drei simplen Spalten: **Zu tun**, **In Arbeit**, **Erledigt**. So sieht jeder im Team sofort, was gerade Phase ist.', image: '' },
+                        { type: 'warning', title: 'Versionierung von Dateien', text: 'Wenn ihr offline Dateien speichern müsst, gebt ihnen klare Versionsnummern, z.B. `Referat_v1`, `Referat_v2`. Nennt Dateien niemals `Referat_fertig_wirklich_final`.' }
+                    ]},
+                    { title: "2. Kriterien für Qualität", intro: "Warum Gruppen-Projekte in der Schule (und im Beruf) so oft scheitern.", blocks: [
+                        { type: 'warning', title: 'Klare Verantwortlichkeiten', text: 'Jede noch so kleine Aufgabe braucht genau EINE Person im Team, die dafür hauptverantwortlich ist. Wenn jemand sagt: "Das machen wir alle zusammen", bedeutet das meistens, dass es am Ende niemand macht.' },
+                        { type: 'tip', title: 'Harte Deadlines setzen', text: 'Aufgaben ohne ein konkretes Enddatum werden fast immer auf den allerletzten Tag vor der Abgabe verschoben. Setzt euch als Team Zwischenziele (Meilensteine).' },
+                        { type: 'success', title: 'Klare Kommunikation', text: 'Lieber einmal zu viel im Gruppenchat nach dem aktuellen Zwischenstand fragen, als am Ende komplett ohne Ergebnisse dazustehen. Probleme müssen sofort offen angesprochen werden.' }
+                    ]}
+                ],
+                missions: ["Lege auf einem leeren Blatt Papier ein kleines Kanban-Board an (Zeichne 3 Spalten: To Do, Doing, Done).", "Schreibe 3 Aufgaben für dein nächstes, fiktives Schulprojekt auf Post-its und klebe sie unter die Spalte 'To Do'.", "Verschiebe ein Post-it physisch in die 'Doing'-Spalte, um den Workflow visuell zu simulieren.", "Finde in Word/Office heraus, wo sich der 'Teilen'-Button befindet, um ein Dokument live für einen Mitschüler freizugeben.", "Diskutiert in der Gruppe: Warum ist ein Dateiname wie 'Referat_final_fertig_v3' in einem Projektteam absolut furchtbar?"]
+            },
+            23: {
+                sections: [
+                    { title: "1. Technische Bedienung", intro: "Wie das moderne World Wide Web technisch funktioniert und aufgebaut ist.", blocks: [
+                        { type: 'info', title: 'Die drei Sprachen des Webs', text: '**HTML** ist das nackte Gerüst (Texte, Bilder) einer Webseite, **CSS** ist die Farbe und das optische Design, **JavaScript** sorgt für Interaktion und Bewegung.' },
+                        { type: 'standard', title: 'Baukästen (CMS)', text: 'Heute muss man kein Coder mehr sein. Webseiten baut man sehr oft mit Content Management Systemen (CMS) wie WordPress, WIX oder Jimdo per Drag & Drop.' },
+                        { type: 'tip', title: 'Responsive Design', text: 'Eine moderne Webseite muss so programmiert sein, dass sie sich automatisch ("responsiv") perfekt anpasst – egal ob man sie auf einem kleinen Smartphone oder auf einem riesigen Monitor ansieht.' }
+                    ]},
+                    { title: "2. Kriterien für Qualität", intro: "User Experience (UX) – Wie sich eine Webseite für den Nutzer anfühlen muss.", blocks: [
+                        { type: 'warning', title: 'Mobile First!', text: 'Da heutzutage über 80% der Nutzer Webseiten auf dem Handy ansehen, muss das Design zwingend zuerst für kleine Bildschirme entworfen werden. Der Desktop ist zweitrangig geworden.', image: '' },
+                        { type: 'warning', title: 'Ladezeiten sind entscheidend', text: 'Riesige, unkomprimierte Bilder machen eine Seite extrem langsam. Untersuchungen zeigen: Wenn eine Seite am Handy länger als 3 Sekunden lädt, brechen die meisten Nutzer ab und gehen zur Konkurrenz.' },
+                        { type: 'success', title: 'Call to Action (Handlungsaufruf)', text: 'Der Besucher muss in der allerersten Sekunde wissen, worum es auf der Seite geht und wo er klicken soll. Der wichtigste Button (z.B. "Jetzt kaufen" oder "Kontakt") muss farblich extrem herausstechen.' }
+                    ]}
+                ],
+                missions: ["Gehe auf deine absolute Lieblingswebseite und drücke am PC die Taste 'F12' (Entwicklertools).", "Schau dir den völlig unübersichtlichen Code-Salat an – das ist das nackte HTML! Schließe das Fenster danach wieder.", "Öffne die Homepage deiner Schule auf dem Handy und parallel auf dem PC. Vergleiche genau, wie sich das Menü anpasst (Responsive).", "Skizziere mit einem Stift auf einem Zettel grob eine Startseite für ein fiktives, neues Startup-Unternehmen.", "Achte bei deiner Skizze darauf, dass der allerwichtigste Button (der 'Call to Action') sofort ins Auge fällt."]
+            },
+            16: {
+                sections: [
+                    { title: "Bias (Vorurteile) in Algorithmen", intro: "Künstliche Intelligenz ist eine Maschine, aber sie ist niemals objektiv oder neutral.", blocks: [
+                        { type: 'warning', title: 'Die KI lernt von uns', text: 'KI lernt ausschließlich aus alten Daten, die von Menschen produziert wurden. Wenn diese historischen Daten im Internet rassistisch, unfair oder sexistisch waren, übernimmt die KI diese Vorurteile unbemerkt in ihre Berechnungen.' },
+                        { type: 'info', title: 'Beispiel aus der Realität', text: 'Ein KI-Bewerbungs-Algorithmus bei einem großen Tech-Konzern hat mal Frauen systematisch benachteiligt und aussortiert. Warum? Weil die KI aus alten Personaldaten der letzten 10 Jahre gelernt hatte, dass IT-Führungskräfte in der Vergangenheit fast immer männlich waren.' }
+                    ]},
+                    { title: "Deepfakes & die Wahrheit", intro: "Der massive Angriff auf unsere Wahrnehmung der Realität.", blocks: [
+                        { type: 'warning', title: 'Täuschend echte Fälschungen', text: 'Künstliche Intelligenz kann heute täuschend echte Videos und Stimmen von Politikern oder Prominenten erzeugen (sogenannte Deepfakes). Man kann Leuten Dinge in den Mund legen, die sie in der Realität niemals gesagt haben.', image: '' },
+                        { type: 'success', title: 'Die kritische Folge', text: 'Das blinde Vertrauen in digitale Medien und Nachrichten sinkt massiv. Du musst als moderner Bürger lernen, viel kritischer denn je zu hinterfragen, was ein Foto oder ein "Beweisvideo" im Internet eigentlich noch wert ist.' }
+                    ]}
+                ],
+                missions: ["Recherchiere im Netz den Begriff 'Deepfake' und finde ein prominentes, erschreckendes Beispiel.", "Diskutiere mit einem Freund: Welche konkrete Gefahr stellen Deepfakes für demokratische Wahlen dar?", "Gib einer kostenlosen Bild-KI (falls verfügbar) den Prompt 'Zeige einen typischen Firmen-Chef'. Welches Geschlecht und Alter hat die Person auf dem Bild meistens?", "Was bedeutet der englische Begriff 'Bias' in der Informatik genau?", "Denkaufgabe: Wem gehören eigentlich moralisch und rechtlich die Rechte an einem Kunstwerk, das eine KI aus Millionen von fremden Bildern gemischt hat?"]
+            },
+            17: {
+                sections: [
+                    { title: "Hate Speech im Netz", intro: "Das Internet ist kein rechtsfreier Raum. Worte sind gefährliche Waffen.", blocks: [
+                        { type: 'warning', title: 'Keine freie Meinungsäußerung', text: 'Hassrede im Netz (Rassismus, Sexismus, Antisemitismus oder konkrete Gewaltandrohungen) ist keine "freie Meinung", sondern sehr oft eine handfeste, verfolgbare Straftat.' },
+                        { type: 'info', title: 'Der Echo-Kammer-Effekt', text: 'In extremen Facebook- oder Telegram-Gruppen schaukeln sich Menschen gegenseitig hoch, weil ihnen in ihrer Blase niemand widerspricht. Die Hemmschwelle für verbale und echte Gewalt sinkt dadurch drastisch.' }
+                    ]},
+                    { title: "Zivilcourage zeigen", intro: "Wie du das Klima im Netz aktiv verbessern kannst.", blocks: [
+                        { type: 'success', title: 'Gegenrede (Counter Speech)', text: 'Schweigen im Netz wird von radikalen Tätern oft als schweigende Zustimmung der Masse gewertet. Es ist extrem wichtig, sachlich gegenzuhalten ("Counter Speech"), um stummen Mitlesern zu zeigen, dass dieser Hass nicht von der Gesellschaft toleriert wird.', image: '' },
+                        { type: 'tip', title: 'Melden & Blockieren', text: 'Diskutiere nicht mit Trollen. Nutze die Melde-Funktionen der sozialen Netzwerke aktiv, um strafbare Inhalte löschen zu lassen. Bei schweren Androhungen von Gewalt: Screenshot machen und sofort die echte Polizei (Internetwache) einschalten!' }
+                    ]}
+                ],
+                missions: ["Finde auf Instagram oder TikTok heraus, wo genau in den Untermenüs sich der 'Beitrag melden'-Button versteckt.", "Recherchiere: Welche harten Strafen stehen in Deutschland auf Volksverhetzung oder schwere Beleidigung im Internet?", "Überlege dir eine sachliche, absolut nicht-aggressive Antwort (Counter Speech) auf einen fiktiven, hetzerischen Hasskommentar.", "Was ist eigentlich die 'Internetwache' der Polizei und wofür genau kann man sie nutzen?", "Diskutiert in der Klasse: Ab wann ist ein harter Kommentar keine freie Meinung mehr, sondern echte Hassrede?"]
+            },
+            18: {
+                sections: [
+                    { title: "Dein Profil im Netz", intro: "Das Internet ist dein ewiger, unfreiwilliger Lebenslauf.", blocks: [
+                        { type: 'warning', title: 'Der digitale Fußabdruck', text: 'Jeder Klick, jedes gelikte Foto, jeder dumme oder wütende Kommentar aus deiner Jugendzeit hinterlässt einen fast unlöschbaren digitalen Fußabdruck im Netz.', image: '' },
+                        { type: 'info', title: 'Der Background-Check der Chefs', text: 'Arbeitgeber und Universitäten scannen (googlen) Bewerber heutzutage fast immer vor dem ersten Vorstellungsgespräch. Ein extrem peinliches, öffentliches Party-Foto von vor 4 Jahren kann dich heute deinen Traumjob kosten.' }
+                    ]},
+                    { title: "Digitale Hygiene betreiben", intro: "Aufräumen in der eigenen Vergangenheit.", blocks: [
+                        { type: 'tip', title: 'Ego-Googling', text: 'Suche regelmäßig deinen eigenen Namen (unbedingt in Anführungszeichen setzen, z.B. `"Max Mustermann"`) bei Google und checke dabei auch intensiv die Google Bildersuche.' },
+                        { type: 'success', title: 'Inhalte löschen lassen', text: 'Wenn andere Leute peinliche Fotos von dir gepostet haben, fordere sie unmissverständlich auf, diese sofort zu löschen (Du hast ein gesetzliches "Recht am eigenen Bild", auch gegenüber deinen Freunden!).' }
+                    ]}
+                ],
+                missions: ["Setze deinen Vor- und Nachnamen in Anführungszeichen und suche dich selbst bei Google.", "Klicke dabei auch intensiv auf die Google-Bildersuche. Bist du mit den Ergebnissen voll zufrieden?", "Prüfe sofort die Privatsphäre-Einstellungen deines allerältesten Social-Media-Accounts.", "Recherchiere, wie man bei Google einen offiziellen Antrag stellt, dass ein bestimmtes, privates Suchergebnis gelöscht wird.", "Lösche noch heute einen richtig alten, peinlichen Beitrag oder ein schlechtes Foto von dir auf Insta oder TikTok."]
+            },
+            24: {
+                sections: [
+                    { title: "Daten sind das neue Öl", intro: "Das knallharte Geschäftsmodell der mächtigen Tech-Giganten.", blocks: [
+                        { type: 'warning', title: 'Du bist das Produkt', text: 'Konzerne wie Meta (Instagram, WhatsApp) und Google sind keine sozialen, netten Dienste, sondern die größten und mächtigsten Werbeagenturen der Welt. Da du für die Apps kein Geld bezahlst, bist DU (bzw. deine Aufmerksamkeit) das Produkt, das an Werbekunden verkauft wird.' },
+                        { type: 'info', title: 'Big Data Profile', text: 'Millionen von kleinsten Datenpunkten (wann du wo bist, was du likest, wie schnell du tippst, wer deine Freunde sind) werden von Algorithmen zu unfassbar präzisen, psychologischen Profilen über dich zusammengefügt.', image: '' }
+                    ]},
+                    { title: "Micro-Targeting", intro: "Manipulation nach Maß.", blocks: [
+                        { type: 'standard', title: 'Zielgenaue Werbung', text: 'Weil große Plattformen dich durch die ständige Datenanalyse oft besser kennen als deine eigenen Eltern, können sie dir Werbung (oder gezielte politische Nachrichten) zeigen, die extrem präzise auf deine ganz persönlichen Ängste, Schwächen oder Wünsche zugeschnitten sind.' },
+                        { type: 'warning', title: 'Dark Patterns', text: 'Webseiten nutzen oft extrem fiese, psychologische Design-Tricks (z.B. versteckte oder ausgegraute "Ablehnen"-Buttons beim Cookie-Banner), um dir illegal noch mehr Daten zu entlocken.' }
+                    ]}
+                ],
+                missions: ["Gehe auf eine beliebige große Webseite und suche nach einem 'Dark Pattern' (z.B. ein riesiger grüner Zustimmen-Button und ein winzig kleiner, unsichtbarer Ablehnen-Button).", "Recherchiere den weltweiten Skandal um die Daten-Firma 'Cambridge Analytica' (ca. 2018). Worum ging es dabei grob?", "Schau ganz bewusst in deinen Social-Media-Feed: Warum wird dir exakt *diese* Werbung gerade jetzt angezeigt? Welches Interesse vermutet die App bei dir?", "Finde heraus, wo du in den Kontoeinstellungen von Instagram oder Google deine 'Werbepräferenzen' (deine heimlichen Interessen-Profile) einsehen kannst.", "Diskutiert hart in der Klasse: Ist es eigentlich wirklich schlimm, dass riesige Firmen all unsere Daten haben, wenn wir dafür im Gegenzug so tolle Apps völlig kostenlos nutzen dürfen?"]
+            }
+        };
+
+        // --- DER DYNAMISCHE WISSENSSPEICHER (Layout & Rendering) ---
+        const RenderWissensspeicher = ({ module }) => {
+            const data = MODULE_CONTENT_DATA[module.id];
+            
+            if (!data) {
+                return (
+                    <div className="text-center py-16 px-6">
+                        <div className="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6 border border-slate-100 shadow-sm">
+                            <Icon name="book-open" size={48} className="text-slate-300" />
+                        </div>
+                        <h3 className="text-2xl font-black text-slate-800 mb-3 tracking-tight">Wissensspeicher in Arbeit</h3>
+                        <p className="text-slate-500 text-base max-w-md mx-auto font-medium leading-relaxed">
+                            Der detaillierte Inhalt, die Layouts und die Praxis-Missionen für dieses Modul werden aktuell erstellt. Schau bald wieder vorbei!
+                        </p>
+                    </div>
+                );
+            }
+
+            const theme = {
+                "5-6": {
+                    introTitle: "Modul geschafft!",
+                    introText: "Herzlichen Glückwunsch! Du hast dieses Modul gemeistert. Hier ist dein Spickzettel:",
+                    bgHeader: "bg-green-50 border-green-200", textHeader: "text-green-900", iconHeader: "text-green-600",
+                    sectionNumber: "text-green-600",
+                    missionBox: "bg-amber-50 border-amber-200", missionTitle: "text-amber-900", missionIconText: "text-amber-600",
+                    missionListBg: "bg-white border-amber-100", missionTitleText: "Deine Missionen 🚀", missionListIcon: "rocket"
+                },
+                "7-8": {
+                    introTitle: "Erfolgreich zertifiziert!",
+                    introText: "Sehr gut! Hier findest du die wichtigsten Fakten und Methoden im Überblick:",
+                    bgHeader: "bg-indigo-50 border-indigo-200", textHeader: "text-indigo-900", iconHeader: "text-indigo-600",
+                    sectionNumber: "text-indigo-600",
+                    missionBox: "bg-blue-50 border-blue-200", missionTitle: "text-blue-900", missionIconText: "text-blue-600",
+                    missionListBg: "bg-white border-blue-100", missionTitleText: "Praxis-Challenges ⚡", missionListIcon: "zap"
+                },
+                "9-10": {
+                    introTitle: "Modul abgeschlossen",
+                    introText: "Relevantes Fachwissen und Best Practices für deinen weiteren Weg:",
+                    bgHeader: "bg-slate-100 border-slate-200", textHeader: "text-slate-800", iconHeader: "text-slate-600",
+                    sectionNumber: "text-slate-600",
+                    missionBox: "bg-emerald-50 border-emerald-200", missionTitle: "text-emerald-900", missionIconText: "text-emerald-600",
+                    missionListBg: "bg-white border-emerald-100", missionTitleText: "Transfer-Aufgaben 🎯", missionListIcon: "target"
+                }
+            }[module.stage];
 
             return (
-                <div className="fixed inset-0 z-50 bg-slate-50 overflow-y-auto animate-in fade-in duration-200">
-                    <header className="bg-[#BF0D3E] text-white pt-12 pb-6 px-6 sm:px-8 shadow-md rounded-b-[2rem] sm:rounded-b-[3rem] relative z-10">
-                        <div className="max-w-5xl mx-auto flex justify-between items-start">
-                            <div>
-                                <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tighter mb-1">Ansicht: {student.vorname}</h1>
-                                <p className="text-red-200 font-bold text-sm sm:text-base opacity-90">Klasse {student.klasse} • Gymnasium Thomaeum</p>
-                            </div>
-                            <button onClick={onClose} className="bg-white/20 hover:bg-white/30 text-white p-3 rounded-xl transition-colors flex items-center gap-2 font-bold text-sm shadow-sm active:scale-95">
-                                <Icon name="x" size={20} /> Schließen
-                            </button>
-                        </div>
-                        <div className="max-w-5xl mx-auto mt-8 bg-black/10 p-5 rounded-3xl backdrop-blur-sm">
-                            <div className="flex justify-between items-end mb-3">
-                                <span className="font-black uppercase tracking-widest text-xs sm:text-sm text-white">Gesamtfortschritt</span>
-                                <span className="font-black text-2xl sm:text-3xl text-white">{progressPercent}%</span>
-                            </div>
-                            <div className="h-4 bg-black/20 rounded-full overflow-hidden shadow-inner">
-                                <div className="h-full bg-white rounded-full transition-all duration-1000 ease-out" style={{ width: `${progressPercent}%` }}></div>
-                            </div>
-                            <p className="text-right mt-2 text-[10px] font-bold text-red-200 uppercase">{totalCompleted} von {ALL_MODULES.length} Modulen geschafft</p>
-                        </div>
-                    </header>
-                    <main className="flex-grow max-w-5xl mx-auto w-full px-4 sm:px-8 mt-[-1rem] sm:mt-[-2rem] relative z-20 pb-10">
-                        <div className="flex gap-3 mb-2 overflow-x-auto pb-4 scrollbar-hide pt-4 sm:pt-6">
-                            {["5-6", "7-8", "9-10"].map(stage => (
-                                <button key={stage} onClick={() => setActiveStage(stage)}
-                                    className={`px-6 py-3 rounded-2xl font-black transition-all whitespace-nowrap shadow-sm ${activeStage === stage ? 'text-white shadow-md scale-105' : 'bg-white text-slate-400 border border-slate-100 hover:bg-slate-50'}`}
-                                    style={activeStage === stage ? { backgroundColor: THOMA_RED } : {}}>
-                                    Klasse {stage}
-                                </button>
-                            ))}
-                        </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                            {ALL_MODULES.filter(m => m.stage === activeStage).map(modul => {
-                                const isDone = student.completedTasks.includes(modul.id);
-                                const moduleData = student.moduleDates?.[modul.id];
-                                let dateDone = "—", teacherName = "";
-                                if (moduleData) {
-                                    if (typeof moduleData === 'string') { dateDone = moduleData; }
-                                    else { dateDone = moduleData.datum || "—"; teacherName = moduleData.lehrer || ""; }
-                                }
-                                return (
-                                    <div key={modul.id} onClick={() => !isUpdating && onToggleModule(modul.id)}
-                                        title={isDone ? "Klicken zum Sperren" : "Klicken zum Freischalten"}
-                                        className={`bg-white rounded-3xl p-5 sm:p-6 border-2 transition-all cursor-pointer flex flex-col h-full hover:-translate-y-1 ${isUpdating ? 'opacity-50 pointer-events-none' : ''} ${isDone ? 'border-green-400 shadow-green-100 shadow-lg' : 'border-slate-100 shadow-sm hover:border-red-200'}`}>
-                                        <div className="flex justify-between items-start mb-4">
-                                            <span className="text-[10px] font-black uppercase tracking-widest bg-slate-100 text-slate-500 px-3 py-1 rounded-lg">Klasse {modul.stage}</span>
-                                            {isDone
-                                                ? <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white shadow-md shrink-0 ml-2"><Icon name="check" size={16} /></div>
-                                                : <div className="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center text-slate-300 hover:bg-red-100 hover:text-red-600 shrink-0 ml-2"><Icon name="plus" size={14} /></div>
-                                            }
-                                        </div>
-                                        <h3 className={`font-black text-base lg:text-lg tracking-tight leading-tight mb-2 flex items-start gap-2 ${isDone ? 'text-slate-800' : 'text-slate-500'}`}>
-                                            <Icon name={modul.icon} size={20} className={`mt-0.5 shrink-0 ${isDone ? 'text-green-500' : 'text-slate-300'}`} />
-                                            {modul.title}
-                                        </h3>
-                                        <div className="mt-auto">
-                                            {isDone ? (
-                                                <div className="mt-3">
-                                                    <p className="text-[10px] sm:text-xs font-bold text-green-600 flex items-center gap-1"><Icon name="calendar-check" size={12} />Zertifiziert am {dateDone}</p>
-                                                    {teacherName && <p className="text-[9px] font-bold text-green-700 ml-4 mt-0.5">durch {teacherName}</p>}
+                <div className="space-y-12 text-slate-700 leading-relaxed max-w-3xl mx-auto">
+                    <div className={`${theme.bgHeader} p-8 rounded-[2rem] border shadow-sm`}>
+                        <h4 className={`font-black ${theme.textHeader} text-2xl flex items-center gap-3 mb-2`}>
+                            <Icon name="trophy" size={32} className={theme.iconHeader}/> {theme.introTitle}
+                        </h4>
+                        <p className={`text-base font-medium ${theme.textHeader} opacity-90`}>{theme.introText}</p>
+                    </div>
+
+                    <div className="space-y-12 px-2">
+                        {data.sections.map((sec, idx) => (
+                            <div key={idx} className="relative">
+                                <h4 className="font-black text-xl text-slate-800 mb-3 flex items-center gap-3">
+                                    <span className={`${theme.sectionNumber} text-2xl`}>{idx + 1}.</span> {sec.title}
+                                </h4>
+                                <p className="text-base mb-6 font-medium text-slate-600 leading-relaxed">{sec.intro}</p>
+                                
+                                <div className="space-y-6">
+                                    {sec.blocks.map((block, i) => {
+                                        let boxStyle = "";
+                                        let icon = "";
+                                        switch(block.type) {
+                                            case 'warning': boxStyle = "bg-red-50 border-red-200 text-red-900"; icon = "triangle-alert"; break;
+                                            case 'info': boxStyle = "bg-blue-50 border-blue-200 text-blue-900"; icon = "info"; break;
+                                            case 'tip': boxStyle = "bg-amber-50 border-amber-200 text-amber-900"; icon = "lightbulb"; break;
+                                            case 'success': boxStyle = "bg-green-50 border-green-200 text-green-900"; icon = "check-circle"; break;
+                                            default: boxStyle = "bg-white border-slate-200 text-slate-800 shadow-sm"; icon = "check"; break;
+                                        }
+
+                                        const formattedText = block.text
+                                            .replace(/\*\*(.*?)\*\*/g, '<strong class="font-black opacity-100">$1</strong>')
+                                            .replace(/`([^`]+)`/g, '<code class="bg-black/5 px-1.5 py-0.5 rounded font-bold border border-black/10 text-[0.9em]">$1</code>');
+
+                                        return (
+                                            <div key={i} className={`p-5 sm:p-6 rounded-2xl border ${boxStyle} flex flex-col gap-4`}>
+                                                <div className="flex gap-4 items-start">
+                                                    <div className="shrink-0 mt-1 opacity-80"><Icon name={icon} size={24} /></div>
+                                                    <div className="flex-1">
+                                                        <h5 className="font-bold text-lg mb-1.5 leading-tight">{block.title}</h5>
+                                                        <p className="text-sm font-medium opacity-90 leading-relaxed" dangerouslySetInnerHTML={{ __html: formattedText }}></p>
+                                                    </div>
                                                 </div>
-                                            ) : (
-                                                <p className="text-xs font-medium text-slate-400 mt-3 flex items-center gap-1"><Icon name="hand" size={14} /> Klicken zum Freischalten</p>
-                                            )}
+                                                {block.image && (
+                                                    <div className="mt-2 w-full rounded-xl overflow-hidden shadow-sm border border-slate-200/50 bg-slate-100/50">
+                                                        <img 
+                                                            src={block.image} 
+                                                            alt={block.title}
+                                                            className="w-full h-48 sm:h-64 object-cover hover:scale-105 transition-transform duration-700"
+                                                            onError={(e) => {
+                                                                e.target.onerror = null;
+                                                                e.target.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400" fill="%23f8fafc"><rect width="100%" height="100%"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="18" fill="%2394a3b8">Bild wird geladen...</text></svg>';
+                                                            }}
+                                                        />
+                                                    </div>
+                                                )}
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    {data.missions && data.missions.length > 0 && (
+                        <div className={`${theme.missionBox} p-8 sm:p-10 rounded-[2.5rem] border shadow-sm mt-16 relative overflow-hidden`}>
+                            <h4 className={`font-black ${theme.missionTitle} text-2xl flex items-center gap-3 mb-8 relative z-10`}>
+                                <Icon name={theme.missionListIcon} size={28} className={theme.missionIconText}/> {theme.missionTitleText}
+                            </h4>
+                            <ul className="space-y-4 relative z-10">
+                                {data.missions.map((mission, i) => (
+                                    <li key={i} className={`flex gap-5 ${theme.missionListBg} p-5 sm:p-6 rounded-2xl shadow-sm border items-start hover:-translate-y-1 transition-transform`}>
+                                        <div className={`w-8 h-8 rounded-full flex items-center justify-center font-black text-sm shrink-0 ${theme.missionIconText} bg-opacity-20`} style={{backgroundColor: 'currentColor', color: 'white'}}>
+                                            {i + 1}
                                         </div>
-                                    </div>
-                                );
-                            })}
+                                        <span className={`${theme.missionTitle} font-semibold text-base leading-snug pt-1`}>{mission}</span>
+                                    </li>
+                                ))}
+                            </ul>
                         </div>
-                    </main>
+                    )}
                 </div>
             );
         };
 
+        // --- HAUPT-APP ---
         const App = () => {
             const [user, setUser] = useState(null);
-            const [students, setStudents] = useState([]);
+            const [studentData, setStudentData] = useState(null);
             const [loading, setLoading] = useState(true);
             const [authRequired, setAuthRequired] = useState(false);
-            const [accessDenied, setAccessDenied] = useState(false);
-            const [debugMsg, setDebugMsg] = useState("");
-            const [isUpdating, setIsUpdating] = useState(false);
-            const [searchName, setSearchName] = useState("");
-            const [filterKlasse, setFilterKlasse] = useState("ALL");
-            const [filterJahrgang, setFilterJahrgang] = useState("ALL");
-            const [filterModul, setFilterModul] = useState("ALL");
-            const [viewingStudentId, setViewingStudentId] = useState(null);
+            const [errorMsg, setErrorMsg] = useState("");
+            const [activeStage, setActiveStage] = useState("5-6");
+            
+            // Zustand für das offene Modul (Modal)
+            const [selectedModule, setSelectedModule] = useState(null);
 
             useEffect(() => {
                 const bootstrap = async () => {
                     try {
-                        setDebugMsg("Lade System...");
                         await msalInitPromise;
                         await msalInstance.handleRedirectPromise();
+                        
                         let activeAccount = msalInstance.getActiveAccount();
                         if (!activeAccount && msalInstance.getAllAccounts().length > 0) {
                             activeAccount = msalInstance.getAllAccounts()[0];
                             msalInstance.setActiveAccount(activeAccount);
                         }
+
                         if (activeAccount) {
-                            const isAuthorized = await verifyTeacherStatus(activeAccount);
-                            if (isAuthorized) { setUser({ name: activeAccount.name, username: activeAccount.username }); fetchData(activeAccount); }
-                            else { setLoading(false); }
-                        } else { setAuthRequired(true); setLoading(false); }
-                    } catch (err) { console.error(err); setAuthRequired(true); setLoading(false); }
+                            setUser({ name: activeAccount.name, username: activeAccount.username });
+                            fetchMyData(activeAccount);
+                        } else {
+                            setAuthRequired(true);
+                            setLoading(false);
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        setAuthRequired(true);
+                        setLoading(false);
+                    }
                 };
                 bootstrap();
             }, []);
 
-            const verifyTeacherStatus = async (account) => {
+            const handleLogin = () => {
                 setLoading(true);
-                setDebugMsg("Prüfe Lehrer-Rechte (Entra ID)...");
-                try {
-                    const tokenRes = await msalInstance.acquireTokenSilent({ scopes: ["GroupMember.Read.All"], account });
-                    const res = await fetch(`https://graph.microsoft.com/v1.0/me/memberOf`, { headers: { Authorization: `Bearer ${tokenRes.accessToken}` } });
-                    if (!res.ok) throw new Error("Graph API Gruppenabruf fehlgeschlagen");
-                    const data = await res.json();
-                    const isTeacher = data.value.some(group => group.id === MS_CONFIG.teacherGroupId);
-                    if (isTeacher) { setAccessDenied(false); return true; }
-                    else { setAccessDenied(true); return false; }
-                } catch (error) { console.error("Berechtigungsfehler:", error); setAccessDenied(true); return false; }
+                msalInstance.loginRedirect({ scopes: ["Sites.Read.All"] });
             };
 
-            const handleLogin = async () => {
-                const tokenRequest = { scopes: ["Sites.ReadWrite.All", "GroupMember.Read.All"], prompt: "select_account" };
-                try {
-                    const response = await msalInstance.loginPopup(tokenRequest);
-                    setLoading(true);
-                    msalInstance.setActiveAccount(response.account);
-                    const isAuthorized = await verifyTeacherStatus(response.account);
-                    if (isAuthorized) { setUser({ name: response.account.name, username: response.account.username }); setAuthRequired(false); fetchData(response.account); }
-                    else { setLoading(false); }
-                } catch (error) {
-                    if (error.name === "BrowserAuthError" || error.message.includes("popup")) { msalInstance.loginRedirect(tokenRequest); }
-                }
+            const handleLogout = () => {
+                msalInstance.logoutRedirect({ postLogoutRedirectUri: window.location.origin });
             };
 
-            const handleLogout = () => msalInstance.logoutRedirect({ postLogoutRedirectUri: window.location.origin });
-
-            const fetchData = async (account) => {
-                setLoading(true);
-                setDebugMsg("Lade Schülerdaten aus SharePoint...");
+            const fetchMyData = async (account) => {
                 try {
-                    const tokenRes = await msalInstance.acquireTokenSilent({ scopes: ["Sites.ReadWrite.All"], account });
+                    const tokenRes = await msalInstance.acquireTokenSilent({ scopes: ["Sites.Read.All"], account });
                     const url = `https://graph.microsoft.com/v1.0/sites/${MS_CONFIG.siteId}/lists/${MS_CONFIG.listId}/items?$expand=fields&$top=999`;
-                    const res = await fetch(url, { headers: { Authorization: `Bearer ${tokenRes.accessToken}`, Prefer: "HonorNonIndexedQueriesWarningMayFailRandomly" } });
-                    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                    
+                    const res = await fetch(url, { 
+                        headers: { 
+                            Authorization: `Bearer ${tokenRes.accessToken}`,
+                            Prefer: "HonorNonIndexedQueriesWarningMayFailRandomly"
+                        }
+                    });
+                    
+                    if (!res.ok) throw new Error("Fehler beim Abrufen der SharePoint-Daten.");
                     const data = await res.json();
-                    const parsedStudents = data.value.map(item => {
-                        const f = item.fields;
+                    
+                    const myRecord = data.value.find(item => 
+                        item.fields.Title && item.fields.Title.toLowerCase() === account.username.toLowerCase()
+                    );
+
+                    if (myRecord) {
+                        const f = myRecord.fields;
                         const completedArray = f.Erledigte_Module ? f.Erledigte_Module.split(',').map(m => parseInt(m.trim())).filter(n => !isNaN(n)) : [];
+                        
                         let parsedDates = {};
-                        if (f.Modul_Daten) { try { parsedDates = JSON.parse(f.Modul_Daten); } catch(e) {} }
-                        return { id: item.id, email: f.Title || "", vorname: f.Vorname || "", nachname: f.Nachname || "", klasse: f.Klasse || "Unbekannt", completedTasks: completedArray, moduleDates: parsedDates };
-                    }).filter(s => s.vorname && s.nachname);
-                    parsedStudents.sort((a, b) => a.nachname.localeCompare(b.nachname));
-                    setStudents(parsedStudents);
-                    setDebugMsg("");
-                } catch (error) { setDebugMsg("Fehler beim Laden der Daten."); setAuthRequired(true); }
-                finally { setLoading(false); }
-            };
+                        if (f.Modul_Daten) {
+                            try { parsedDates = JSON.parse(f.Modul_Daten); } catch(e) {}
+                        }
 
-            const toggleModuleSingle = async (studentId, moduleId) => {
-                if (isUpdating) return;
-                setIsUpdating(true);
-                try {
-                    const student = students.find(s => s.id === studentId);
-                    const isDone = student.completedTasks.includes(moduleId);
-                    const newTasks = isDone ? student.completedTasks.filter(id => id !== moduleId) : [...student.completedTasks, moduleId];
-                    let newDates = { ...student.moduleDates };
-                    if (isDone) { delete newDates[moduleId]; }
-                    else { newDates[moduleId] = { datum: new Date().toLocaleDateString('de-DE'), lehrer: user.name }; }
-                    await updateSharePoint(studentId, newTasks, newDates);
-                    setStudents(prev => prev.map(s => s.id === studentId ? { ...s, completedTasks: newTasks, moduleDates: newDates } : s));
-                } catch (err) { alert(err.message); }
-                finally { setIsUpdating(false); }
-            };
-
-            // FIX: Sequenziell statt Promise.all, um "failed to fetch" bei Masseneintragungen zu vermeiden.
-            // Jede Anfrage wird einzeln abgewartet, mit 150ms Pause dazwischen.
-            const bulkToggle = async (action) => {
-                if (filterModul === "ALL" || isUpdating) return;
-                const moduleId = parseInt(filterModul);
-                const studentsToUpdate = filteredStudents.filter(s => {
-                    const hasMod = s.completedTasks.includes(moduleId);
-                    return action === "grant" ? !hasMod : hasMod;
-                });
-                if (studentsToUpdate.length === 0) { alert("Alle angezeigten Schüler haben diesen Status bereits."); return; }
-                if (!confirm(`Möchtest du Modul ${moduleId} für ${studentsToUpdate.length} Schüler ${action === 'grant' ? 'freischalten' : 'sperren'}?`)) return;
-
-                setIsUpdating(true);
-                const today = new Date().toLocaleDateString('de-DE');
-                const results = [];
-                let successCount = 0, errorCount = 0;
-
-                // Token einmal vorab holen
-                let tokenRes;
-                try {
-                    tokenRes = await msalInstance.acquireTokenSilent({ scopes: ["Sites.ReadWrite.All"], account: msalInstance.getActiveAccount() });
-                } catch (err) {
-                    alert("Token konnte nicht erneuert werden. Bitte neu anmelden.");
-                    setIsUpdating(false);
-                    return;
-                }
-
-                // Schüler sequenziell (einen nach dem anderen) aktualisieren
-                for (let i = 0; i < studentsToUpdate.length; i++) {
-                    const student = studentsToUpdate[i];
-                    setDebugMsg(`Aktualisiere ${i + 1} von ${studentsToUpdate.length}: ${student.vorname} ${student.nachname}...`);
-
-                    const newTasks = action === "grant"
-                        ? [...student.completedTasks, moduleId]
-                        : student.completedTasks.filter(id => id !== moduleId);
-                    let newDates = { ...student.moduleDates };
-                    if (action === "grant") { newDates[moduleId] = { datum: today, lehrer: user.name }; }
-                    else { delete newDates[moduleId]; }
-
-                    try {
-                        const url = `https://graph.microsoft.com/v1.0/sites/${MS_CONFIG.siteId}/lists/${MS_CONFIG.listId}/items/${student.id}/fields`;
-                        const res = await fetch(url, {
-                            method: 'PATCH',
-                            headers: { 'Authorization': `Bearer ${tokenRes.accessToken}`, 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ "Erledigte_Module": newTasks.join(', '), "Modul_Daten": JSON.stringify(newDates) })
+                        setStudentData({
+                            vorname: f.Vorname || "",
+                            nachname: f.Nachname || "",
+                            klasse: f.Klasse || "",
+                            completedTasks: completedArray,
+                            moduleDates: parsedDates
                         });
-                        if (!res.ok) {
-                            const errData = await res.json();
-                            if (errData.error?.code === "accessDenied" || errData.error?.message?.includes("Access denied")) {
-                                throw new Error("ZUGRIFF VERWEIGERT!\n\n1. Bitte abmelden und neu einloggen.\n2. Prüfe in Azure, ob 'Sites.ReadWrite.All' zugestimmt wurde.");
-                            }
-                            throw new Error(`Graph API Fehler: ${errData.error?.message || res.statusText}`);
-                        }
-                        results.push({ id: student.id, tasks: newTasks, dates: newDates });
-                        successCount++;
-                        // Kurze Pause zwischen Anfragen (verhindert Rate-Limiting)
-                        if (i < studentsToUpdate.length - 1) {
-                            await new Promise(resolve => setTimeout(resolve, 150));
-                        }
-                    } catch (err) {
-                        console.error(`Fehler bei ${student.vorname} ${student.nachname}:`, err);
-                        errorCount++;
-                        // Bei Einzelfehler weitermachen, nicht abbrechen
+                    } else {
+                        setErrorMsg("Deine E-Mail-Adresse wurde noch nicht in die Datenbank eingetragen. Bitte melde dich bei deiner Lehrkraft.");
                     }
-                }
-
-                if (results.length > 0) {
-                    setStudents(prev => prev.map(s => {
-                        const updatedInfo = results.find(r => r.id === s.id);
-                        return updatedInfo ? { ...s, completedTasks: updatedInfo.tasks, moduleDates: updatedInfo.dates } : s;
-                    }));
-                }
-
-                if (errorCount === 0) {
-                    setDebugMsg(`✓ ${successCount} Schüler erfolgreich aktualisiert.`);
-                } else {
-                    setDebugMsg(`⚠ ${successCount} erfolgreich, ${errorCount} fehlgeschlagen. Bitte Seite neu laden.`);
-                }
-                setTimeout(() => setDebugMsg(""), 5000);
-                setIsUpdating(false);
-            };
-
-            const updateSharePoint = async (itemId, tasksArray, datesObj) => {
-                const tokenRes = await msalInstance.acquireTokenSilent({ scopes: ["Sites.ReadWrite.All"], account: msalInstance.getActiveAccount() });
-                const url = `https://graph.microsoft.com/v1.0/sites/${MS_CONFIG.siteId}/lists/${MS_CONFIG.listId}/items/${itemId}/fields`;
-                const res = await fetch(url, {
-                    method: 'PATCH',
-                    headers: { 'Authorization': `Bearer ${tokenRes.accessToken}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ "Erledigte_Module": tasksArray.join(', '), "Modul_Daten": JSON.stringify(datesObj) })
-                });
-                if (!res.ok) {
-                    const errData = await res.json();
-                    if (errData.error?.code === "accessDenied" || errData.error?.message?.includes("Access denied")) {
-                        throw new Error("ZUGRIFF VERWEIGERT!\n\nPrüfe in Azure, ob der App 'Sites.ReadWrite.All' zugestimmt wurde.");
+                } catch (error) {
+                    if (error.name === "InteractionRequiredAuthError") {
+                        msalInstance.loginRedirect({ scopes: ["Sites.Read.All"] });
+                    } else {
+                        setErrorMsg("Fehler beim Laden deiner Daten.");
                     }
-                    throw new Error(`Graph API Fehler:\n${errData.error?.message || res.statusText}`);
+                } finally {
+                    setLoading(false);
                 }
             };
 
-            const uniqueKlassen = useMemo(() => [...new Set(students.map(s => s.klasse))].sort(), [students]);
-            const uniqueJahrgaenge = useMemo(() => {
-                const j = students.map(s => s.klasse.match(/\d+/)?.[0]).filter(Boolean);
-                return [...new Set(j)].sort((a,b) => parseInt(a) - parseInt(b));
-            }, [students]);
-            const filteredStudents = useMemo(() => students.filter(s => {
-                const searchMatch = `${s.vorname} ${s.nachname}`.toLowerCase().includes(searchName.toLowerCase());
-                const klasseMatch = filterKlasse === "ALL" || s.klasse === filterKlasse;
-                const jg = s.klasse.match(/\d+/)?.[0];
-                const jahrgangMatch = filterJahrgang === "ALL" || jg === filterJahrgang;
-                return searchMatch && klasseMatch && jahrgangMatch;
-            }), [students, searchName, filterKlasse, filterJahrgang]);
-
-            const hasActiveFilters = searchName.trim() !== "" || filterJahrgang !== "ALL" || filterKlasse !== "ALL" || filterModul !== "ALL";
-
-            if (accessDenied) return (
-                <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 p-6">
-                    <div className="bg-white p-10 rounded-[3rem] shadow-2xl max-w-md w-full text-center border border-red-100">
-                        <div className="mx-auto w-24 h-24 bg-red-50 rounded-full flex items-center justify-center mb-6 text-red-600"><Icon name="shield-alert" size={48} /></div>
-                        <h2 className="text-2xl font-black mb-4 uppercase tracking-tighter text-slate-800">Zugriff verweigert</h2>
-                        <p className="text-slate-500 mb-8 font-medium">Dein Konto ist nicht in der Gruppe <b>"LehrerPlusReferendare"</b> eingetragen.</p>
-                        <button onClick={handleLogout} className="w-full bg-slate-100 text-slate-600 hover:bg-slate-200 font-black uppercase px-8 py-4 rounded-2xl transition-all">Abmelden / Zurück</button>
+            if (loading) {
+                return (
+                    <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 p-6">
+                        <div className="spinner mb-6"></div>
+                        <p className="text-sm font-black uppercase text-slate-400 tracking-widest text-center">Lade Profil...</p>
                     </div>
-                </div>
-            );
+                );
+            }
 
-            if (authRequired) return (
-                <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 p-6">
-                    <div className="bg-white p-10 rounded-[3rem] shadow-2xl max-w-md w-full text-center border">
-                        <div className="mx-auto w-24 h-24 bg-red-50 rounded-full flex items-center justify-center mb-6 text-[#BF0D3E]"><Icon name="lock" size={48} /></div>
-                        <h2 className="text-2xl font-black mb-4 uppercase tracking-tighter text-slate-800">Lehrer-Login</h2>
-                        <p className="text-slate-500 mb-6 font-medium">Bitte logge dich mit deinem Office 365 Schulkonto ein.</p>
-                        <button onClick={handleLogin} className="w-full text-white font-black uppercase px-8 py-4 rounded-2xl transition-all shadow-lg hover:scale-105 active:scale-95" style={{ backgroundColor: THOMA_RED }}>Mit Microsoft verbinden</button>
+            if (authRequired) {
+                return (
+                    <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 p-6">
+                        <div className="bg-white p-8 sm:p-10 rounded-[2.5rem] shadow-2xl max-w-md w-full text-center border border-slate-100">
+                            <div className="mx-auto w-20 h-20 bg-red-50 rounded-full flex items-center justify-center mb-6 text-[#BF0D3E] shadow-sm">
+                                <Icon name="graduation-cap" size={40} />
+                            </div>
+                            <h2 className="text-2xl sm:text-3xl font-black mb-3 uppercase tracking-tighter text-slate-800">Medienpass</h2>
+                            <p className="text-slate-500 mb-8 font-medium text-sm sm:text-base leading-relaxed">Bitte melde dich mit deiner Schul-E-Mail-Adresse an, um deinen Fortschritt zu sehen.</p>
+                            <button 
+                                onClick={handleLogin} 
+                                className="w-full text-white font-black uppercase tracking-widest px-6 py-4 rounded-2xl transition-all shadow-lg active:scale-95" 
+                                style={{ backgroundColor: THOMA_RED }}>
+                                Anmelden
+                            </button>
+                        </div>
                     </div>
-                </div>
-            );
+                );
+            }
 
-            if (loading) return (
-                <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50">
-                    <div className="spinner mb-4"></div>
-                    <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest">{debugMsg || "Lade System..."}</p>
-                </div>
-            );
+            if (errorMsg) {
+                return (
+                    <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 p-6">
+                        <div className="bg-white p-8 rounded-[2.5rem] shadow-xl max-w-md w-full text-center border border-red-100">
+                            <div className="mx-auto w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mb-4 text-red-500">
+                                <Icon name="user-x" size={32} />
+                            </div>
+                            <h2 className="text-xl font-black mb-2 text-slate-800">Kein Profil gefunden</h2>
+                            <p className="text-slate-500 mb-6 text-sm">{errorMsg}</p>
+                            <button onClick={handleLogout} className="bg-slate-100 text-slate-600 font-bold uppercase px-6 py-3 rounded-xl w-full">Abmelden</button>
+                        </div>
+                    </div>
+                );
+            }
 
-            const currentViewingStudent = viewingStudentId ? students.find(s => s.id === viewingStudentId) : null;
+            const totalCompleted = studentData ? studentData.completedTasks.length : 0;
+            const progressPercent = Math.round((totalCompleted / ALL_MODULES.length) * 100) || 0;
 
             return (
-                <div className="min-h-screen flex flex-col bg-slate-50 font-sans selection:bg-red-100 relative">
-                    {currentViewingStudent && (
-                        <StudentPreview student={currentViewingStudent} onClose={() => setViewingStudentId(null)}
-                            onToggleModule={(moduleId) => toggleModuleSingle(currentViewingStudent.id, moduleId)} isUpdating={isUpdating} />
-                    )}
-                    <header className="bg-white border-b h-20 flex items-center justify-between px-8 shadow-sm sticky top-0 z-40">
-                        <div className="flex items-center gap-3">
-                            <div className="p-2 rounded-xl text-white shadow-lg" style={{ backgroundColor: THOMA_RED }}><Icon name="graduation-cap" size={28} /></div>
-                            <h1 className="font-black text-xl uppercase tracking-tighter hidden md:block">Lehrer-Konsole <span style={{ color: THOMA_RED }}>Thomaeum</span></h1>
-                        </div>
-                        <div className="flex items-center gap-4">
-                            {isUpdating && <div className="flex items-center gap-2 text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full"><div className="spinner border-blue-600 !w-3 !h-3"></div> Speichert...</div>}
-                            <div className="text-right hidden sm:block">
-                                <p className="text-[10px] font-black text-green-600 uppercase mb-1">Gesichert & Aktiv</p>
-                                <p className="text-xs font-bold text-slate-700">{user?.name || "Lehrkraft"}</p>
+                <div className="min-h-screen flex flex-col bg-slate-50 font-sans pb-10 relative">
+                    
+                    {/* OVERLAY / MODAL: Wissensspeicher */}
+                    {selectedModule && (
+                        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-sm">
+                            <div className="bg-white rounded-[3rem] w-full max-w-4xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden relative animate-in fade-in zoom-in-95 duration-200">
+                                {/* Modal Header */}
+                                <div className="bg-[#BF0D3E] text-white p-8 sm:p-10 flex justify-between items-center shrink-0">
+                                    <div>
+                                        <span className="text-red-200 text-xs font-black uppercase tracking-widest mb-2 block">
+                                            {selectedModule.category === 'skills' ? 'Skills (Anwendung)' : 'Umgang (Reflexion)'} • Klasse {selectedModule.stage}
+                                        </span>
+                                        <h2 className="text-3xl sm:text-4xl font-black tracking-tight">{selectedModule.title}</h2>
+                                    </div>
+                                    <button onClick={() => setSelectedModule(null)} className="flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white px-5 py-3 rounded-2xl transition-all shadow-sm active:scale-95 border border-white/30" title="Schließen">
+                                        <Icon name="x" size={24} />
+                                        <span className="font-bold uppercase tracking-wider text-sm hidden sm:inline">Schließen</span>
+                                    </button>
+                                </div>
+
+                                {/* Modal Body (Scrollable) */}
+                                <div className="p-8 sm:p-12 overflow-y-auto bg-white custom-scroll">
+                                    <RenderWissensspeicher module={selectedModule} />
+                                </div>
                             </div>
-                            <button onClick={handleLogout} className="text-[10px] font-black uppercase tracking-widest bg-slate-100 hover:bg-red-100 hover:text-red-600 text-slate-500 px-3 py-2 rounded-xl transition-all">Abmelden</button>
+                        </div>
+                    )}
+
+                    {/* Header */}
+                    <header className="bg-[#BF0D3E] text-white pt-12 pb-6 px-6 sm:px-8 shadow-md rounded-b-[2rem] sm:rounded-b-[3rem] relative z-10">
+                        <div className="max-w-5xl mx-auto flex justify-between items-start">
+                            <div className="mr-4">
+                                <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tighter mb-1">Hallo {studentData?.vorname}!</h1>
+                                <p className="text-red-200 font-bold text-sm sm:text-base opacity-90">Klasse {studentData?.klasse} • Gymnasium Thomaeum</p>
+                            </div>
+                            <button onClick={handleLogout} className="flex items-center gap-2 bg-white text-[#BF0D3E] hover:bg-slate-100 px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl sm:rounded-2xl transition-all shadow-lg active:scale-95 shrink-0 mt-1 sm:mt-0" title="Abmelden">
+                                <Icon name="log-out" size={16} className="sm:w-[18px] sm:h-[18px]" />
+                                <span className="font-black uppercase tracking-wider text-[10px] sm:text-xs">Abmelden</span>
+                            </button>
+                        </div>
+                        
+                        {/* Fortschrittsbalken */}
+                        <div className="max-w-5xl mx-auto mt-8 bg-black/10 p-5 rounded-3xl backdrop-blur-sm">
+                            <div className="flex justify-between items-end mb-3">
+                                <span className="font-black uppercase tracking-widest text-xs sm:text-sm text-white">Dein Fortschritt</span>
+                                <span className="font-black text-2xl sm:text-3xl text-white">{progressPercent}%</span>
+                            </div>
+                            <div className="h-4 bg-black/20 rounded-full overflow-hidden shadow-inner relative">
+                                <div className="h-full bg-white rounded-full transition-all duration-1000 ease-out" style={{ width: `${progressPercent}%` }}></div>
+                                <div className="absolute top-0 bottom-0 left-[33.33%] w-1 bg-black/20"></div>
+                                <div className="absolute top-0 bottom-0 left-[66.66%] w-1 bg-black/20"></div>
+                            </div>
+                            <p className="text-right mt-2 text-[10px] font-bold text-red-200 uppercase">{totalCompleted} von {ALL_MODULES.length} Modulen geschafft</p>
                         </div>
                     </header>
 
-                    <div className="bg-white border-b shadow-sm p-4 sticky top-20 z-30">
-                        <div className="max-w-7xl mx-auto flex flex-wrap gap-4 items-center">
-                            <div className="relative flex-grow min-w-[200px]">
-                                <Icon name="search" size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-                                <input type="text" placeholder="Nachname / Vorname suchen..." className="w-full pl-10 pr-4 py-2 bg-slate-50 border rounded-xl text-sm font-semibold outline-none focus:ring-2 focus:ring-red-600" value={searchName} onChange={e => setSearchName(e.target.value)} />
-                            </div>
-                            <select className="bg-slate-50 border rounded-xl px-4 py-2 text-sm font-semibold outline-none focus:ring-2 focus:ring-red-600" value={filterKlasse} onChange={e => setFilterKlasse(e.target.value)}>
-                                <option value="ALL">Alle Klassen</option>
-                                {uniqueKlassen.filter(k => filterJahrgang === "ALL" || k.includes(filterJahrgang)).map(k => <option key={k} value={k}>Klasse {k}</option>)}
-                            </select>
-                            <select className="bg-slate-50 border rounded-xl px-4 py-2 text-sm font-semibold outline-none focus:ring-2 focus:ring-red-600" value={filterJahrgang} onChange={e => {setFilterJahrgang(e.target.value); setFilterKlasse("ALL");}}>
-                                <option value="ALL">Alle Jahrgänge</option>
-                                {uniqueJahrgaenge.map(j => <option key={j} value={j}>Jahrgang {j}</option>)}
-                            </select>
-                            <select className="bg-slate-50 border rounded-xl px-4 py-2 text-sm font-semibold outline-none focus:ring-2 focus:ring-red-600" value={filterModul} onChange={e => setFilterModul(e.target.value)}>
-                                <option value="ALL">Modul auswählen...</option>
-                                {ALL_MODULES.map(m => <option key={m.id} value={m.id}>Modul {m.id}: {m.title}</option>)}
-                            </select>
+                    {/* Content / Module */}
+                    <main className="flex-grow max-w-5xl mx-auto w-full px-4 sm:px-8 mt-[-1rem] sm:mt-[-2rem] relative z-20">
+                        
+                        {/* Navigation für die Jahrgangsstufen */}
+                        <div className="flex gap-3 mb-2 overflow-x-auto pb-4 scrollbar-hide pt-4 sm:pt-6">
+                            {["5-6", "7-8", "9-10"].map(stage => (
+                                <button 
+                                    key={stage} 
+                                    onClick={() => setActiveStage(stage)} 
+                                    className={`px-6 py-3 rounded-2xl font-black transition-all whitespace-nowrap shadow-sm ${activeStage === stage ? 'text-white shadow-md scale-105' : 'bg-white text-slate-400 border border-slate-100 hover:bg-slate-50'}`} 
+                                    style={activeStage === stage ? { backgroundColor: THOMA_RED } : {}}
+                                >
+                                    Klasse {stage}
+                                </button>
+                            ))}
                         </div>
-                        {filterModul !== "ALL" && hasActiveFilters && (
-                            <div className="max-w-7xl mx-auto mt-4 p-4 bg-red-50 rounded-2xl flex flex-wrap items-center justify-between gap-4 border border-red-100">
-                                <div>
-                                    <h3 className="text-sm font-black text-slate-800 uppercase">Massen-Bearbeitung (Modul {filterModul})</h3>
-                                    <p className="text-xs font-medium text-slate-500">Wendet die Aktion auf alle {filteredStudents.length} angezeigten Schüler an.</p>
-                                </div>
-                                <div className="flex gap-2">
-                                    <button disabled={isUpdating} onClick={() => bulkToggle('revoke')} className="bg-white text-slate-700 hover:bg-slate-100 border px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all">Alle Sperren</button>
-                                    <button disabled={isUpdating} onClick={() => bulkToggle('grant')} className="text-white px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all shadow-md" style={{ backgroundColor: THOMA_RED }}>Alle Freischalten</button>
-                                </div>
-                            </div>
-                        )}
-                        {debugMsg && <p className="text-center text-xs font-bold text-green-600 mt-2">{debugMsg}</p>}
-                    </div>
 
-                    <main className="max-w-7xl mx-auto w-full p-8 flex-grow">
-                        {!hasActiveFilters ? (
-                            <div className="bg-white rounded-3xl shadow-sm border border-slate-200 p-12 text-center flex flex-col items-center justify-center min-h-[400px]">
-                                <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center text-slate-300 mb-6"><Icon name="filter" size={40} /></div>
-                                <h2 className="text-2xl font-black text-slate-700 mb-2 tracking-tight">Bereit für die Eingabe</h2>
-                                <p className="text-slate-500 max-w-md font-medium">Die Schülerdaten wurden erfolgreich geladen. Bitte nutze die Filterleiste oben (z.B. nach Klasse oder Modul), um dir eine Auswahl anzeigen zu lassen.</p>
+                        <div className="mb-10">
+                            <h3 className="text-xl font-black text-slate-800 mb-4 flex items-center gap-2">
+                                <Icon name="wrench" size={24} className="text-[#BF0D3E]" /> Skills (Anwendung)
+                            </h3>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                {ALL_MODULES.filter(m => m.stage === activeStage && m.category === 'skills').map(modul => {
+                                    const isDone = studentData?.completedTasks.includes(modul.id);
+                                    const moduleData = studentData?.moduleDates[modul.id];
+                                    let dateDone = "—";
+                                    let teacherName = "";
+                                    if (moduleData) {
+                                        if (typeof moduleData === 'string') { dateDone = moduleData; }
+                                        else { dateDone = moduleData.datum || "—"; teacherName = moduleData.lehrer || ""; }
+                                    }
+
+                                    return (
+                                        <div 
+                                            key={modul.id} 
+                                            onClick={() => { if (isDone) setSelectedModule(modul); }}
+                                            className={`bg-white rounded-2xl p-4 sm:p-5 border-2 transition-all flex flex-col h-full ${isDone ? 'border-green-400 shadow-green-100 shadow-lg cursor-pointer hover:-translate-y-1 hover:shadow-xl' : 'border-slate-100 shadow-sm opacity-90'}`}
+                                        >
+                                            <div className="flex justify-between items-start mb-4">
+                                                <span className="text-[10px] font-black uppercase tracking-widest bg-slate-100 text-slate-500 px-3 py-1 rounded-lg">Klasse {modul.stage}</span>
+                                                {isDone ? (
+                                                    <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white shadow-md shrink-0 ml-2">
+                                                        <Icon name="check" size={16} />
+                                                    </div>
+                                                ) : (
+                                                    <div className="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center text-slate-300 shrink-0 ml-2">
+                                                        <Icon name="lock" size={14} />
+                                                    </div>
+                                                )}
+                                            </div>
+                                            
+                                            <h3 className={`font-black text-base lg:text-lg tracking-tight leading-tight mb-2 flex items-start gap-2 ${isDone ? 'text-slate-800' : 'text-slate-500'}`}>
+                                                <Icon name={modul.icon} size={20} className={`mt-0.5 shrink-0 ${isDone ? 'text-[#BF0D3E]' : 'text-slate-300'}`} />
+                                                {modul.title}
+                                            </h3>
+                                            
+                                            <div className="mt-auto">
+                                                {isDone ? (
+                                                    <div>
+                                                        <div className="text-[10px] font-bold text-green-600 flex flex-col gap-0.5 mt-3 mb-4">
+                                                            <span className="flex items-center gap-1">
+                                                                <Icon name="calendar-check" size={12} />
+                                                                Zertifiziert am {dateDone}
+                                                            </span>
+                                                            {teacherName && <span className="text-[9px] text-green-700 ml-4">durch {teacherName}</span>}
+                                                        </div>
+                                                        <div className="pt-3 border-t border-slate-100 text-center">
+                                                            <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-[#BF0D3E] flex items-center justify-center gap-2 group-hover:text-red-700">
+                                                                <Icon name="book-open" size={14} /> Wissensspeicher
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                ) : (
+                                                    <p className="text-xs font-medium text-slate-400 mt-3">
+                                                        Noch nicht freigeschaltet.
+                                                    </p>
+                                                )}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
                             </div>
-                        ) : (
-                            <div className="bg-white rounded-3xl shadow-lg border overflow-hidden animate-in fade-in duration-300">
-                                <div className="overflow-x-auto">
-                                    <table className="w-full text-left border-collapse min-w-[600px]">
-                                        <thead>
-                                            <tr className="bg-slate-50 text-slate-400 text-xs uppercase tracking-widest font-black border-b">
-                                                <th className="p-4 pl-8">Nachname</th>
-                                                <th className="p-4">Vorname</th>
-                                                <th className="p-4">Klasse</th>
-                                                <th className="p-4 text-center">{filterModul === "ALL" ? "Gesamtfortschritt" : `Status: Modul ${filterModul}`}</th>
-                                                <th className="p-4 text-center w-32">Ansicht</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {filteredStudents.length === 0 ? (
-                                                <tr><td colSpan="5" className="p-8 text-center text-slate-400 font-bold">Keine Schüler für diesen Filter gefunden.</td></tr>
-                                            ) : filteredStudents.map(student => {
-                                                const totalProgress = Math.round((student.completedTasks.length / ALL_MODULES.length) * 100);
-                                                const isModulDone = filterModul !== "ALL" && student.completedTasks.includes(parseInt(filterModul));
-                                                return (
-                                                    <tr key={student.id} className="border-b last:border-0 hover:bg-slate-50 transition-colors">
-                                                        <td className="p-4 pl-8 font-black text-slate-800">{student.nachname || "-"}</td>
-                                                        <td className="p-4 font-semibold text-slate-600">{student.vorname || "-"}</td>
-                                                        <td className="p-4"><span className="bg-slate-100 text-slate-600 px-3 py-1 rounded-lg text-xs font-black uppercase tracking-widest">{student.klasse}</span></td>
-                                                        <td className="p-4 text-center">
-                                                            {filterModul === "ALL" ? (
-                                                                <div className="flex items-center justify-center gap-3">
-                                                                    <div className="w-24 h-2 bg-slate-100 rounded-full overflow-hidden"><div className="h-full bg-green-500" style={{ width: `${totalProgress}%` }}></div></div>
-                                                                    <span className="text-xs font-black text-slate-500 w-8">{totalProgress}%</span>
-                                                                </div>
-                                                            ) : (
-                                                                <button disabled={isUpdating} onClick={() => toggleModuleSingle(student.id, parseInt(filterModul))}
-                                                                    className={`w-8 h-8 rounded-lg flex items-center justify-center mx-auto transition-all ${isModulDone ? 'bg-green-500 text-white shadow-md shadow-green-200 hover:bg-red-500 hover:shadow-red-200' : 'bg-slate-100 text-slate-300 hover:bg-green-500 hover:text-white'}`}
-                                                                    title={isModulDone ? "Klicken zum Entziehen" : "Klicken zum Freischalten"}>
-                                                                    <Icon name={isModulDone ? "check" : "circle"} size={16} />
-                                                                </button>
-                                                            )}
-                                                        </td>
-                                                        <td className="p-4 text-center">
-                                                            <button onClick={() => setViewingStudentId(student.id)}
-                                                                className="flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-slate-800 text-white hover:bg-blue-600 text-[10px] font-black uppercase tracking-widest transition-all mx-auto shadow-md hover:shadow-lg hover:-translate-y-0.5">
-                                                                <Icon name="user" size={14} /> Profil
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                );
-                                            })}
-                                        </tbody>
-                                    </table>
-                                </div>
+                        </div>
+
+                        <div className="mb-4">
+                            <h3 className="text-xl font-black text-slate-800 mb-4 flex items-center gap-2">
+                                <Icon name="brain" size={24} className="text-[#BF0D3E]" /> Reflexion (Umgang)
+                            </h3>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                {ALL_MODULES.filter(m => m.stage === activeStage && m.category === 'reflexion').map(modul => {
+                                    const isDone = studentData?.completedTasks.includes(modul.id);
+                                    const moduleData = studentData?.moduleDates[modul.id];
+                                    let dateDone = "—";
+                                    let teacherName = "";
+                                    if (moduleData) {
+                                        if (typeof moduleData === 'string') { dateDone = moduleData; }
+                                        else { dateDone = moduleData.datum || "—"; teacherName = moduleData.lehrer || ""; }
+                                    }
+
+                                    return (
+                                        <div 
+                                            key={modul.id} 
+                                            onClick={() => { if (isDone) setSelectedModule(modul); }}
+                                            className={`bg-white rounded-2xl p-4 sm:p-5 border-2 transition-all flex flex-col h-full ${isDone ? 'border-green-400 shadow-green-100 shadow-lg cursor-pointer hover:-translate-y-1 hover:shadow-xl' : 'border-slate-100 shadow-sm opacity-90'}`}
+                                        >
+                                            <div className="flex justify-between items-start mb-4">
+                                                <span className="text-[10px] font-black uppercase tracking-widest bg-slate-100 text-slate-500 px-3 py-1 rounded-lg">Klasse {modul.stage}</span>
+                                                {isDone ? (
+                                                    <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white shadow-md shrink-0 ml-2">
+                                                        <Icon name="check" size={16} />
+                                                    </div>
+                                                ) : (
+                                                    <div className="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center text-slate-300 shrink-0 ml-2">
+                                                        <Icon name="lock" size={14} />
+                                                    </div>
+                                                )}
+                                            </div>
+                                            
+                                            <h3 className={`font-black text-base lg:text-lg tracking-tight leading-tight mb-2 flex items-start gap-2 ${isDone ? 'text-slate-800' : 'text-slate-500'}`}>
+                                                <Icon name={modul.icon} size={20} className={`mt-0.5 shrink-0 ${isDone ? 'text-[#BF0D3E]' : 'text-slate-300'}`} />
+                                                {modul.title}
+                                            </h3>
+                                            
+                                            <div className="mt-auto">
+                                                {isDone ? (
+                                                    <div>
+                                                        <div className="text-[10px] font-bold text-green-600 flex flex-col gap-0.5 mt-3 mb-4">
+                                                            <span className="flex items-center gap-1">
+                                                                <Icon name="calendar-check" size={12} />
+                                                                Zertifiziert am {dateDone}
+                                                            </span>
+                                                            {teacherName && <span className="text-[9px] text-green-700 ml-4">durch {teacherName}</span>}
+                                                        </div>
+                                                        <div className="pt-3 border-t border-slate-100 text-center">
+                                                            <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-[#BF0D3E] flex items-center justify-center gap-2 group-hover:text-red-700">
+                                                                <Icon name="book-open" size={14} /> Wissensspeicher
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                ) : (
+                                                    <p className="text-xs font-medium text-slate-400 mt-3">
+                                                        Noch nicht freigeschaltet.
+                                                    </p>
+                                                )}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
                             </div>
-                        )}
+                        </div>
                     </main>
                 </div>
             );
