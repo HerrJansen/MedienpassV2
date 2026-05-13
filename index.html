@@ -79,8 +79,7 @@
             { id: 8, title: "Digitale Kunst & Design", stage: "7-8", category: "skills", icon: "palette" }, 
             { id: 9, title: "Tabellenkalkulation", stage: "7-8", category: "skills", icon: "table" },
             { id: 21, title: "Audio & Podcasts", stage: "9-10", category: "skills", icon: "mic" },
-            { id: 10, title: "Urheberrecht", stage: "7-8", category: "reflexion", icon: "copyright" }, 
-            { id: 11, title: "Quellenkritik", stage: "7-8", category: "reflexion", icon: "check-circle" }, 
+            { id: 10, title: "Digitale Quellenarbeit", stage: "7-8", category: "reflexion", icon: "search-check" }, 
             { id: 12, title: "Datenschutz", stage: "7-8", category: "reflexion", icon: "lock" },
             { id: 22, title: "Social Media Check", stage: "7-8", category: "reflexion", icon: "smartphone" },
             { id: 13, title: "KI-Produktivität", stage: "9-10", category: "skills", icon: "cpu" }, 
@@ -332,29 +331,30 @@
             },
             10: {
                 sections: [
-                    { title: "Fremde Werke nutzen", intro: "Das Internet ist kein kostenloser Selbstbedienungsladen. Fast alles, was du dort findest, ist geschützt.", blocks: [
-                        { type: 'warning', title: 'Du darfst nicht einfach klauen', text: 'Bilder, Texte, Videos und Musik aus dem Internet gehören rechtlich demjenigen, der sie erschaffen hat (dem Urheber). Wenn du einfach ein Bild aus der Google-Bildersuche kopierst und für deine öffentliche Schul-Präsentation nutzt, begehst du eine handfeste Urheberrechtsverletzung!' },
-                        { type: 'info', title: 'Das Recht auf Zitate', text: 'Du darfst kurze Abschnitte aus fremden Texten nutzen, ABER du musst sie zwingend in "Anführungszeichen" setzen und direkt danach angeben, von wem der Text stammt und wo du ihn gefunden hast (Quellenangabe).' }
+                    { title: "1. Quellen finden und bewerten", intro: "Im Geschichtsunterricht lernst du, Quellen kritisch zu analysieren. Dasselbe Handwerkszeug brauchst du im digitalen Alltag – denn im Internet kann jeder alles behaupten.", blocks: [
+                        { type: 'info', title: 'Was ist überhaupt eine Quelle?', text: 'Eine Quelle ist alles, woraus du Informationen beziehst: ein Wikipedia-Artikel, ein YouTube-Video, ein Zeitungsartikel, ein Foto oder ein historisches Dokument. Entscheidend ist immer die Frage: **Wer hat das erstellt, wann, und mit welchem Ziel?**' },
+                        { type: 'warning', title: 'Fake News erkennen', text: 'Absichtlich erfundene oder verfälschte Nachrichten (Fake News) sollen Leser emotional aufregen, Klicks generieren oder politische Gegner schädigen. Ein sicheres Warnsignal: reißerische Überschriften mit Ausrufezeichen, extreme Emotionalisierung oder fehlende Quellenangaben. Seriöse Medien wie die Tagesschau verzichten auf solche Mittel.', image: '' },
+                        { type: 'standard', title: 'Die 2-Quellen-Regel', text: 'Lies eine schockierende Behauptung? Suche dasselbe Thema bei Google News. Berichten auch andere, unabhängige und seriöse Medien darüber? Wenn nicht, ist es mit hoher Wahrscheinlichkeit falsch oder stark übertrieben.' },
+                        { type: 'tip', title: 'Bilder-Rückwärtssuche', text: 'Oft werden echte Fotos aus einem anderen Kontext herausgerissen und neu interpretiert. Lade ein verdächtiges Bild bei der **Google Bilderrückwärtssuche** hoch – Google zeigt dir, wann und wo es zum ersten Mal auftauchte.' }
                     ]},
-                    { title: "Die legale Lösung", intro: "Es gibt Millionen von Bildern, die du völlig legal und kostenlos nutzen darfst.", blocks: [
-                        { type: 'success', title: 'Creative Commons (CC)', text: 'Viele Künstler stellen ihre Werke unter "Creative Commons" Lizenzen ins Netz. Das bedeutet: "Du darfst mein Bild nutzen, solange du meinen Namen nennst."', image: '' },
-                        { type: 'tip', title: 'Freie Bilddatenbanken nutzen', text: 'Anstatt bei Google zu suchen, nutze Plattformen wie **Pixabay.com**, **Unsplash.com** oder **Pexels.com**. Die Fotografen dort haben ihre Bilder explizit zur freien, legalen Nutzung für alle freigegeben.' }
+                    { title: "2. Quellen legal nutzen und zitieren", intro: "Wer Quellen findet, muss wissen, was er damit tun darf – und was nicht. Das Urheberrecht schützt die Arbeit anderer Menschen.", blocks: [
+                        { type: 'warning', title: 'Das Internet ist kein Selbstbedienungsladen', text: 'Bilder, Texte, Videos und Musik aus dem Internet gehören rechtlich dem, der sie erstellt hat (dem Urheber). Ein Bild aus der Google-Bildersuche einfach in eine Präsentation zu kopieren ist eine Urheberrechtsverletzung – auch in der Schule.' },
+                        { type: 'info', title: 'Zitieren ist Pflicht', text: 'Du darfst kurze Abschnitte aus fremden Texten nutzen, aber du musst sie zwingend in **„Anführungszeichen"** setzen und direkt danach angeben, von wem der Text stammt und wo du ihn gefunden hast. Das gilt für Wikipedia genauso wie für gedruckte Bücher.' },
+                        { type: 'success', title: 'Freie Quellen nutzen', text: 'Viele Inhalte sind explizit zur freien Nutzung freigegeben. Für Bilder: **Pixabay.com**, **Unsplash.com** oder **Pexels.com**. Für Texte und historische Dokumente: **Wikimedia Commons** oder das **Deutsche Digitale Archiv**. Für Musik: **ccmixter.org** oder die **YouTube Audio Library**.' },
+                        { type: 'tip', title: 'Creative Commons (CC)', text: 'Viele Urheber stellen ihre Werke unter Creative-Commons-Lizenzen. Die häufigste lautet **CC BY** – du darfst das Werk frei nutzen, musst aber den Namen des Urhebers nennen. Achte beim Download immer auf das Lizenzkürzel.' }
+                    ]},
+                    { title: "3. Sauber dokumentieren", intro: "Eine korrekte Quellenangabe ist keine Formalie – sie zeigt, dass du sorgfältig und ehrlich gearbeitet hast.", blocks: [
+                        { type: 'standard', title: 'So sieht eine vollständige Quellenangabe aus', text: 'Eine Quellenangabe enthält immer: **Autor oder Urheber** (falls bekannt) – **Titel des Werkes** – **Erscheinungsjahr** – **URL** (bei Online-Quellen) – **Datum des Abrufs**. Beispiel: *Bundeszentrale für politische Bildung: „Was sind Fake News?", 2022, www.bpb.de, abgerufen am 12.05.2026.*' },
+                        { type: 'info', title: 'Das Impressum als Qualitätsmerkmal', text: 'Seriöse Webseiten haben ein **Impressum** – eine gesetzlich vorgeschriebene Seite, die angibt, wer rechtlich für den Inhalt verantwortlich ist. Fehlt das Impressum, ist das ein starkes Warnsignal für eine unseriöse oder anonyme Quelle.' }
                     ]}
                 ],
-                missions: ["Gehe auf die Plattform 'Pixabay.com' und suche nach einem Foto von einer großen Stadt.", "Finde heraus, was unter dem Bild bei der Lizenz steht (Meistens: Freie kommerzielle Nutzung, kein Bildnachweis nötig).", "Kopiere einen Satz aus Wikipedia in ein Textdokument und setze ihn korrekt in Anführungszeichen.", "Schreibe die genaue URL (den Link zur Webseite) als saubere Quellenangabe direkt unter dein Zitat.", "Erkläre einem Mitschüler in eigenen Worten, was das Urheberrecht eigentlich schützen soll."]
-            },
-            11: {
-                sections: [
-                    { title: "Die Lüge im Netz", intro: "Jeder kann im Internet alles behaupten. Das macht es so gefährlich für die Demokratie.", blocks: [
-                        { type: 'warning', title: 'Was sind Fake News?', text: 'Fake News sind absichtlich erfundene oder stark verfälschte Nachrichten. Sie sollen Leser wütend machen, Klicks generieren (um Geld mit Werbung zu verdienen) oder politische Gegner schlecht aussehen lassen.', image: '' },
-                        { type: 'info', title: 'Reißerische Titel (Clickbait)', text: 'Wenn Überschriften stark emotional machen ("Du wirst nicht glauben was passiert!" oder "SKANDAL!"), nennt man das Clickbait. Sei hier extrem misstrauisch. Seriöse Nachrichten (wie die Tagesschau) nutzen keine Ausrufezeichen in Überschriften.' }
-                    ]},
-                    { title: "Wahrheit finden", intro: "Wie du Lügen in wenigen Minuten entlarven kannst.", blocks: [
-                        { type: 'standard', title: 'Die 2-Quellen-Regel', text: 'Wenn du online eine wirklich krasse oder schockierende Behauptung liest, suche das Thema bei Google News. Berichten auch seriöse, große Medien darüber? Wenn nicht, ist es mit hoher Wahrscheinlichkeit Fake.' },
-                        { type: 'tip', title: 'Bilder-Rückwärtssuche', text: 'Oft werden echte Bilder aus der Vergangenheit genommen und in einen falschen, neuen Zusammenhang gesetzt. Lade das Bild bei der "Google Bilderrückwärtssuche" hoch. Google zeigt dir dann, wann und wo dieses Bild zum allerersten Mal im Internet aufgetaucht ist.' }
-                    ]}
-                ],
-                missions: ["Suche eine aktuelle Schlagzeile auf einer seriösen Nachrichten-Webseite (z.B. tagesschau.de).", "Suche exakt dasselbe Thema bei Google. Berichten auch andere große Medien übereinstimmend darüber?", "Suche das Impressum auf der Homepage eurer Schule (Wer ist rechtlich verantwortlich für das, was dort steht?).", "Finde heraus, wie genau die 'Google Bilderrückwärtssuche' funktioniert.", "Diskutiert kurz: Warum erfinden Menschen eigentlich absichtlich Fake News?"]
+                missions: [
+                    "Suche eine aktuelle Schlagzeile auf tagesschau.de und prüfe mit der 2-Quellen-Regel, ob andere seriöse Medien dasselbe berichten.",
+                    "Finde ein Bild auf Pixabay.com zu einem Thema aus dem Geschichtsunterricht und notiere die genaue Lizenzangabe.",
+                    "Kopiere einen Satz aus einem Wikipedia-Artikel in ein Textdokument und schreibe darunter eine vollständige Quellenangabe.",
+                    "Öffne eine beliebige Nachrichtenwebseite und suche das Impressum: Wer ist dort als Verantwortlicher eingetragen?",
+                    "Lade ein Bild aus den Nachrichten bei der Google Bilderrückwärtssuche hoch und schaue, in welchem ursprünglichen Kontext es aufgetaucht ist."
+                ]
             },
             12: {
                 sections: [
