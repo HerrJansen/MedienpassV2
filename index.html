@@ -95,24 +95,73 @@
             1: {
                 sections: [
                     {
-                        title: "1. Hardware & Bedienung",
-                        intro: "Bevor wir richtig loslegen, müssen wir unser Werkzeug beherrschen. Ein Computer macht immer genau das, was du ihm sagst – du musst nur wissen wie!",
+                        title: "1. Hardware – Die wichtigsten Bauteile",
+                        intro: "Ein Computer ist kein Zauberkästchen – er besteht aus klar definierten Bauteilen, die jeweils eine bestimmte Aufgabe haben. Wer sie kennt, versteht auch, warum manche Dinge schnell oder langsam sind, und weiß, was zu tun ist, wenn etwas nicht funktioniert.",
                         blocks: [
                             {
-                                type: 'standard',
-                                title: 'Maus & Tastatur',
-                                text: 'Der **Linksklick** wählt Dinge aus oder öffnet Programme. Der **Rechtsklick** öffnet ein verstecktes Kontextmenü mit weiteren Optionen (z.B. Kopieren, Umbenennen, Löschen). Halte die **Shift-Taste** gedrückt, um einzelne Buchstaben groß zu schreiben. Die **Caps-Lock-Taste** macht dauerhaft alles groß – drücke sie sofort wieder, wenn du sie aus Versehen erwischt hast!',
-                                image: ''
-                            },
-                            {
-                                type: 'warning',
-                                title: 'Kabel und Anschlüsse richtig behandeln',
-                                text: 'Ziehe Stecker (USB, Kopfhörer, Strom) immer am dicken Plastikkopf heraus – niemals am weichen Kabel. Sonst brechen die feinen Drähte im Inneren und das Gerät ist dauerhaft kaputt.'
+                                type: 'info',
+                                title: 'Prozessor (CPU) – das Gehirn',
+                                text: 'Die **CPU (Central Processing Unit)** ist das Gehirn des Computers. Sie führt alle Berechnungen aus – egal ob du ein Spiel spielst, ein Video schaust oder in Word schreibst. Je schneller die CPU, desto flüssiger läuft alles. Bekannte Hersteller sind **Intel** (Core i3/i5/i7/i9) und **AMD** (Ryzen). Für normale Schulaufgaben reicht ein Core i5 oder Ryzen 5 problemlos.'
                             },
                             {
                                 type: 'info',
-                                title: 'Ergonomie und Sicherheit am Arbeitsplatz',
-                                text: 'Stelle deinen Stuhl so ein, dass deine Augen ungefähr auf Höhe des oberen Bildschirmrands sind. Essen und Trinken gehören nicht direkt neben die Tastatur! Wenn du deinen Platz verlässt, sperre den Bildschirm mit der Tastenkombination `Windows + L`.'
+                                title: 'Arbeitsspeicher (RAM) – der Schreibtisch',
+                                text: 'Der **RAM (Random Access Memory)** ist der kurzfristige Arbeitsspeicher – wie ein Schreibtisch, auf dem du gerade arbeitest. Alles, was du gerade geöffnet hast (Browser, Word, Musik), liegt im RAM. Wenn du den Computer ausschaltest, wird der RAM geleert – nichts bleibt dauerhaft gespeichert. Mehr RAM bedeutet: mehr Programme gleichzeitig, ohne dass es ruckelt. **8 GB** reichen für den Schulalltag, **16 GB** sind komfortabler.'
+                            },
+                            {
+                                type: 'info',
+                                title: 'Festplatte / SSD – der Aktenschrank',
+                                text: 'Hier werden alle Dateien dauerhaft gespeichert – auch wenn der Strom aus ist. Eine **HDD (Hard Disk Drive)** ist günstig und hat viel Platz, aber mechanisch (drehende Scheiben) und langsamer. Eine **SSD (Solid State Drive)** hat keine beweglichen Teile, startet und lädt Dateien viel schneller, ist robuster gegen Stöße, aber etwas teurer. Moderne Schulcomputer und Laptops haben fast immer eine SSD. Typische Größen: **256 GB** bis **1 TB**.'
+                            },
+                            {
+                                type: 'info',
+                                title: 'Grafikkarte (GPU) – der Zeichner',
+                                text: 'Die **GPU (Graphics Processing Unit)** berechnet alles, was du auf dem Bildschirm siehst. Einfache Aufgaben (Texte, Tabellen, Webseiten) übernimmt die in die CPU integrierte **Onboard-Grafik** – das reicht für den Schulalltag völlig. Für anspruchsvolle Aufgaben wie 3D-Spiele, Videobearbeitung oder KI-Anwendungen braucht man eine separate, leistungsstarke GPU (z.B. von **NVIDIA** oder **AMD**).'
+                            },
+                            {
+                                type: 'standard',
+                                title: 'Bildschirm (Monitor)',
+                                text: 'Der Monitor zeigt dir alles an. Wichtige Kenngrößen: Die **Auflösung** (z.B. **1920×1080 Pixel = Full HD**) bestimmt, wie scharf das Bild ist. Die **Bildwiederholrate** (z.B. 60 Hz) gibt an, wie flüssig Bewegungen dargestellt werden. Der **Zoll-Wert** (z.B. 24") beschreibt die Bildschirmdiagonale. Für normale Schulaufgaben reicht Full HD mit 60 Hz und 22–24 Zoll völlig aus.'
+                            },
+                            {
+                                type: 'standard',
+                                title: 'Maus & Tastatur',
+                                text: 'Der **Linksklick** wählt Dinge aus oder öffnet Programme. Der **Rechtsklick** öffnet ein Kontextmenü (Kopieren, Umbenennen, Löschen). Das **Scrollrad** scrollt durch Seiten. Auf der Tastatur: **Shift** (gedrückt halten) = einzelner Großbuchstabe. **Caps Lock** = dauerhaft Großbuchstaben. **Tab** = Einrücken in Tabellen oder Formularen. **Entf** = löscht das Zeichen rechts vom Cursor oder eine markierte Datei. **Backspace** = löscht das Zeichen links vom Cursor.'
+                            },
+                            {
+                                type: 'standard',
+                                title: 'Lautsprecher, Kopfhörer & Mikrofon',
+                                text: 'Audio-Ausgabe läuft über **Lautsprecher** (intern oder extern) oder **Kopfhörer**. Die Lautstärke regelst du über das Lautsprecher-Symbol in der Taskleiste unten rechts oder über die Funktionstasten auf dem Laptop. Ein **Mikrofon** nimmt deinen Ton auf – entweder eingebaut (im Laptop) oder extern (via USB oder Klinke). Für Videokonferenzen und Aufnahmen gilt: Ein externes Mikrofon liefert deutlich bessere Qualität.'
+                            },
+                            {
+                                type: 'standard',
+                                title: 'Webcam',
+                                text: 'Eine **Webcam** überträgt dein Bild bei Videokonferenzen (Teams, Zoom). In fast allen Laptops ist eine eingebaut – erkennbar am kleinen Punkt oben an der Bildschirmkante. Bei Desktop-PCs wird sie extern per USB angeschlossen. Die Webcam hat oft auch ein eingebautes Mikrofon. Viele Laptops haben einen **Schieber oder eine Abdeckung** über der Kamera – nutze sie zum Schutz der Privatsphäre.'
+                            },
+                            {
+                                type: 'standard',
+                                title: 'Drucker & Scanner',
+                                text: 'Ein **Drucker** wird per USB oder WLAN mit dem Computer verbunden. Beim ersten Anschluss muss ein **Treiber** installiert werden (oft automatisch). Drucken: **Strg + P** öffnet das Druckmenü in fast jedem Programm. Ein **Scanner** digitalisiert Papierdokumente als Bilddatei oder PDF – oft als kombiniertes Gerät mit dem Drucker (**Multifunktionsgerät**).'
+                            },
+                            {
+                                type: 'info',
+                                title: 'WLAN-Router – das Tor zum Internet',
+                                text: 'Der **Router** verbindet dein Heimnetzwerk mit dem Internet. Er sendet ein **WLAN-Signal (Wi-Fi)** aus, mit dem sich Geräte drahtlos verbinden. Der Router hat eine Adresse (**IP-Adresse**, meistens 192.168.1.1 oder 192.168.0.1), über die man seine Einstellungen im Browser aufrufen kann. Wenn das Internet nicht funktioniert: Router aus- und nach 30 Sekunden wieder einschalten – löst die meisten Probleme.'
+                            },
+                            {
+                                type: 'standard',
+                                title: 'Anschlüsse und Schnittstellen',
+                                text: '**USB-A** (klassischer rechteckiger Stecker) für Maus, Tastatur, USB-Sticks. **USB-C** (oval, beidseitig steckbar) – moderner, schneller, wird Standard bei Laptops und Handys. **HDMI** überträgt Bild und Ton zum Monitor oder Beamer. **DisplayPort** ähnlich wie HDMI, oft an Monitoren und Gaming-PCs. **Klinke (3,5 mm)** – runder Anschluss für Kopfhörer und Mikrofon. **SD-Kartenslot** – für Speicherkarten aus Kameras.'
+                            },
+                            {
+                                type: 'warning',
+                                title: 'Kabel richtig behandeln & USB-Sticks sicher auswerfen',
+                                text: 'Ziehe Stecker immer am dicken Plastikkopf heraus – niemals am Kabel. USB-Sticks vor dem Abziehen immer sicher auswerfen: **Rechtsklick auf das Symbol im Explorer → „Auswerfen"**. Wenn du einfach abziehst, können Daten beschädigt oder verloren gehen. Beim Herunterfahren des Computers: Warte, bis der Bildschirm komplett schwarz ist – erst dann Strom trennen.'
+                            },
+                            {
+                                type: 'tip',
+                                title: 'Ergonomie am Arbeitsplatz',
+                                text: 'Stelle deinen Stuhl so ein, dass deine Augen ungefähr auf Höhe des **oberen Bildschirmrands** sind – so vermeidest du Nackenschmerzen. Halte ca. **50–70 cm Abstand** zum Bildschirm. Platziere die Tastatur so, dass deine Unterarme waagerecht liegen. Essen und Trinken gehören nicht direkt neben die Tastatur. Verlässt du deinen Platz: Bildschirm sperren mit `Windows + L`.'
                             }
                         ]
                     },
@@ -123,69 +172,131 @@
                             {
                                 type: 'info',
                                 title: 'Deine Kommandozentrale: Der Windows Explorer',
-                                text: 'Der **Windows Explorer** zeigt dir alle Ordner und Dateien auf deinem Computer wie die Äste eines Baumes. Öffne ihn blitzschnell mit `Windows + E`. Auf der linken Seite siehst du die großen Hauptordner, rechts deren Inhalt.',
+                                text: 'Der **Windows Explorer** zeigt dir alle Ordner und Dateien auf deinem Computer wie die Äste eines Baumes. Öffne ihn blitzschnell mit `Windows + E`. Auf der linken Seite siehst du die großen Hauptordner, rechts deren Inhalt. Oben in der Adressleiste siehst du immer, wo du dich gerade befindest.',
                                 image: ''
                             },
                             {
                                 type: 'tip',
                                 title: 'Professionelle Dateinamen – die 3 goldenen Regeln',
-                                text: 'Nenne Dateien niemals `Unbenannt` oder `asdf`. **1. Sei genau:** Schreibe Fach und Thema hinein (z.B. `Deutsch_Referat.docx`). **2. Das Datum gehört an den Anfang** – und zwar umgekehrt: `2026-05-12_...`. So sortiert der Computer alle Dateien automatisch in der richtigen Reihenfolge. **3. Keine Sonderzeichen** wie `? / \\ * : < > |` im Dateinamen.'
+                                text: 'Nenne Dateien niemals `Unbenannt` oder `asdf`. **1. Sei genau:** Schreibe Fach und Thema hinein (z.B. `Deutsch_Referat.docx`). **2. Das Datum gehört an den Anfang** – und zwar umgekehrt: `2026-05-12_...`. So sortiert der Computer alle Dateien automatisch chronologisch. **3. Keine Sonderzeichen** wie `? / \\ * : < > |` im Dateinamen – sie sind unter Windows verboten.'
                             },
                             {
                                 type: 'standard',
                                 title: 'Kopieren, Ausschneiden und Einfügen',
-                                text: 'Nutze lieber Tastaturkürzel als Drag & Drop, um ungewollte Kopien zu vermeiden: **`Strg + C`** kopiert eine Datei, **`Strg + X`** schneidet sie aus (= verschiebt sie) und **`Strg + V`** fügt sie am Zielort ein.',
+                                text: 'Nutze lieber Tastaturkürzel als Drag & Drop: **`Strg + C`** kopiert, **`Strg + X`** schneidet aus (= verschiebt), **`Strg + V`** fügt ein. Willst du mehrere Dateien auf einmal markieren: Halte **Strg** gedrückt und klicke die Dateien einzeln an. Für einen zusammenhängenden Block: erste Datei anklicken, dann **Shift** halten und letzte anklicken.',
                                 image: ''
+                            },
+                            {
+                                type: 'info',
+                                title: 'Dateiformate verstehen',
+                                text: 'Jede Datei hat eine **Dateiendung**, die ihr Format anzeigt. Wichtige Formate: **.docx** = Word-Dokument, **.pdf** = unveränderliches Dokument, **.xlsx** = Excel-Tabelle, **.pptx** = PowerPoint-Präsentation, **.jpg / .png** = Bilddateien, **.mp4** = Video, **.mp3** = Audio. Lösche diese Endung beim Umbenennen niemals – sonst erkennt Windows die Datei nicht mehr!'
                             },
                             {
                                 type: 'warning',
                                 title: 'Der Papierkorb bringt sich nicht selbst raus',
-                                text: 'Wenn du die `Entf`-Taste drückst, landet die Datei nur im Papierkorb – der Speicherplatz ist noch belegt. Erst wenn du mit Rechtsklick auf den Papierkorb **„Papierkorb leeren"** wählst, wird der Platz wirklich frei.'
+                                text: 'Wenn du die `Entf`-Taste drückst, landet die Datei nur im Papierkorb – der Speicherplatz ist noch belegt. Erst wenn du mit Rechtsklick auf den Papierkorb **„Papierkorb leeren"** wählst, wird der Platz wirklich frei. Mit `Strg + Z` kurz nach dem Löschen kannst du eine Datei sofort wiederherstellen.'
                             }
                         ]
                     },
                     {
-                        title: "3. Arbeiten mit Word",
-                        intro: "Microsoft Word ist dein wichtigstes Werkzeug für Hausaufgaben, Referate und alle längeren Texte. Diese Grundlagen musst du sitzen!",
+                        title: "3. Word – Grundlagen und Tastenkürzel",
+                        intro: "Bevor du formatierst, musst du die Grundbedienung sitzen haben. Diese Tastenkürzel sparst du dir täglich Minuten.",
                         blocks: [
                             {
                                 type: 'warning',
                                 title: 'Speichern und Retten',
-                                text: 'Drücke während des Schreibens regelmäßig `Strg + S` (Speichern), damit nichts verloren geht. Wenn du aus Versehen Text gelöscht hast: Keine Panik! Mit `Strg + Z` machst du den letzten Schritt rückgängig – das funktioniert mehrfach hintereinander.',
-                                image: ''
-                            },
-                            {
-                                type: 'tip',
-                                title: 'Formatvorlagen richtig nutzen',
-                                text: 'Mache eine Überschrift nicht einfach nur groß und fett. Markiere das Wort und wähle oben in der Leiste die **Formatvorlage „Überschrift 1"**. Nur so weiß Word, dass es sich wirklich um eine Überschrift handelt – das ist wichtig für automatisch erstellte Inhaltsverzeichnisse!'
-                            },
-                            {
-                                type: 'info',
-                                title: 'Lesbarkeit und Schrift',
-                                text: 'Wähle eine ruhige, gut lesbare Schrift (z.B. **Arial** oder **Calibri**) in der Größe 11 oder 12. Nutze keine verschnörkelten Schriften für längere Texte! Drücke nach einem abgeschlossenen Gedanken die Enter-Taste, um einen neuen Absatz zu beginnen. Das Auge des Lesers braucht Pausen.'
+                                text: 'Drücke während des Schreibens regelmäßig **`Strg + S`** – so geht nichts verloren. Hast du aus Versehen Text gelöscht? **`Strg + Z`** macht den letzten Schritt rückgängig, beliebig oft. **`Strg + Y`** stellt einen rückgängig gemachten Schritt wieder her. Speichere neue Dokumente sofort unter einem sinnvollen Namen ab, bevor du anfängst zu schreiben.'
                             },
                             {
                                 type: 'standard',
+                                title: 'Die wichtigsten Tastenkürzel',
+                                text: '`Strg + S` = Speichern · `Strg + Z` = Rückgängig · `Strg + Y` = Wiederholen · `Strg + C` = Kopieren · `Strg + X` = Ausschneiden · `Strg + V` = Einfügen · `Strg + A` = Alles markieren · `Strg + F` = Suchen · `Strg + H` = Suchen & Ersetzen · `Strg + P` = Drucken · `Strg + B` = **Fett** · `Strg + I` = *Kursiv* · `Strg + U` = Unterstrichen.'
+                            },
+                            {
+                                type: 'tip',
+                                title: 'Formatvorlagen – der richtige Weg für Überschriften',
+                                text: 'Mache eine Überschrift niemals nur durch manuelle Vergrößerung und Fettdruck. Markiere das Wort und wähle oben in der Leiste: **„Überschrift 1"** für Hauptüberschriften (z.B. Kapitel), **„Überschrift 2"** für Unterüberschriften. Nur so kann Word später automatisch ein **Inhaltsverzeichnis** erstellen – und die Struktur deines Dokuments bleibt konsistent.'
+                            },
+                            {
+                                type: 'info',
+                                title: 'Suchen und Ersetzen',
+                                text: 'Mit **`Strg + F`** öffnest du die Suchleiste und findest jedes Wort im Dokument sofort. Mit **`Strg + H`** öffnest du „Suchen und Ersetzen": Trage oben das gesuchte Wort ein (z.B. „Schüler") und unten das neue Wort (z.B. „Lernende") – dann klicke **„Alle ersetzen"**. Word tauscht alle Vorkommen auf einmal aus. Praktisch bei langen Texten!'
+                            },
+                            {
+                                type: 'tip',
+                                title: 'Rechtschreibprüfung richtig nutzen',
+                                text: 'Rot unterstrichene Wörter = Rechtschreibfehler. Blau unterstrichene Wörter = mögliche Grammatikfehler. **Rechtsklick** auf das unterstrichene Wort zeigt Korrekturvorschläge. Mit **F7** öffnest du die vollständige Rechtschreibprüfung für das gesamte Dokument. Wichtig: Die Prüfung ist nicht unfehlbar – lies deinen Text trotzdem selbst durch!'
+                            }
+                        ]
+                    },
+                    {
+                        title: "4. Word – Eine Seite professionell formatieren",
+                        intro: "Ein gut formatiertes Dokument wirkt professionell und ist leichter zu lesen. Hier lernst du Schritt für Schritt, wie du eine Seite richtig einrichtest.",
+                        blocks: [
+                            {
+                                type: 'info',
+                                title: 'Seitenränder einstellen',
+                                text: 'Gehe zu **Layout → Seitenränder**. Für schulische Dokumente empfiehlt sich: oben **2,5 cm**, unten **2,5 cm**, links **3 cm** (Platz für Heftung oder Korrekturrand), rechts **2 cm**. Alternativ wähle die Voreinstellung **„Normal"** (alle Seiten 2,54 cm) als guten Ausgangspunkt. Diese Einstellung gilt für das gesamte Dokument.'
+                            },
+                            {
+                                type: 'info',
+                                title: 'Schriftart und -größe festlegen',
+                                text: 'Markiere deinen gesamten Text mit **`Strg + A`**. Wähle oben eine ruhige, gut lesbare Schriftart: **Calibri**, **Arial** oder **Times New Roman**. Die Schriftgröße für den Fließtext sollte **11 oder 12 Punkt** betragen. Überschriften werden durch Formatvorlagen automatisch größer – verändere deren Größe niemals manuell, sonst verlierst du die Einheitlichkeit.'
+                            },
+                            {
+                                type: 'standard',
+                                title: 'Zeilenabstand und Absatzabstand einstellen',
+                                text: 'Markiere alles mit **`Strg + A`**. Gehe zu **Start → Absatz → Zeilenabstand**. Für schulische Arbeiten ist **1,5-facher Abstand** standard – das macht den Text leichter lesbar und gibt Lehrkräften Raum für Korrekturen. Für den Abstand zwischen Absätzen: **„Abstand nach"** auf **6 Punkt** setzen. So entsteht zwischen Absätzen automatisch etwas Luft – ohne eine leere Zeile einzufügen.'
+                            },
+                            {
+                                type: 'standard',
+                                title: 'Textausrichtung',
+                                text: 'Markiere deinen Text und wähle die Ausrichtung: **Linksbündig** (Strg + L) – Standard für Fließtext, natürlich zu lesen. **Zentriert** (Strg + E) – für Titelseiten und Überschriften auf einer eigenen Zeile. **Rechtsbündig** (Strg + R) – selten, z.B. für Datum oben rechts. **Blocksatz** (Strg + J) – beide Seiten bündig, wirkt formell; Achtung: kann große Lücken zwischen Wörtern erzeugen.'
+                            },
+                            {
+                                type: 'standard',
+                                title: 'Aufzählungen und Nummerierungen',
+                                text: 'Für **Aufzählungslisten** (Spiegelstriche/Punkte): Klicke im Start-Tab auf das Symbol mit den Punkten und Strichen. Für **nummerierte Listen** (1., 2., 3.): Klicke das Symbol mit den Zahlen daneben. Word setzt die Nummerierung automatisch fort. Mit der **Tab-Taste** rückst du einen Punkt in der Hierarchie nach unten ein (z.B. von 1. zu 1.a). Mit **Shift + Tab** gehst du wieder nach oben.'
+                            },
+                            {
+                                type: 'standard',
+                                title: 'Tabellen einfügen',
+                                text: 'Gehe zu **Einfügen → Tabelle** und ziehe mit der Maus die gewünschte Anzahl an Zeilen und Spalten auf. Mit der **Tab-Taste** springst du von Zelle zu Zelle (am Ende einer Zeile automatisch in die nächste). Mit **Tab in der letzten Zelle** fügst du eine neue Zeile ein. Über **Tabellenentwurf** (erscheint oben, wenn die Tabelle angeklickt ist) kannst du Farben und Rahmenlinien gestalten.'
+                            },
+                            {
+                                type: 'tip',
+                                title: 'Kopf- und Fußzeile einfügen',
+                                text: '**Doppelklicke** ganz oben auf der Seite (über dem Text) – das öffnet die Kopfzeile. Hier kannst du Name, Fach oder Titel eintragen. Unten auf der Seite ist die Fußzeile. Automatische **Seitenzahlen** fügst du ein über: **Einfügen → Seitenzahl → Unten auf der Seite → Einfache Zahl**. Die Zahl erscheint dann auf jeder Seite automatisch. Mit **Doppelklick** auf den normalen Text verlässt du die Kopf-/Fußzeile wieder.'
+                            },
+                            {
+                                type: 'tip',
+                                title: 'Automatisches Inhaltsverzeichnis erstellen',
+                                text: 'Voraussetzung: Du hast deine Überschriften mit den Formatvorlagen **„Überschrift 1"** und **„Überschrift 2"** formatiert. Dann: Setze den Cursor an die Stelle, wo das Inhaltsverzeichnis erscheinen soll. Gehe zu **Referenzen → Inhaltsverzeichnis → Automatische Tabelle 1**. Word erstellt das Verzeichnis mit allen Überschriften und Seitenzahlen. Wenn du später etwas änderst: Rechtsklick auf das Verzeichnis → **„Felder aktualisieren"**.'
+                            },
+                            {
+                                type: 'tip',
                                 title: 'Bilder einfügen ohne Chaos',
-                                text: 'Oft zerreißt ein eingefügtes Bild den gesamten Text. Klicke das Bild an, wähle die kleinen **Layoutoptionen** daneben und stelle **„Quadrat"** ein. Jetzt fließt dein Text wunderschön um das Bild herum.',
-                                image: ''
+                                text: 'Gehe zu **Einfügen → Bilder → Dieses Gerät**. Das Bild erscheint oft mitten im Text und zerreißt alles. Klicke das Bild an, wähle die kleinen **Layoutoptionen** (erscheinen rechts neben dem Bild) und stelle **„Quadrat"** ein. Jetzt fließt der Text um das Bild herum. Verändere die Bildgröße immer nur an den **Ecken** (nicht an den Seiten), sonst verzerrt das Bild.'
                             },
                             {
                                 type: 'success',
-                                title: 'Fertige Dokumente immer als PDF speichern',
-                                text: 'Speichere abgegebene Hausaufgaben immer als **PDF** ab (Datei → Speichern unter → PDF). Ein PDF ist wie ein digitales Foto deines Textes – so verschiebt sich beim Öffnen auf einem anderen Computer absolut nichts mehr.'
+                                title: 'Fertige Dokumente als PDF exportieren',
+                                text: 'Gehe zu **Datei → Speichern unter → Dateityp: PDF**. Ein PDF ist wie ein digitales Foto deines Dokuments – Schrift, Abstände und Bilder bleiben auf jedem Computer genau gleich. Abgaben an Lehrkräfte immer als **PDF**, niemals als .docx – die Formatierung könnte sonst beim Öffnen verrutschen, besonders wenn der Empfänger eine andere Word-Version hat.'
                             }
                         ]
                     }
                 ],
                 missions: [
-                    "Mache einen Rechtsklick auf den leeren Desktop und erstelle darüber einen neuen Ordner namens 'Test'.",
-                    "Sperre deinen Bildschirm mit der Tastenkombination Windows + L und entsperre ihn anschließend wieder.",
-                    "Öffne den Windows Explorer mit Win + E und erstelle eine Ordnerstruktur: einen Hauptordner 'Schule' mit je einem Unterordner für drei deiner Fächer.",
-                    "Suche eine vorhandene Datei auf dem Computer und benenne sie nach den Profi-Regeln um: Datum (umgekehrt) + Fach + Thema.",
-                    "Öffne Word, tippe einen kurzen Text über dein Lieblingstier und speichere ihn regelmäßig mit Strg + S.",
-                    "Formatiere eine Überschrift in deinem Dokument mit der Formatvorlage 'Überschrift 1'.",
-                    "Speichere dein fertiges Word-Dokument als PDF-Datei ab und vergleiche beide Versionen miteinander."
+                    "Benenne die wichtigsten Bauteile eines Computers (CPU, RAM, SSD, GPU, Monitor) und erkläre in einem Satz, was jedes davon macht.",
+                    "Stecke einen USB-Stick an deinen Computer, öffne ihn im Explorer und wirf ihn danach sicher aus (Rechtsklick → Auswerfen).",
+                    "Öffne den Windows Explorer (Win + E) und erstelle eine Ordnerstruktur: Hauptordner 'Schule' mit je einem Unterordner für drei deiner Fächer.",
+                    "Suche eine Datei auf deinem Computer und benenne sie nach den Profi-Regeln um: Datum umgekehrt + Fach + Thema (z.B. 2026-05-12_Deutsch_Referat.docx).",
+                    "Öffne Word und richte eine neue Seite ein: Seitenränder (links 3 cm, rechts 2 cm, oben/unten 2,5 cm), Schrift Calibri 12pt, Zeilenabstand 1,5.",
+                    "Schreibe einen kurzen Text mit mindestens zwei Überschriften. Formatiere sie mit den Formatvorlagen 'Überschrift 1' und 'Überschrift 2'.",
+                    "Erstelle aus deinen Überschriften ein automatisches Inhaltsverzeichnis (Referenzen → Inhaltsverzeichnis).",
+                    "Füge eine Tabelle mit 3 Spalten und 4 Zeilen ein und befülle sie mit Beispieldaten. Gestalte sie farblich über 'Tabellenentwurf'.",
+                    "Füge eine Kopfzeile mit deinem Namen und eine automatische Seitenzahl in der Fußzeile ein.",
+                    "Speichere dein fertiges Dokument einmal als .docx und einmal als PDF ab."
                 ]
             },
 
