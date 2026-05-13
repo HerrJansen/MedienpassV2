@@ -46,21 +46,20 @@
         const msalInstance = new msal.PublicClientApplication(msalConfig);
         const msalInitPromise = msalInstance.initialize();
 
-        // ÄNDERUNG: Module 1, 2, 3 zusammengefasst (analog zur Schülerapp)
         const ALL_MODULES = [
-            { id: 1, title: "Word-Führerschein und Dateimanagement", stage: "5-6", category: "skills", icon: "file-text" },
-            { id: 7, title: "Umgang mit PowerPoint", stage: "5-6", category: "skills", icon: "presentation" },
-            { id: 4, title: "Digitale Verantwortung", stage: "5-6", category: "reflexion", icon: "heart-handshake" },
-            { id: 6, title: "Suchmaschinen", stage: "5-6", category: "reflexion", icon: "search" },
-            { id: 19, title: "Sichere Passwörter", stage: "5-6", category: "reflexion", icon: "key" },
-            { id: 8, title: "Digitale Kunst & Design", stage: "7-8", category: "skills", icon: "palette" },
-            { id: 9, title: "Tabellenkalkulation", stage: "7-8", category: "skills", icon: "table" },
-            { id: 21, title: "Audio & Podcasts", stage: "9-10", category: "skills", icon: "mic" },
-            { id: 10, title: "Digitale Quellenarbeit", stage: "7-8", category: "reflexion", icon: "search-check" },
-            { id: 12, title: "Digitale Selbstbestimmung", stage: "7-8", category: "reflexion", icon: "shield-check" },
-            { id: 13, title: "KI-Produktivität", stage: "9-10", category: "skills", icon: "cpu" },
-            { id: 16, title: "Digitale Mündigkeit", stage: "9-10", category: "reflexion", icon: "brain" },
-            { id: 24, title: "Datenökonomie", stage: "9-10", category: "reflexion", icon: "database" }
+            { id: 1,  title: "Word-Führerschein und Dateimanagement", stage: "5-6",  category: "skills",    icon: "file-text",     description: "Hardware-Grundlagen, Ordnerstrukturen und Dateinamen – plus die wichtigsten Word-Funktionen für den Schulalltag." },
+            { id: 7,  title: "Umgang mit PowerPoint",                 stage: "5-6",  category: "skills",    icon: "presentation",  description: "Folien professionell gestalten, den Designer nutzen und frei vor Publikum sprechen statt ablesen." },
+            { id: 4,  title: "Digitale Verantwortung",                stage: "5-6",  category: "reflexion", icon: "heart-handshake", description: "Respektvoller Umgang im Netz, Netiquette im Klassenchat und richtiges Reagieren bei Cybermobbing." },
+            { id: 6,  title: "Suchmaschinen",                         stage: "5-6",  category: "reflexion", icon: "search",        description: "Clever googeln mit Keywords und Suchoperatoren, Werbung erkennen und sichere Kindersuchmaschinen kennenlernen." },
+            { id: 19, title: "Sichere Passwörter",                    stage: "5-6",  category: "reflexion", icon: "key",           description: "Was ein starkes Passwort ausmacht, der Merksatz-Trick – und warum du es niemals teilen solltest." },
+            { id: 8,  title: "Digitale Kunst & Design",               stage: "7-8",  category: "skills",    icon: "palette",       description: "Bilder professionell bearbeiten und Videos schneiden – von Crop und Kontrast bis zur fertigen MP4-Datei." },
+            { id: 9,  title: "Tabellenkalkulation",                   stage: "7-8",  category: "skills",    icon: "table",         description: "Mit Excel oder Calc Daten erfassen, Formeln anwenden und Ergebnisse als Diagramm visualisieren." },
+            { id: 21, title: "Audio & Podcasts",                      stage: "9-10", category: "skills",    icon: "mic",           description: "Professionelle Aufnahmetechnik, mehrspurige Produktion und dramaturgischer Aufbau einer eigenen Podcast-Episode." },
+            { id: 10, title: "Digitale Quellenarbeit",                stage: "7-8",  category: "reflexion", icon: "search-check",  description: "Fake News erkennen, Bilder rückwärts suchen und fremde Inhalte korrekt zitieren und lizenzieren." },
+            { id: 12, title: "Digitale Selbstbestimmung",             stage: "7-8",  category: "reflexion", icon: "shield-check",  description: "Wie Algorithmen und Tracker funktionieren, die Filterblase verstehen und die eigene Privatsphäre schützen." },
+            { id: 13, title: "KI-Produktivität",                      stage: "9-10", category: "skills",    icon: "cpu",           description: "Effektives Prompting mit der Rolle-Aufgabe-Format-Methode, Halluzinationen erkennen und KI transparent einsetzen." },
+            { id: 16, title: "Digitale Mündigkeit",                   stage: "9-10", category: "reflexion", icon: "brain",         description: "Den eigenen digitalen Fußabdruck kennen, KI-Bias und Deepfakes verstehen und mündig mit Algorithmen umgehen." },
+            { id: 24, title: "Datenökonomie",                         stage: "9-10", category: "reflexion", icon: "database",      description: "Das Geschäftsmodell der Tech-Giganten, Micro-Targeting und psychologische Dark Patterns entlarven." }
         ];
 
         const Icon = ({ name, size = 20, className = "" }) => {
