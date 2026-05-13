@@ -110,7 +110,7 @@
                                 </button>
                             ))}
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                             {ALL_MODULES.filter(m => m.stage === activeStage).map(modul => {
                                 const isDone = student.completedTasks.includes(modul.id);
                                 const moduleData = student.moduleDates?.[modul.id];
@@ -122,26 +122,40 @@
                                 return (
                                     <div key={modul.id} onClick={() => !isUpdating && onToggleModule(modul.id)}
                                         title={isDone ? "Klicken zum Sperren" : "Klicken zum Freischalten"}
-                                        className={`bg-white rounded-3xl p-5 sm:p-6 border-2 transition-all cursor-pointer flex flex-col h-full hover:-translate-y-1 ${isUpdating ? 'opacity-50 pointer-events-none' : ''} ${isDone ? 'border-green-400 shadow-green-100 shadow-lg' : 'border-slate-100 shadow-sm hover:border-red-200'}`}>
-                                        <div className="flex justify-between items-start mb-4">
+                                        className={`bg-white rounded-2xl p-6 border-2 transition-all cursor-pointer flex flex-col h-full hover:-translate-y-1 ${isUpdating ? 'opacity-50 pointer-events-none' : ''} ${isDone ? 'border-green-400 shadow-green-100 shadow-lg' : 'border-slate-100 shadow-sm hover:border-red-200'}`}>
+                                        <div className="flex justify-between items-start mb-5">
                                             <span className="text-[10px] font-black uppercase tracking-widest bg-slate-100 text-slate-500 px-3 py-1 rounded-lg">Klasse {modul.stage}</span>
                                             {isDone
-                                                ? <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white shadow-md shrink-0 ml-2"><Icon name="check" size={16} /></div>
-                                                : <div className="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center text-slate-300 hover:bg-red-100 hover:text-red-600 shrink-0 ml-2"><Icon name="plus" size={14} /></div>
+                                                ? <div className="w-9 h-9 bg-green-500 rounded-full flex items-center justify-center text-white shadow-md shrink-0 ml-2"><Icon name="check" size={18} /></div>
+                                                : <div className="w-9 h-9 bg-slate-100 rounded-full flex items-center justify-center text-slate-300 hover:bg-red-100 hover:text-red-600 shrink-0 ml-2"><Icon name="plus" size={16} /></div>
                                             }
                                         </div>
-                                        <h3 className={`font-black text-base lg:text-lg tracking-tight leading-tight mb-2 flex items-start gap-2 ${isDone ? 'text-slate-800' : 'text-slate-500'}`}>
-                                            <Icon name={modul.icon} size={20} className={`mt-0.5 shrink-0 ${isDone ? 'text-green-500' : 'text-slate-300'}`} />
-                                            {modul.title}
-                                        </h3>
+                                        <div className="flex items-start gap-4 mb-3">
+                                            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 ${isDone ? 'bg-red-50' : 'bg-slate-50'}`}>
+                                                <Icon name={modul.icon} size={26} className={isDone ? 'text-[#BF0D3E]' : 'text-slate-300'} />
+                                            </div>
+                                            <h3 className={`font-black text-lg tracking-tight leading-tight ${isDone ? 'text-slate-800' : 'text-slate-500'}`}>
+                                                {modul.title}
+                                            </h3>
+                                        </div>
+                                        <p className={`text-sm leading-relaxed font-medium mb-4 ${isDone ? 'text-slate-500' : 'text-slate-300'}`}>
+                                            {modul.description}
+                                        </p>
                                         <div className="mt-auto">
                                             {isDone ? (
-                                                <div className="mt-3">
-                                                    <p className="text-[10px] sm:text-xs font-bold text-green-600 flex items-center gap-1"><Icon name="calendar-check" size={12} />Zertifiziert am {dateDone}</p>
-                                                    {teacherName && <p className="text-[9px] font-bold text-green-700 ml-4 mt-0.5">durch {teacherName}</p>}
+                                                <div>
+                                                    <div className="text-[10px] font-bold text-green-600 flex flex-col gap-0.5 mb-4">
+                                                        <p className="flex items-center gap-1"><Icon name="calendar-check" size={12} />Zertifiziert am {dateDone}</p>
+                                                        {teacherName && <p className="text-[9px] font-bold text-green-700 ml-4">durch {teacherName}</p>}
+                                                    </div>
+                                                    <div className="pt-3 border-t border-slate-100 text-center">
+                                                        <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-[#BF0D3E] flex items-center justify-center gap-2">
+                                                            <Icon name="lock-open" size={14} /> Klicken zum Sperren
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             ) : (
-                                                <p className="text-xs font-medium text-slate-400 mt-3 flex items-center gap-1"><Icon name="hand" size={14} /> Klicken zum Freischalten</p>
+                                                <p className="text-xs font-medium text-slate-400 flex items-center gap-1"><Icon name="hand" size={14} /> Klicken zum Freischalten</p>
                                             )}
                                         </div>
                                     </div>
