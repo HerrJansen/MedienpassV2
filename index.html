@@ -76,9 +76,8 @@
             { id: 5, title: "Prävention", stage: "5-6", category: "reflexion", icon: "shield-alert" }, 
             { id: 6, title: "Suchmaschinen", stage: "5-6", category: "reflexion", icon: "search" },
             { id: 19, title: "Sichere Passwörter", stage: "5-6", category: "reflexion", icon: "key" },
-            { id: 8, title: "Medienproduktion", stage: "7-8", category: "skills", icon: "video" }, 
+            { id: 8, title: "Digitale Kunst & Design", stage: "7-8", category: "skills", icon: "palette" }, 
             { id: 9, title: "Tabellenkalkulation", stage: "7-8", category: "skills", icon: "table" },
-            { id: 20, title: "Bildbearbeitung", stage: "7-8", category: "skills", icon: "image" },
             { id: 21, title: "Audio & Podcasts", stage: "9-10", category: "skills", icon: "mic" },
             { id: 10, title: "Urheberrecht", stage: "7-8", category: "reflexion", icon: "copyright" }, 
             { id: 11, title: "Quellenkritik", stage: "7-8", category: "reflexion", icon: "check-circle" }, 
@@ -270,17 +269,29 @@
             // ================== KLASSE 7-8 ==================
             8: {
                 sections: [
-                    { title: "1. Technische Bedienung", intro: "Ein gutes Video entsteht nicht beim Filmen, sondern beim Schnitt am Computer oder Tablet.", blocks: [
-                        { type: 'standard', title: 'Die Zeitleiste (Timeline)', text: 'Schnitt-Programme wie iMovie oder CapCut arbeiten mit einer Zeitleiste. Du importierst deine aufgenommenen Clips und legst sie nacheinander ab. Mit dem **Split-Werkzeug (Schere)** zerschneidest du Clips, um langweilige Pausen oder Versprecher herauszulöschen.', image: '' },
-                        { type: 'info', title: 'Audio-Spuren und Ducking', text: 'Gute Videos haben oft leise Hintergrundmusik. Lege die Musik auf eine zweite Audio-Spur unter dein Video. Nutze die Funktion "Ducking" (oder drehe die Lautstärke manuell herunter), damit die Musik leiser wird, sobald jemand im Video spricht.' },
-                        { type: 'warning', title: 'Exportieren (Rendern)', text: 'Wenn du fertig bist, musst du das Video "exportieren" (rendern). Speichere es als **.MP4** Datei ab. Die Projektdatei deines Schnittprogramms kann dein Lehrer nämlich nicht öffnen!' }
+                    { title: "1. Bildbearbeitung", intro: "Ein gutes Foto entsteht nicht nur mit der Kamera – oft ist die Nachbearbeitung entscheidend. Hier lernst du die wichtigsten Werkzeuge kennen.", blocks: [
+                        { type: 'standard', title: 'Zuschneiden (Crop)', text: 'Das wichtigste Werkzeug der Bildbearbeitung! Schneide störende Ränder oder ablenkende Hintergrundelemente weg, um den Fokus des Betrachters gezielt auf dein Hauptmotiv zu lenken.', image: '' },
+                        { type: 'info', title: 'Helligkeit, Kontrast und Farbe', text: 'Ein flaues Bild rettest du durch mehr Kontrast. Aber Vorsicht: Zu viel Helligkeit lässt helle Flächen "ausbrennen" – sie werden komplett weiß und verlieren alle Details. Nutze den Regler **Weißabgleich** (Temperatur), um Farbstiche zu korrigieren: Ein zu gelbes Kunstlicht-Foto wird durch einen Zug ins Blaue neutralisiert.' },
+                        { type: 'warning', title: 'Weniger ist mehr', text: 'Ein Instagram-Filter auf 100% wirkt oft künstlich und billig. Reduziere die Deckkraft auf 30–50% für einen professionellen Look. Und: Verändere niemals Körperproportionen von Menschen – das erzeugt gefährliche und unrealistische Schönheitsideale.', image: '' }
                     ]},
-                    { title: "2. Kriterien für Qualität", intro: "Was unterscheidet ein langweiliges Urlaubsvideo von einem spannenden Clip?", blocks: [
-                        { type: 'tip', title: 'Der Rote Faden (Storytelling)', text: 'Jedes Video braucht einen **Hook** (einen extrem spannenden Anfang in den ersten 3 Sekunden, der den Zuschauer fesselt), einen informativen Hauptteil und ein klares Ende.' },
-                        { type: 'success', title: 'Kurz & Knackig', text: 'Sei gnadenlos beim Schneiden! Entferne rücksichtslos alles, was die Geschichte nicht voranbringt. Besser ein extrem spannendes 2-Minuten-Video als ein langweiliges 10-Minuten-Video.' }
+                    { title: "2. Videobearbeitung", intro: "Ein gutes Video entsteht nicht beim Filmen, sondern beim Schnitt. Wer schneiden kann, kann Geschichten erzählen.", blocks: [
+                        { type: 'standard', title: 'Die Zeitleiste (Timeline)', text: 'Schnitt-Programme wie iMovie oder CapCut arbeiten mit einer Zeitleiste. Du importierst deine Clips und legst sie nacheinander ab. Mit dem **Split-Werkzeug** zerschneidest du Clips, um Pausen oder Versprecher herauszulöschen.', image: '' },
+                        { type: 'tip', title: 'Audio und Musik', text: 'Lege Hintergrundmusik auf eine zweite Audio-Spur unter dein Video. Nutze **Ducking** (Lautstärke senken), damit die Musik leiser wird, sobald jemand spricht. So klingt das Ergebnis professionell und ausgewogen.' },
+                        { type: 'warning', title: 'Exportieren nicht vergessen', text: 'Wenn du fertig bist, musst du das Video exportieren (rendern). Speichere immer als **.MP4** – die Projektdatei des Schnittprogramms kann niemand anderes öffnen!' }
+                    ]},
+                    { title: "3. Kriterien für Qualität", intro: "Was unterscheidet professionelle digitale Medien von schnell hingepfuschten Ergebnissen?", blocks: [
+                        { type: 'success', title: 'Der rote Faden (Storytelling)', text: 'Egal ob Bild oder Video – jede gute Produktion erzählt eine Geschichte. Ein starkes Bild hat ein klares Hauptmotiv. Ein gutes Video hat einen **Hook** (spannender Einstieg), einen informativen Hauptteil und ein klares Ende.' },
+                        { type: 'tip', title: 'Kurz und knackig', text: 'Beim Videoschnitt gilt: Sei gnadenlos. Entferne alles, was die Geschichte nicht voranbringt. Ein 2-minütiges, spannendes Video ist immer besser als ein 10-minütiges, langatmiges.' },
+                        { type: 'info', title: 'Ethik in der Bildbearbeitung', text: 'Digitale Medien können täuschen. Überlege bei jeder Bearbeitung: Optimiere ich ein Bild, oder manipuliere ich es? Das Verfälschen von Nachrichtenbildern oder das Retuschieren von Körpern ist nicht nur unethisch, sondern kann echten Schaden anrichten.' }
                     ]}
                 ],
-                missions: ["Nimm ein kurzes, 10-sekündiges Video von deiner direkten Umgebung auf.", "Öffne ein Videoschnitt-Programm (oder eine App) und lade den Clip in die Zeitleiste.", "Schneide den Clip genau in der Mitte durch (Split) und lösche die zweite Hälfte.", "Lege einen kurzen Text-Titel (z.B. 'Mein erstes Video') über den Anfang des Clips.", "Exportiere das fertige Projekt auf deinem Gerät als echte, abspielbare .MP4 Datei."]
+                missions: [
+                    "Mache ein Foto von einem Gegenstand in deiner Nähe und schneide alle störenden Ränder weg.",
+                    "Bearbeite dasselbe Foto: Erhöhe den Kontrast leicht und korrigiere ggf. einen Farbstich mit dem Weißabgleich.",
+                    "Nimm ein kurzes, 15-sekündiges Video auf und schneide mindestens eine Pause oder einen Versprecher heraus.",
+                    "Lege eine kurze, lizenzfreie Hintergrundmusik unter dein Video und senke ihre Lautstärke auf ein angenehmes Niveau.",
+                    "Exportiere dein fertiges Video als .MP4 und vergleiche die Dateigröße mit der ursprünglichen Projektdatei."
+                ]
             },
             9: {
                 sections: [
@@ -295,20 +306,6 @@
                     ]}
                 ],
                 missions: ["Öffne Excel/Calc und trage in Spalte A untereinander deine 3 Lieblingsessen ein.", "Trage in Spalte B fiktive Preise für diese Essen ein.", "Berechne in einer neuen Zelle die Summe der Preise mit der Formel `=SUMME()`.", "Markiere die Essen und die Preise und erstelle ein Säulendiagramm.", "Gib deinem Diagramm einen passenden Titel (z.B. 'Meine Essenskosten')."]
-            },
-            20: {
-                sections: [
-                    { title: "1. Technische Bedienung", intro: "Gute Fotos macht man nicht nur mit der Kamera, sondern auch nachträglich in der Bildbearbeitung.", blocks: [
-                        { type: 'standard', title: 'Zuschneiden (Crop)', text: 'Das wichtigste Werkzeug! Schneide störende, unwichtige Ränder weg, um den vollen Fokus des Betrachters auf dein Hauptmotiv zu lenken.', image: '' },
-                        { type: 'info', title: 'Helligkeit & Kontrast', text: 'Ein flaues Bild rettest du durch mehr Kontrast. Aber Vorsicht: Wenn du es zu hell machst, "brennen" helle Flächen aus (sie werden komplett weiß und verlieren alle Details).' },
-                        { type: 'tip', title: 'Farbstich korrigieren', text: 'Nutze den Regler "Weißabgleich" (oder Temperatur). Wenn ein Foto drinnen durch Kunstlicht zu gelb (warm) wirkt, ziehe den Regler leicht ins Blaue (kalt), um es natürlich aussehen zu lassen.' }
-                    ]},
-                    { title: "2. Kriterien für Qualität", intro: "Bildbearbeitung ist eine Gratwanderung zwischen Optimierung und Manipulation.", blocks: [
-                        { type: 'warning', title: 'Weniger ist mehr', text: 'Ein fertiger Instagram-Filter auf 100% sieht oft künstlich und billig aus. Reduziere die Deckkraft des Filters auf 30-50%, um einen professionellen Look zu erzielen.', image: '' },
-                        { type: 'success', title: 'Ethik der Manipulation', text: 'Verändere niemals Körperproportionen (Gesichtsform, Taille) von Menschen. Diese Retusche erzeugt bei den Betrachtern extrem falsche und gefährliche Schönheitsideale.' }
-                    ]}
-                ],
-                missions: ["Mache ein Foto von einem Gegenstand, der gerade vor dir liegt.", "Öffne das Foto in der Fotos-App und schneide unwichtige Ränder großzügig weg.", "Erhöhe den Kontrast des Bildes ganz leicht, damit die Farben knackiger wirken.", "Lege testweise einen starken Schwarz-Weiß-Filter auf das Bild.", "Vergleiche das Original mit der bearbeiteten Version: Was wirkt besser?"]
             },
             21: {
                 sections: [
