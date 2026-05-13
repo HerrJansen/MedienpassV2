@@ -70,19 +70,19 @@
         // --- MODULE BASIS-DATEN ---
         // ÄNDERUNG: Module 1, 2, 3 wurden zu einem Modul zusammengefasst.
         const ALL_MODULES = [
-            { id: 1, title: "Word-Führerschein und Dateimanagement", stage: "5-6", category: "skills", icon: "file-text" },
-            { id: 7, title: "Umgang mit PowerPoint", stage: "5-6", category: "skills", icon: "presentation" },
-            { id: 4, title: "Digitale Verantwortung", stage: "5-6", category: "reflexion", icon: "heart-handshake" },
-            { id: 6, title: "Suchmaschinen", stage: "5-6", category: "reflexion", icon: "search" },
-            { id: 19, title: "Sichere Passwörter", stage: "5-6", category: "reflexion", icon: "key" },
-            { id: 8, title: "Digitale Kunst & Design", stage: "7-8", category: "skills", icon: "palette" }, 
-            { id: 9, title: "Tabellenkalkulation", stage: "7-8", category: "skills", icon: "table" },
-            { id: 21, title: "Audio & Podcasts", stage: "9-10", category: "skills", icon: "mic" },
-            { id: 10, title: "Digitale Quellenarbeit", stage: "7-8", category: "reflexion", icon: "search-check" }, 
-            { id: 12, title: "Digitale Selbstbestimmung", stage: "7-8", category: "reflexion", icon: "shield-check" },
-            { id: 13, title: "KI-Produktivität", stage: "9-10", category: "skills", icon: "cpu" }, 
-            { id: 16, title: "Digitale Mündigkeit", stage: "9-10", category: "reflexion", icon: "brain" },
-            { id: 24, title: "Datenökonomie", stage: "9-10", category: "reflexion", icon: "database" }
+            { id: 1,  title: "Word-Führerschein und Dateimanagement", stage: "5-6",  category: "skills",    icon: "file-text",     description: "Hardware-Grundlagen, Ordnerstrukturen und Dateinamen – plus die wichtigsten Word-Funktionen für den Schulalltag." },
+            { id: 7,  title: "Umgang mit PowerPoint",                 stage: "5-6",  category: "skills",    icon: "presentation",  description: "Folien professionell gestalten, den Designer nutzen und frei vor Publikum sprechen statt ablesen." },
+            { id: 4,  title: "Digitale Verantwortung",                stage: "5-6",  category: "reflexion", icon: "heart-handshake", description: "Respektvoller Umgang im Netz, Netiquette im Klassenchat und richtiges Reagieren bei Cybermobbing." },
+            { id: 6,  title: "Suchmaschinen",                         stage: "5-6",  category: "reflexion", icon: "search",        description: "Clever googeln mit Keywords und Suchoperatoren, Werbung erkennen und sichere Kindersuchmaschinen kennenlernen." },
+            { id: 19, title: "Sichere Passwörter",                    stage: "5-6",  category: "reflexion", icon: "key",           description: "Was ein starkes Passwort ausmacht, der Merksatz-Trick – und warum du es niemals teilen solltest." },
+            { id: 8,  title: "Digitale Kunst & Design",               stage: "7-8",  category: "skills",    icon: "palette",       description: "Bilder professionell bearbeiten und Videos schneiden – von Crop und Kontrast bis zur fertigen MP4-Datei." },
+            { id: 9,  title: "Tabellenkalkulation",                   stage: "7-8",  category: "skills",    icon: "table",         description: "Mit Excel oder Calc Daten erfassen, Formeln anwenden und Ergebnisse als Diagramm visualisieren." },
+            { id: 21, title: "Audio & Podcasts",                      stage: "9-10", category: "skills",    icon: "mic",           description: "Professionelle Aufnahmetechnik, mehrspurige Produktion und dramaturgischer Aufbau einer eigenen Podcast-Episode." },
+            { id: 10, title: "Digitale Quellenarbeit",                stage: "7-8",  category: "reflexion", icon: "search-check",  description: "Fake News erkennen, Bilder rückwärts suchen und fremde Inhalte korrekt zitieren und lizenzieren." },
+            { id: 12, title: "Digitale Selbstbestimmung",             stage: "7-8",  category: "reflexion", icon: "shield-check",  description: "Wie Algorithmen und Tracker funktionieren, die Filterblase verstehen und die eigene Privatsphäre schützen." },
+            { id: 13, title: "KI-Produktivität",                      stage: "9-10", category: "skills",    icon: "cpu",           description: "Effektives Prompting mit der Rolle-Aufgabe-Format-Methode, Halluzinationen erkennen und KI transparent einsetzen." },
+            { id: 16, title: "Digitale Mündigkeit",                   stage: "9-10", category: "reflexion", icon: "brain",         description: "Den eigenen digitalen Fußabdruck kennen, KI-Bias und Deepfakes verstehen und mündig mit Algorithmen umgehen." },
+            { id: 24, title: "Datenökonomie",                         stage: "9-10", category: "reflexion", icon: "database",      description: "Das Geschäftsmodell der Tech-Giganten, Micro-Targeting und psychologische Dark Patterns entlarven." }
         ];
 
         // --- ZENTRALE DATENBANK FÜR INHALTE & MISSIONEN ---
@@ -777,7 +777,7 @@
                             <h3 className="text-xl font-black text-slate-800 mb-4 flex items-center gap-2">
                                 <Icon name="wrench" size={24} className="text-[#BF0D3E]" /> Skills (Anwendung)
                             </h3>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                 {ALL_MODULES.filter(m => m.stage === activeStage && m.category === 'skills').map(modul => {
                                     const isDone = studentData?.completedTasks.includes(modul.id);
                                     const moduleData = studentData?.moduleDates[modul.id];
@@ -792,30 +792,38 @@
                                         <div 
                                             key={modul.id} 
                                             onClick={() => { if (isDone) setSelectedModule(modul); }}
-                                            className={`bg-white rounded-2xl p-4 sm:p-5 border-2 transition-all flex flex-col h-full ${isDone ? 'border-green-400 shadow-green-100 shadow-lg cursor-pointer hover:-translate-y-1 hover:shadow-xl' : 'border-slate-100 shadow-sm opacity-90'}`}
+                                            className={`bg-white rounded-2xl p-6 border-2 transition-all flex flex-col h-full ${isDone ? 'border-green-400 shadow-green-100 shadow-lg cursor-pointer hover:-translate-y-1 hover:shadow-xl' : 'border-slate-100 shadow-sm opacity-90'}`}
                                         >
-                                            <div className="flex justify-between items-start mb-4">
+                                            <div className="flex justify-between items-start mb-5">
                                                 <span className="text-[10px] font-black uppercase tracking-widest bg-slate-100 text-slate-500 px-3 py-1 rounded-lg">Klasse {modul.stage}</span>
                                                 {isDone ? (
-                                                    <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white shadow-md shrink-0 ml-2">
-                                                        <Icon name="check" size={16} />
+                                                    <div className="w-9 h-9 bg-green-500 rounded-full flex items-center justify-center text-white shadow-md shrink-0 ml-2">
+                                                        <Icon name="check" size={18} />
                                                     </div>
                                                 ) : (
-                                                    <div className="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center text-slate-300 shrink-0 ml-2">
-                                                        <Icon name="lock" size={14} />
+                                                    <div className="w-9 h-9 bg-slate-100 rounded-full flex items-center justify-center text-slate-300 shrink-0 ml-2">
+                                                        <Icon name="lock" size={16} />
                                                     </div>
                                                 )}
                                             </div>
-                                            
-                                            <h3 className={`font-black text-base lg:text-lg tracking-tight leading-tight mb-2 flex items-start gap-2 ${isDone ? 'text-slate-800' : 'text-slate-500'}`}>
-                                                <Icon name={modul.icon} size={20} className={`mt-0.5 shrink-0 ${isDone ? 'text-[#BF0D3E]' : 'text-slate-300'}`} />
-                                                {modul.title}
-                                            </h3>
-                                            
+
+                                            <div className="flex items-start gap-4 mb-3">
+                                                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 ${isDone ? 'bg-red-50' : 'bg-slate-50'}`}>
+                                                    <Icon name={modul.icon} size={26} className={isDone ? 'text-[#BF0D3E]' : 'text-slate-300'} />
+                                                </div>
+                                                <h3 className={`font-black text-lg tracking-tight leading-tight ${isDone ? 'text-slate-800' : 'text-slate-500'}`}>
+                                                    {modul.title}
+                                                </h3>
+                                            </div>
+
+                                            <p className={`text-sm leading-relaxed font-medium mb-4 ${isDone ? 'text-slate-500' : 'text-slate-300'}`}>
+                                                {modul.description}
+                                            </p>
+
                                             <div className="mt-auto">
                                                 {isDone ? (
                                                     <div>
-                                                        <div className="text-[10px] font-bold text-green-600 flex flex-col gap-0.5 mt-3 mb-4">
+                                                        <div className="text-[10px] font-bold text-green-600 flex flex-col gap-0.5 mb-4">
                                                             <span className="flex items-center gap-1">
                                                                 <Icon name="calendar-check" size={12} />
                                                                 Zertifiziert am {dateDone}
@@ -823,13 +831,13 @@
                                                             {teacherName && <span className="text-[9px] text-green-700 ml-4">durch {teacherName}</span>}
                                                         </div>
                                                         <div className="pt-3 border-t border-slate-100 text-center">
-                                                            <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-[#BF0D3E] flex items-center justify-center gap-2 group-hover:text-red-700">
-                                                                <Icon name="book-open" size={14} /> Wissensspeicher
+                                                            <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-[#BF0D3E] flex items-center justify-center gap-2">
+                                                                <Icon name="book-open" size={14} /> Wissensspeicher öffnen
                                                             </span>
                                                         </div>
                                                     </div>
                                                 ) : (
-                                                    <p className="text-xs font-medium text-slate-400 mt-3">
+                                                    <p className="text-xs font-medium text-slate-400">
                                                         Noch nicht freigeschaltet.
                                                     </p>
                                                 )}
@@ -844,7 +852,7 @@
                             <h3 className="text-xl font-black text-slate-800 mb-4 flex items-center gap-2">
                                 <Icon name="brain" size={24} className="text-[#BF0D3E]" /> Reflexion (Umgang)
                             </h3>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                 {ALL_MODULES.filter(m => m.stage === activeStage && m.category === 'reflexion').map(modul => {
                                     const isDone = studentData?.completedTasks.includes(modul.id);
                                     const moduleData = studentData?.moduleDates[modul.id];
@@ -859,30 +867,38 @@
                                         <div 
                                             key={modul.id} 
                                             onClick={() => { if (isDone) setSelectedModule(modul); }}
-                                            className={`bg-white rounded-2xl p-4 sm:p-5 border-2 transition-all flex flex-col h-full ${isDone ? 'border-green-400 shadow-green-100 shadow-lg cursor-pointer hover:-translate-y-1 hover:shadow-xl' : 'border-slate-100 shadow-sm opacity-90'}`}
+                                            className={`bg-white rounded-2xl p-6 border-2 transition-all flex flex-col h-full ${isDone ? 'border-green-400 shadow-green-100 shadow-lg cursor-pointer hover:-translate-y-1 hover:shadow-xl' : 'border-slate-100 shadow-sm opacity-90'}`}
                                         >
-                                            <div className="flex justify-between items-start mb-4">
+                                            <div className="flex justify-between items-start mb-5">
                                                 <span className="text-[10px] font-black uppercase tracking-widest bg-slate-100 text-slate-500 px-3 py-1 rounded-lg">Klasse {modul.stage}</span>
                                                 {isDone ? (
-                                                    <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white shadow-md shrink-0 ml-2">
-                                                        <Icon name="check" size={16} />
+                                                    <div className="w-9 h-9 bg-green-500 rounded-full flex items-center justify-center text-white shadow-md shrink-0 ml-2">
+                                                        <Icon name="check" size={18} />
                                                     </div>
                                                 ) : (
-                                                    <div className="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center text-slate-300 shrink-0 ml-2">
-                                                        <Icon name="lock" size={14} />
+                                                    <div className="w-9 h-9 bg-slate-100 rounded-full flex items-center justify-center text-slate-300 shrink-0 ml-2">
+                                                        <Icon name="lock" size={16} />
                                                     </div>
                                                 )}
                                             </div>
-                                            
-                                            <h3 className={`font-black text-base lg:text-lg tracking-tight leading-tight mb-2 flex items-start gap-2 ${isDone ? 'text-slate-800' : 'text-slate-500'}`}>
-                                                <Icon name={modul.icon} size={20} className={`mt-0.5 shrink-0 ${isDone ? 'text-[#BF0D3E]' : 'text-slate-300'}`} />
-                                                {modul.title}
-                                            </h3>
-                                            
+
+                                            <div className="flex items-start gap-4 mb-3">
+                                                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 ${isDone ? 'bg-red-50' : 'bg-slate-50'}`}>
+                                                    <Icon name={modul.icon} size={26} className={isDone ? 'text-[#BF0D3E]' : 'text-slate-300'} />
+                                                </div>
+                                                <h3 className={`font-black text-lg tracking-tight leading-tight ${isDone ? 'text-slate-800' : 'text-slate-500'}`}>
+                                                    {modul.title}
+                                                </h3>
+                                            </div>
+
+                                            <p className={`text-sm leading-relaxed font-medium mb-4 ${isDone ? 'text-slate-500' : 'text-slate-300'}`}>
+                                                {modul.description}
+                                            </p>
+
                                             <div className="mt-auto">
                                                 {isDone ? (
                                                     <div>
-                                                        <div className="text-[10px] font-bold text-green-600 flex flex-col gap-0.5 mt-3 mb-4">
+                                                        <div className="text-[10px] font-bold text-green-600 flex flex-col gap-0.5 mb-4">
                                                             <span className="flex items-center gap-1">
                                                                 <Icon name="calendar-check" size={12} />
                                                                 Zertifiziert am {dateDone}
@@ -890,13 +906,13 @@
                                                             {teacherName && <span className="text-[9px] text-green-700 ml-4">durch {teacherName}</span>}
                                                         </div>
                                                         <div className="pt-3 border-t border-slate-100 text-center">
-                                                            <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-[#BF0D3E] flex items-center justify-center gap-2 group-hover:text-red-700">
-                                                                <Icon name="book-open" size={14} /> Wissensspeicher
+                                                            <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-[#BF0D3E] flex items-center justify-center gap-2">
+                                                                <Icon name="book-open" size={14} /> Wissensspeicher öffnen
                                                             </span>
                                                         </div>
                                                     </div>
                                                 ) : (
-                                                    <p className="text-xs font-medium text-slate-400 mt-3">
+                                                    <p className="text-xs font-medium text-slate-400">
                                                         Noch nicht freigeschaltet.
                                                     </p>
                                                 )}
