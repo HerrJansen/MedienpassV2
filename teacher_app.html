@@ -378,12 +378,60 @@
                 setIsUpdating(true);
                 try {
                     const student = students.find(s => s.id === studentId);
-                    const isUnlocked = student.quizUnlocked.includes(moduleId);
-                    const newQuiz = isUnlocked ? student.quizUnlocked.filter(id => id !== moduleId) : [...student.quizUnlocked, moduleId];
+                    const isUnlocked = (student.quizUnlocked || []).includes(moduleId);
+                    const newQuiz = isUnlocked ? student.quizUnlocked.filter(id => id !== moduleId) : [...(student.quizUnlocked || []), moduleId];
                     await updateSharePoint(studentId, student.completedTasks, student.moduleDates, newQuiz);
                     setStudents(prev => prev.map(s => s.id === studentId ? { ...s, quizUnlocked: newQuiz } : s));
                 } catch (err) { alert(err.message); }
                 finally { setIsUpdating(false); }
+            };
+
+            const bulkQuizToggle = async (action) => {
+                if (filterModul === "ALL" || isUpdating) return;
+                const moduleId = parseInt(filterModul);
+                const studentsToUpdate = filteredStudents.filter(s => {
+                    const hasQuiz = (s.quizUnlocked || []).includes(moduleId);
+                    return action === "grant" ? !hasQuiz : hasQuiz;
+                });
+                if (studentsToUpdate.length === 0) { alert("Alle angezeigten Schüler haben diesen Quiz-Status bereits."); return; }
+                if (!confirm(`Quiz für Modul ${moduleId} für ${studentsToUpdate.length} Schüler ${action === 'grant' ? 'freischalten' : 'sperren'}?`)) return;
+
+                setIsUpdating(true);
+                let tokenRes;
+                try {
+                    tokenRes = await msalInstance.acquireTokenSilent({ scopes: ["Sites.ReadWrite.All"], account: msalInstance.getActiveAccount() });
+                } catch (err) { alert("Token konnte nicht erneuert werden."); setIsUpdating(false); return; }
+
+                let successCount = 0, errorCount = 0;
+                const results = [];
+                for (let i = 0; i < studentsToUpdate.length; i++) {
+                    const student = studentsToUpdate[i];
+                    setDebugMsg(`Quiz: Aktualisiere ${i + 1} von ${studentsToUpdate.length}: ${student.vorname} ${student.nachname}...`);
+                    const newQuiz = action === "grant"
+                        ? [...(student.quizUnlocked || []), moduleId]
+                        : (student.quizUnlocked || []).filter(id => id !== moduleId);
+                    try {
+                        const url = `https://graph.microsoft.com/v1.0/sites/${MS_CONFIG.siteId}/lists/${MS_CONFIG.listId}/items/${student.id}/fields`;
+                        const res = await fetch(url, {
+                            method: 'PATCH',
+                            headers: { 'Authorization': `Bearer ${tokenRes.accessToken}`, 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ "Quiz_Freigaben": newQuiz.join(', ') })
+                        });
+                        if (!res.ok) throw new Error("Fehler");
+                        results.push({ id: student.id, quiz: newQuiz });
+                        successCount++;
+                        if (i < studentsToUpdate.length - 1) await new Promise(r => setTimeout(r, 150));
+                    } catch (err) { errorCount++; }
+                }
+                if (results.length > 0) {
+                    setStudents(prev => prev.map(s => {
+                        const r = results.find(x => x.id === s.id);
+                        return r ? { ...s, quizUnlocked: r.quiz } : s;
+                    }));
+                }
+                setDebugMsg(errorCount === 0 ? `✓ Quiz für ${successCount} Schüler aktualisiert.` : `⚠ ${successCount} erfolgreich, ${errorCount} fehlgeschlagen.`);
+                setTimeout(() => setDebugMsg(""), 5000);
+                setIsUpdating(false);
             };
 
             const uniqueKlassen = useMemo(() => [...new Set(students.map(s => s.klasse))].sort(), [students]);
@@ -475,14 +523,34 @@
                             </select>
                         </div>
                         {filterModul !== "ALL" && hasActiveFilters && (
-                            <div className="max-w-7xl mx-auto mt-4 p-4 bg-red-50 rounded-2xl flex flex-wrap items-center justify-between gap-4 border border-red-100">
-                                <div>
-                                    <h3 className="text-sm font-black text-slate-800 uppercase">Massen-Bearbeitung (Modul {filterModul})</h3>
-                                    <p className="text-xs font-medium text-slate-500">Wendet die Aktion auf alle {filteredStudents.length} angezeigten Schüler an.</p>
+                            <div className="max-w-7xl mx-auto mt-4 flex flex-col gap-3">
+                                {/* Quiz-Freigabe */}
+                                <div className="p-4 bg-blue-50 rounded-2xl flex flex-wrap items-center justify-between gap-4 border border-blue-100">
+                                    <div>
+                                        <h3 className="text-sm font-black text-slate-800 uppercase flex items-center gap-2">
+                                            <span className="w-2 h-2 rounded-full bg-blue-500 inline-block"></span>
+                                            Quiz-Freigabe (Modul {filterModul})
+                                        </h3>
+                                        <p className="text-xs font-medium text-slate-500">Quiz für alle {filteredStudents.length} angezeigten Schüler freischalten oder sperren.</p>
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <button disabled={isUpdating} onClick={() => bulkQuizToggle('revoke')} className="bg-white text-slate-700 hover:bg-slate-100 border px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all">Quiz sperren</button>
+                                        <button disabled={isUpdating} onClick={() => bulkQuizToggle('grant')} className="text-white bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all shadow-md">Quiz freischalten</button>
+                                    </div>
                                 </div>
-                                <div className="flex gap-2">
-                                    <button disabled={isUpdating} onClick={() => bulkToggle('revoke')} className="bg-white text-slate-700 hover:bg-slate-100 border px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all">Alle Sperren</button>
-                                    <button disabled={isUpdating} onClick={() => bulkToggle('grant')} className="text-white px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all shadow-md" style={{ backgroundColor: THOMA_RED }}>Alle Freischalten</button>
+                                {/* Modul-Abschluss */}
+                                <div className="p-4 bg-red-50 rounded-2xl flex flex-wrap items-center justify-between gap-4 border border-red-100">
+                                    <div>
+                                        <h3 className="text-sm font-black text-slate-800 uppercase flex items-center gap-2">
+                                            <span className="w-2 h-2 rounded-full bg-red-500 inline-block"></span>
+                                            Modul-Abschluss (Modul {filterModul})
+                                        </h3>
+                                        <p className="text-xs font-medium text-slate-500">Modul für alle {filteredStudents.length} angezeigten Schüler manuell abhaken oder sperren.</p>
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <button disabled={isUpdating} onClick={() => bulkToggle('revoke')} className="bg-white text-slate-700 hover:bg-slate-100 border px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all">Alle sperren</button>
+                                        <button disabled={isUpdating} onClick={() => bulkToggle('grant')} className="text-white px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all shadow-md" style={{ backgroundColor: THOMA_RED }}>Alle freischalten</button>
+                                    </div>
                                 </div>
                             </div>
                         )}
