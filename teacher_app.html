@@ -72,7 +72,7 @@
             return <span className={`inline-flex items-center justify-center ${className}`} dangerouslySetInnerHTML={{ __html: svg }} />;
         };
 
-        const StudentPreview = ({ student, onClose, onToggleModule, isUpdating }) => {
+        const StudentPreview = ({ student, onClose, onToggleModule, onToggleQuiz, isUpdating }) => {
             const [activeStage, setActiveStage] = useState("5-6");
             const totalCompleted = student.completedTasks.length;
             const progressPercent = Math.round((totalCompleted / ALL_MODULES.length) * 100);
@@ -113,6 +113,7 @@
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                             {ALL_MODULES.filter(m => m.stage === activeStage).map(modul => {
                                 const isDone = student.completedTasks.includes(modul.id);
+                                const isQuizUnlocked = (student.quizUnlocked || []).includes(modul.id);
                                 const moduleData = student.moduleDates?.[modul.id];
                                 let dateDone = "—", teacherName = "";
                                 if (moduleData) {
@@ -120,44 +121,43 @@
                                     else { dateDone = moduleData.datum || "—"; teacherName = moduleData.lehrer || ""; }
                                 }
                                 return (
-                                    <div key={modul.id} onClick={() => !isUpdating && onToggleModule(modul.id)}
-                                        title={isDone ? "Klicken zum Sperren" : "Klicken zum Freischalten"}
-                                        className={`bg-white rounded-2xl p-6 border-2 transition-all cursor-pointer flex flex-col h-full hover:-translate-y-1 ${isUpdating ? 'opacity-50 pointer-events-none' : ''} ${isDone ? 'border-green-400 shadow-green-100 shadow-lg' : 'border-slate-100 shadow-sm hover:border-red-200'}`}>
-                                        <div className="flex justify-between items-start mb-5">
+                                    <div key={modul.id} className={`bg-white rounded-2xl p-6 border-2 flex flex-col h-full ${isUpdating ? 'opacity-50' : ''} ${isDone ? 'border-green-400 shadow-green-100 shadow-lg' : isQuizUnlocked ? 'border-blue-300 shadow-blue-100 shadow-md' : 'border-slate-100 shadow-sm'}`}>
+                                        <div className="flex justify-between items-start mb-4">
                                             <span className="text-[10px] font-black uppercase tracking-widest bg-slate-100 text-slate-500 px-3 py-1 rounded-lg">Klasse {modul.stage}</span>
                                             {isDone
                                                 ? <div className="w-9 h-9 bg-green-500 rounded-full flex items-center justify-center text-white shadow-md shrink-0 ml-2"><Icon name="check" size={18} /></div>
-                                                : <div className="w-9 h-9 bg-slate-100 rounded-full flex items-center justify-center text-slate-300 hover:bg-red-100 hover:text-red-600 shrink-0 ml-2"><Icon name="plus" size={16} /></div>
+                                                : isQuizUnlocked
+                                                    ? <div className="w-9 h-9 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 shrink-0 ml-2"><Icon name="pencil" size={16} /></div>
+                                                    : <div className="w-9 h-9 bg-slate-100 rounded-full flex items-center justify-center text-slate-300 shrink-0 ml-2"><Icon name="lock" size={16} /></div>
                                             }
                                         </div>
-                                        <div className="flex items-start gap-4 mb-3">
-                                            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 ${isDone ? 'bg-red-50' : 'bg-slate-50'}`}>
-                                                <Icon name={modul.icon} size={26} className={isDone ? 'text-[#BF0D3E]' : 'text-slate-300'} />
+                                        <div className="flex items-start gap-3 mb-2">
+                                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${isDone ? 'bg-red-50' : 'bg-slate-50'}`}>
+                                                <Icon name={modul.icon} size={22} className={isDone ? 'text-[#BF0D3E]' : 'text-slate-300'} />
                                             </div>
-                                            <h3 className={`font-black text-lg tracking-tight leading-tight ${isDone ? 'text-slate-800' : 'text-slate-500'}`}>
-                                                {modul.title}
-                                            </h3>
+                                            <h3 className={`font-black text-base tracking-tight leading-tight ${isDone ? 'text-slate-800' : 'text-slate-500'}`}>{modul.title}</h3>
                                         </div>
-                                        <p className={`text-sm leading-relaxed font-medium mb-4 ${isDone ? 'text-slate-500' : 'text-slate-300'}`}>
-                                            {modul.description}
-                                        </p>
-                                        <div className="mt-auto">
-                                            {isDone ? (
-                                                <div>
-                                                    <div className="text-[10px] font-bold text-green-600 flex flex-col gap-0.5 mb-4">
-                                                        <p className="flex items-center gap-1"><Icon name="calendar-check" size={12} />Zertifiziert am {dateDone}</p>
-                                                        {teacherName && <p className="text-[9px] font-bold text-green-700 ml-4">durch {teacherName}</p>}
-                                                    </div>
-                                                    <div className="pt-3 border-t border-slate-100 text-center">
-                                                        <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-[#BF0D3E] flex items-center justify-center gap-2">
-                                                            <Icon name="lock-open" size={14} /> Klicken zum Sperren
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            ) : (
-                                                <p className="text-xs font-medium text-slate-400 flex items-center gap-1"><Icon name="hand" size={14} /> Klicken zum Freischalten</p>
-                                            )}
+                                        <div className="mt-auto pt-3 border-t border-slate-100 flex gap-2">
+                                            {/* Quiz-Freigabe Button */}
+                                            <button disabled={isUpdating || isDone} onClick={() => !isUpdating && !isDone && onToggleQuiz(modul.id)}
+                                                title={isDone ? "Modul bereits abgeschlossen" : isQuizUnlocked ? "Quiz sperren" : "Quiz freischalten"}
+                                                className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${isDone ? 'bg-slate-50 text-slate-300 cursor-not-allowed' : isQuizUnlocked ? 'bg-blue-100 text-blue-700 hover:bg-blue-200' : 'bg-slate-100 text-slate-500 hover:bg-blue-50 hover:text-blue-600'}`}>
+                                                <Icon name={isQuizUnlocked ? "pencil-off" : "pencil"} size={12} />
+                                                {isQuizUnlocked ? "Quiz sperren" : "Quiz frei"}
+                                            </button>
+                                            {/* Modul-Abschluss Button */}
+                                            <button disabled={isUpdating} onClick={() => !isUpdating && onToggleModule(modul.id)}
+                                                title={isDone ? "Modul-Abschluss entziehen" : "Modul manuell freischalten"}
+                                                className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${isDone ? 'bg-green-100 text-green-700 hover:bg-red-100 hover:text-red-600' : 'bg-slate-100 text-slate-500 hover:bg-green-50 hover:text-green-600'}`}>
+                                                <Icon name={isDone ? "check-circle" : "circle"} size={12} />
+                                                {isDone ? "Sperren" : "Manuell ✓"}
+                                            </button>
                                         </div>
+                                        {isDone && (
+                                            <div className="mt-2 text-[9px] font-bold text-green-600 flex flex-col gap-0.5">
+                                                <span className="flex items-center gap-1"><Icon name="calendar-check" size={10} /> {dateDone} {teacherName ? `• ${teacherName}` : ''}</span>
+                                            </div>
+                                        )}
                                     </div>
                                 );
                             })}
@@ -244,9 +244,10 @@
                     const parsedStudents = data.value.map(item => {
                         const f = item.fields;
                         const completedArray = f.Erledigte_Module ? f.Erledigte_Module.split(',').map(m => parseInt(m.trim())).filter(n => !isNaN(n)) : [];
+                        const quizArray = f.Quiz_Freigaben ? f.Quiz_Freigaben.split(',').map(m => parseInt(m.trim())).filter(n => !isNaN(n)) : [];
                         let parsedDates = {};
                         if (f.Modul_Daten) { try { parsedDates = JSON.parse(f.Modul_Daten); } catch(e) {} }
-                        return { id: item.id, email: f.Title || "", vorname: f.Vorname || "", nachname: f.Nachname || "", klasse: f.Klasse || "Unbekannt", completedTasks: completedArray, moduleDates: parsedDates };
+                        return { id: item.id, email: f.Title || "", vorname: f.Vorname || "", nachname: f.Nachname || "", klasse: f.Klasse || "Unbekannt", completedTasks: completedArray, moduleDates: parsedDates, quizUnlocked: quizArray };
                     }).filter(s => s.vorname && s.nachname);
                     parsedStudents.sort((a, b) => a.nachname.localeCompare(b.nachname));
                     setStudents(parsedStudents);
@@ -353,13 +354,15 @@
                 setIsUpdating(false);
             };
 
-            const updateSharePoint = async (itemId, tasksArray, datesObj) => {
+            const updateSharePoint = async (itemId, tasksArray, datesObj, quizArray) => {
                 const tokenRes = await msalInstance.acquireTokenSilent({ scopes: ["Sites.ReadWrite.All"], account: msalInstance.getActiveAccount() });
                 const url = `https://graph.microsoft.com/v1.0/sites/${MS_CONFIG.siteId}/lists/${MS_CONFIG.listId}/items/${itemId}/fields`;
+                const body = { "Erledigte_Module": tasksArray.join(', '), "Modul_Daten": JSON.stringify(datesObj) };
+                if (quizArray !== undefined) body["Quiz_Freigaben"] = quizArray.join(', ');
                 const res = await fetch(url, {
                     method: 'PATCH',
                     headers: { 'Authorization': `Bearer ${tokenRes.accessToken}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ "Erledigte_Module": tasksArray.join(', '), "Modul_Daten": JSON.stringify(datesObj) })
+                    body: JSON.stringify(body)
                 });
                 if (!res.ok) {
                     const errData = await res.json();
@@ -368,6 +371,19 @@
                     }
                     throw new Error(`Graph API Fehler:\n${errData.error?.message || res.statusText}`);
                 }
+            };
+
+            const toggleQuizSingle = async (studentId, moduleId) => {
+                if (isUpdating) return;
+                setIsUpdating(true);
+                try {
+                    const student = students.find(s => s.id === studentId);
+                    const isUnlocked = student.quizUnlocked.includes(moduleId);
+                    const newQuiz = isUnlocked ? student.quizUnlocked.filter(id => id !== moduleId) : [...student.quizUnlocked, moduleId];
+                    await updateSharePoint(studentId, student.completedTasks, student.moduleDates, newQuiz);
+                    setStudents(prev => prev.map(s => s.id === studentId ? { ...s, quizUnlocked: newQuiz } : s));
+                } catch (err) { alert(err.message); }
+                finally { setIsUpdating(false); }
             };
 
             const uniqueKlassen = useMemo(() => [...new Set(students.map(s => s.klasse))].sort(), [students]);
@@ -420,7 +436,9 @@
                 <div className="min-h-screen flex flex-col bg-slate-50 font-sans selection:bg-red-100 relative">
                     {currentViewingStudent && (
                         <StudentPreview student={currentViewingStudent} onClose={() => setViewingStudentId(null)}
-                            onToggleModule={(moduleId) => toggleModuleSingle(currentViewingStudent.id, moduleId)} isUpdating={isUpdating} />
+                            onToggleModule={(moduleId) => toggleModuleSingle(currentViewingStudent.id, moduleId)}
+                            onToggleQuiz={(moduleId) => toggleQuizSingle(currentViewingStudent.id, moduleId)}
+                            isUpdating={isUpdating} />
                     )}
                     <header className="bg-white border-b h-20 flex items-center justify-between px-8 shadow-sm sticky top-0 z-40">
                         <div className="flex items-center gap-3">

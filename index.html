@@ -536,6 +536,426 @@
             }
         };
 
+        // --- QUIZ-DATEN (15 Fragen pro Modul) ---
+        // Format: { q: Fragetext, a: [Antworten], c: [korrekte Indizes] }
+        const QUIZ_DATA = {
+          1: [
+            { q: "Was ist die Aufgabe der CPU?", a: ["Sie speichert Dateien dauerhaft auf der Festplatte", "Sie verarbeitet alle Berechnungen und führt Programme aus", "Sie zeigt Bilder auf dem Bildschirm an", "Sie verbindet den Computer mit dem Internet"], c: [1] },
+            { q: "Welche Aussage zur SSD trifft zu?", a: ["Sie hat drehende mechanische Scheiben", "Sie ist langsamer als eine HDD", "Sie ist schneller und stoßunempfindlicher als eine HDD", "Sie wird zum Anzeigen von Bildern verwendet"], c: [2] },
+            { q: "Wie heißt der Tastaturbefehl zum Speichern in Word?", a: ["Strg + Z", "Strg + S", "Strg + P", "Strg + C"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Welche zwei Aussagen zum RAM sind korrekt?", a: ["Der RAM speichert Daten dauerhaft", "Der RAM wird beim Ausschalten geleert", "Der RAM ist der kurzfristige Arbeitsspeicher", "Der RAM ist dasselbe wie die Festplatte"], c: [1, 2] },
+            { q: "Wie sollte ein professioneller Dateiname für ein Referat aussehen?", a: ["Unbenannt.docx", "referat.docx", "2026-05-12_Deutsch_Referat.docx", "Datei1.docx"], c: [2] },
+            { q: "Was macht Strg + Z in Word?", a: ["Speichern", "Drucken", "Letzten Schritt rückgängig machen", "Alles markieren"], c: [2] },
+            { q: "Mit welchem Tastaturkürzel öffnest du den Windows Explorer?", a: ["Strg + E", "Windows + E", "Alt + E", "Strg + W"], c: [1] },
+            { q: "Welche Dateiendung hat ein Word-Dokument?", a: [".pdf", ".xlsx", ".docx", ".pptx"], c: [2] },
+            { q: "Wie entfernst du einen USB-Stick sicher?", a: ["Einfach abziehen", "Rechtsklick auf das Symbol → Auswerfen, dann abziehen", "Den Computer neu starten", "Strg + Alt + Entf drücken"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Welche Aussagen zu Formatvorlagen in Word sind korrekt?", a: ["Formatvorlagen ermöglichen ein automatisches Inhaltsverzeichnis", "Formatvorlagen sind nur für Bilder gedacht", "Mit 'Überschrift 1' und 'Überschrift 2' strukturiert man Dokumente korrekt", "Formatvorlagen vergrößern die Schrift immer auf 24pt"], c: [0, 2] },
+            { q: "Was bedeutet die Dateiendung .pdf?", a: ["Eine bearbeitbare Word-Datei", "Ein unveränderliches Dokument, das überall gleich aussieht", "Eine Tabellendatei", "Eine Videodatei"], c: [1] },
+            { q: "Wie viel RAM empfiehlt sich mindestens für den Schulalltag?", a: ["1 GB", "4 GB", "8 GB", "64 GB"], c: [2] },
+            { q: "Was ist der Unterschied zwischen Kopieren (Strg+C) und Ausschneiden (Strg+X)?", a: ["Es gibt keinen Unterschied", "Kopieren lässt das Original bestehen, Ausschneiden entfernt es", "Ausschneiden lässt das Original bestehen, Kopieren entfernt es", "Kopieren löscht die Datei direkt"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Welche zwei Zeichen sind in Windows-Dateinamen verboten?", a: ["Unterstrich (_)", "Fragezeichen (?)", "Bindestrich (-)", "Schrägstrich (/)"], c: [1, 3] },
+            { q: "Was passiert, wenn du die Entf-Taste bei einer Datei drückst?", a: ["Die Datei wird sofort unwiderruflich gelöscht", "Die Datei landet im Papierkorb und kann wiederhergestellt werden", "Die Datei wird verschoben", "Die Datei wird komprimiert"], c: [1] }
+          ],
+          2: [
+            { q: "Was ist die wichtigste Regel für Text auf Präsentationsfolien?", a: ["Je mehr Text, desto besser", "Nur kurze Stichpunkte, keine ganzen Sätze", "Mindestens 5 Sätze pro Folie", "Schriftgröße immer unter 10pt"], c: [1] },
+            { q: "Was ist der 'Designer' in PowerPoint?", a: ["Ein Werkzeug zum Zeichnen von Formen", "Ein KI-gestütztes Tool, das automatisch professionelle Layouts vorschlägt", "Eine Funktion zum Drucken", "Ein Filter für Bilder"], c: [1] },
+            { q: "Wie verändert man ein Bild korrekt in PowerPoint, ohne es zu verzerren?", a: ["An den Seiten ziehen", "An den Ecken ziehen", "Die Größe manuell eintippen", "Das Bild drehen"], c: [1] },
+            { q: "Was bedeutet 'frei sprechen' in einer Präsentation?", a: ["Den Text von der Folie ablesen", "Das Publikum ignorieren", "Mit eigenen Worten und Blickkontakt zum Publikum sprechen", "Sehr laut sprechen"], c: [2] },
+            { q: "Wie erstellst du in PowerPoint eine neue Folie mit dem richtigen Layout?", a: ["Strg + N drücken", "Auf 'Neue Folie' klicken und das passende Layout wählen", "Eine leere Seite aus Word kopieren", "Im Dateimenü 'Einfügen' wählen"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Welche Aussagen zu Präsentationen sind korrekt?", a: ["Ein starkes Bild ist oft wertvoller als viel Text", "Das Publikum soll vor allem die Folien lesen, nicht zuhören", "Die Folie soll unterstützen, was du sagst", "Je mehr Animationen, desto professioneller"], c: [0, 2] },
+            { q: "Wie wechselst du im Präsentationsmodus zur nächsten Folie?", a: ["Strg + N", "Pfeiltaste rechts oder Enter", "Tab-Taste", "Escape"], c: [1] },
+            { q: "Wozu dienen Karteikarten bei einer Präsentation?", a: ["Um den Text vollständig abzulesen", "Als Stichworte für freies Sprechen", "Um das Publikum abzulenken", "Als Ersatz für die Folien"], c: [1] },
+            { q: "Was ist beim Einfügen von Bildern in PowerPoint zu beachten?", a: ["Bilder immer klein halten", "Größenänderung nur an den Ecken, um Verzerrung zu vermeiden", "Bilder immer in die Mitte setzen", "Bilder immer mit Text überlagern"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Welche Aussagen zu Design und Farben sind korrekt?", a: ["Möglichst viele verschiedene Schriftarten auf einer Folie verwenden", "Ein einheitliches Farbschema wirkt professioneller", "Der Designer schlägt automatisch passende Layouts vor", "Je bunter, desto besser"], c: [1, 2] },
+            { q: "Was ist die Hauptaufgabe des Präsentierenden?", a: ["Die Folien zu gestalten", "Die Informationen lebendig und verständlich dem Publikum zu vermitteln", "Möglichst viel Text auf die Folien zu schreiben", "Den Computer zu bedienen"], c: [1] },
+            { q: "Wie viele Stichpunkte sollte eine gute Inhaltsfolie maximal haben?", a: ["So viele wie möglich", "10–15 Stichpunkte", "3–5 sehr kurze Stichpunkte", "Keine – nur Bilder"], c: [2] },
+            { q: "Was bedeutet 'Präsentationsmodus'?", a: ["Die Folien werden in der Bearbeitungsansicht gezeigt", "Die Präsentation wird bildschirmfüllend ohne Bearbeitungswerkzeuge gezeigt", "Ein Modus zum gemeinsamen Bearbeiten", "Ein Druckmodus"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Welche Fehler passieren Anfängern bei Präsentationen häufig?", a: ["Text von der Folie ablesen", "Zu wenig Text auf den Folien haben", "Kein Blickkontakt zum Publikum", "Zu viele starke Bilder verwenden"], c: [0, 2] },
+            { q: "Warum sollte man Animationen sparsam einsetzen?", a: ["Animationen verlangsamen den Computer zu stark", "Zu viele Animationen lenken vom Inhalt ab und wirken unprofessionell", "Animationen sind in Schulen verboten", "Animationen funktionieren nur in neuen PowerPoint-Versionen"], c: [1] }
+          ],
+          3: [
+            { q: "Was bedeutet Netiquette?", a: ["Eine spezielle Internet-Suchmaschine", "Verhaltensregeln für den respektvollen Umgang im Internet", "Ein Programm zur Netzwerksicherheit", "Eine App für Schulen"], c: [1] },
+            { q: "Was bedeutet es, wenn jemand in Großbuchstaben schreibt?", a: ["Er hat Caps Lock aus Versehen aktiviert", "Er ist begeistert vom Thema", "In der Chat-Sprache bedeutet es SCHREIEN und wirkt aggressiv", "Er möchte besonders höflich sein"], c: [2] },
+            { q: "Was ist Cybermobbing?", a: ["Einmaliger Streit im Chat", "Wiederholtes, absichtliches Fertigmachen einer Person über digitale Kanäle", "Ein Computervirus", "Eine Art von Online-Spiel"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Was solltest du tun, wenn du Opfer von Cybermobbing wirst?", a: ["Sofort zurückbeleidigen", "Screenshots als Beweise sichern", "Eltern oder Lehrkräfte informieren", "Die Nachrichten sofort löschen"], c: [1, 2] },
+            { q: "Warum sollte man wütende Nachrichten nicht sofort abschicken?", a: ["Das Internet ist zu langsam dafür", "Das Internet vergisst nicht – Nachrichten können Screenshots werden und bleiben bestehen", "Wütende Nachrichten werden automatisch blockiert", "Es ist technisch nicht möglich"], c: [1] },
+            { q: "Was ist die goldene Regel der Netiquette?", a: ["Immer anonym bleiben", "Schreibe nur, was du der Person auch direkt ins Gesicht sagen würdest", "Niemals Emojis verwenden", "Immer in Großbuchstaben schreiben"], c: [1] },
+            { q: "Welche Telefonnummer hat die 'Nummer gegen Kummer'?", a: ["110", "112", "116 111", "0800 111 0 111"], c: [2] },
+            { q: "Was solltest du bei einem Witz im Chat bedenken?", a: ["Den Witz so schreiben, dass ihn alle sehen", "Ironie kann im Chat leicht missverstanden werden – Emojis helfen zur Klarstellung", "Den Witz in Großbuchstaben schreiben", "Den Witz an alle weiterleiten"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Welche Aussagen zu Cybermobbing-Beweisen sind korrekt?", a: ["Fiese Nachrichten sofort löschen", "Screenshots machen, bevor der Täter löscht", "Beweise sind wichtig für Gespräche mit Schule oder Polizei", "Beweise dürfen nicht gezeigt werden"], c: [1, 2] },
+            { q: "Was unterscheidet Cybermobbing von einem normalen Streit?", a: ["Es gibt keinen Unterschied", "Cybermobbing ist absichtlich, wiederholt und hört nach der Schule nicht auf", "Cybermobbing passiert nur in sozialen Netzwerken", "Ein normaler Streit ist schlimmer"], c: [1] },
+            { q: "Was bedeutet 'das Internet vergisst nicht'?", a: ["Das Internet hat einen sehr großen Speicher", "Einmal veröffentlichte Inhalte können durch Screenshots dauerhaft existieren", "Nachrichten werden automatisch archiviert", "Der Browser speichert alle Nachrichten"], c: [1] },
+            { q: "Welche Aussage zum Blockieren ist korrekt?", a: ["Blockieren ist eine Schwäche", "Jemanden zu blockieren ist stärker als zurückzubeleidigen", "Blockieren löst das Problem sofort und dauerhaft", "Man kann in sozialen Netzwerken niemanden blockieren"], c: [1] },
+            { q: "Was solltest du tun, wenn du Zeuge von Cybermobbing wirst?", a: ["Wegschauen und nichts tun", "Das Opfer unterstützen und ggf. Erwachsene informieren", "Selbst mitmachen", "Die Nachrichten teilen"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Was solltest du beim Schreiben in Klassenchats beachten?", a: ["Immer Emojis verwenden", "Respektvolle Sprache und Ton", "Überlegen, ob du die Nachricht auch direkt so sagen würdest", "Möglichst kurze Nachrichten schreiben"], c: [1, 2] },
+            { q: "Was können Folgen von Cybermobbing für das Opfer sein?", a: ["Keine ernsthaften Folgen, da es nur online passiert", "Echte psychische Schäden, da das Mobbing bis ins eigene Zimmer verfolgt", "Nur kurzfristiger Ärger", "Das Opfer wird stärker dadurch"], c: [1] }
+          ],
+          4: [
+            { q: "Was sind 'Crawler' bei Suchmaschinen?", a: ["Mitarbeiter, die das Internet manuell durchsuchen", "Programme, die Webseiten lesen und in einem Index speichern", "Nutzer, die besonders schnell suchen", "Werbeanzeigen in Suchmaschinen"], c: [1] },
+            { q: "Was ist der 'Index' einer Suchmaschine?", a: ["Die Startseite der Suchmaschine", "Ein riesiges Inhaltsverzeichnis aller bekannten Webseiten", "Eine Liste aller Nutzer", "Das Logo der Suchmaschine"], c: [1] },
+            { q: "Was ist bei der Eingabe in Suchmaschinen besser?", a: ["Ganze Sätze eingeben", "Präzise Schlagwörter (Keywords) verwenden", "Immer mit Satzzeichen suchen", "Nur ein einzelnes Wort eingeben"], c: [1] },
+            { q: "Was bewirkt das Minus-Zeichen in einer Google-Suche (z.B. 'Jaguar -Auto')?", a: ["Es sucht nach negativen Inhalten", "Es schließt ein bestimmtes Wort aus den Suchergebnissen aus", "Es sortiert nach Datum", "Es sucht nur auf englischen Seiten"], c: [1] },
+            { q: "Woran erkennst du Werbung in den Suchergebnissen?", a: ["Am farbigen Hintergrund", "An der Kennzeichnung 'Anzeige' oder 'Gesponsert'", "An der Position ganz unten", "An der Schriftgröße"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Welche Aussagen zur Google Bilderrückwärtssuche sind korrekt?", a: ["Man kann ein Bild hochladen und sehen, wo es zuerst auftauchte", "Sie funktioniert nur mit Bildern aus Wikipedia", "Sie hilft, aus dem Kontext gerissene Bilder zu entlarven", "Sie zeigt nur Bilder vom aktuellen Tag"], c: [0, 2] },
+            { q: "Welche Suchmaschine ist speziell für Kinder geeignet?", a: ["Google", "Bing", "FragFINN.de", "DuckDuckGo"], c: [2] },
+            { q: "Was bewirken Anführungszeichen bei einer Google-Suche?", a: ["Die Suche wird auf englische Seiten eingeschränkt", "Es wird nach der exakten Wortfolge gesucht", "Die Suche wird schneller", "Bilder werden ausgeblendet"], c: [1] },
+            { q: "Warum ist der erste Treffer bei Google nicht immer der beste?", a: ["Google sortiert nach Beliebtheit", "Firmen können sich mit Geld nach oben kaufen (Anzeigen)", "Google zeigt die neuesten Seiten zuerst", "Der erste Treffer ist immer gesperrt"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Welche Aussagen zum Suchindex sind korrekt?", a: ["Suchmaschinen durchsuchen das Internet in Echtzeit", "Crawler lesen Webseiten und speichern sie im Index", "Beim Suchen durchsuchst du den gespeicherten Index, nicht das live-Internet", "Alle Webseiten der Welt sind im Index"], c: [1, 2] },
+            { q: "Was solltest du tun, bevor du einer reißerischen Schlagzeile glaubst?", a: ["Sofort weiterteilen", "Prüfen, ob seriöse unabhängige Medien dasselbe berichten", "Nur in den Kommentaren nachlesen", "Auf den Autor achten"], c: [1] },
+            { q: "Wie lautet die korrekte Keyword-Suche für 'Was fressen Eisbären im Winter'?", a: ["Was fressen Eisbären im Winter?", "Eisbär Nahrung Winter", "Eisbär im Winter", "Fressen Nahrung Tier Winter Eis"], c: [1] },
+            { q: "Was ist ein Suchoperator?", a: ["Ein Mitarbeiter der Suchmaschine", "Ein spezieller Befehl, der Suchergebnisse präziser macht (z.B. -, \"\")", "Das Suchfeld auf der Webseite", "Eine Werbeanzeige"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Welche Eigenschaften haben kindersichere Suchmaschinen?", a: ["Sie zeigen alle Ergebnisse wie Google", "Sie filtern das Internet und zeigen nur sichere Inhalte", "Sie sind meist werbefrei", "Sie sind schneller als Google"], c: [1, 2] },
+            { q: "Was passiert, wenn du 'Gymnasium Thomaeum' in Anführungszeichen bei Google eingibst?", a: ["Google ignoriert die Anführungszeichen", "Google sucht nach exakt dieser Wortfolge", "Google sucht nur auf lokalen Seiten", "Google übersetzt den Begriff ins Englische"], c: [1] }
+          ],
+          5: [
+            { q: "Welches Passwort ist am sichersten?", a: ["123456", "hallo", "IejM3gÄ!", "password"], c: [2] },
+            { q: "Was ist der 'Merksatz-Trick' bei Passwörtern?", a: ["Ein Passwort aus bekannten Wörtern zusammensetzen", "Einen Satz bilden und nur die Anfangsbuchstaben + Sonderzeichen verwenden", "Das Passwort auf einem Zettel notieren", "Den eigenen Namen rückwärts schreiben"], c: [1] },
+            { q: "Wie lang sollte ein sicheres Passwort mindestens sein?", a: ["4 Zeichen", "6 Zeichen", "12 Zeichen", "20 Zeichen"], c: [2] },
+            { q: "Wer darf dein Passwort kennen?", a: ["Deine beste Freundin / dein bester Freund", "Nur du selbst und im Notfall deine Eltern", "Alle engen Freunde", "Deine Lehrkraft"], c: [1] },
+            { q: "Was können Hacker-Programme in weniger als einer Sekunde knacken?", a: ["15-stellige zufällige Passwörter", "Einfache Passwörter wie '123456' oder den Namen des Haustieres", "Passwörter mit Sonderzeichen", "Passwörter mit Groß- und Kleinbuchstaben"], c: [1] },
+            { q: "Was ist ein Passwort-Manager?", a: ["Ein Mensch, der Passwörter verwaltet", "Ein Programm, das Passwörter sicher speichert und verwaltet", "Eine Liste mit Passwörtern auf Papier", "Eine Funktion im Windows Explorer"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Welche Merkmale hat ein sicheres Passwort?", a: ["Es ist kurz und leicht zu merken", "Es ist mindestens 12 Zeichen lang", "Es enthält Buchstaben, Zahlen und Sonderzeichen", "Es ist ein bekanntes Wort aus dem Wörterbuch"], c: [1, 2] },
+            { q: "Warum ist 'Hund123' kein sicheres Passwort?", a: ["Es ist zu lang", "Es enthält den Namen eines Haustieres, der leicht erraten werden kann", "Es enthält Zahlen", "Es ist zu kompliziert"], c: [1] },
+            { q: "Was kann passieren, wenn du dein Passwort einer Freundin gibst und ihr euch streitet?", a: ["Nichts, sie ist vertrauenswürdig", "Sie könnte das Passwort missbrauchen und dir schaden", "Das Passwort wird automatisch geändert", "Das Passwort wird ungültig"], c: [1] },
+            { q: "Welches Passwort entsteht nach dem Merksatz-Trick aus 'Ich esse jeden Morgen 3 grüne Äpfel!'?", a: ["IessejedenMorgen3grüneÄpfel", "Morgen3Äpfel!", "IejM3gÄ!", "IEJM3GÄ!"], c: [2] },
+            { q: "Warum ist Länge bei Passwörtern wichtiger als Komplexität?", a: ["Längere Passwörter sind leichter zu merken", "Je länger das Passwort, desto exponentiell länger braucht ein Computer zum Knacken", "Komplexe Passwörter werden von Webseiten nicht akzeptiert", "Kurze komplexe Passwörter sind sicherer"], c: [1] },
+            { q: "Was solltest du tun, wenn du vermutest, dass dein Passwort gestohlen wurde?", a: ["Abwarten", "Das Passwort sofort ändern", "Das Passwort an Freunde weitergeben", "Einen neuen Account erstellen"], c: [1] },
+            { q: "Warum solltest du für verschiedene Konten unterschiedliche Passwörter nutzen?", a: ["Nur für das Schulkonto", "Ein gestohlenes Passwort gefährdet sonst alle Konten auf einmal", "Nur für soziale Netzwerke", "Nur wenn man viele Konten hat"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Welche Passwörter sind am unsichersten?", a: ["123456", "XkP#9!mQ$zR2", "password", "L8r$mK!2pQx9"], c: [0, 2] },
+            { q: "Was ist ein 'Brute-Force'-Angriff auf Passwörter?", a: ["Eine Methode, Passwörter zu verschlüsseln", "Ein Angriff, bei dem ein Programm systematisch alle möglichen Passwörter durchprobiert", "Eine App zur Passwortverwaltung", "Eine sichere Passwortmethode"], c: [1] }
+          ],
+          6: [
+            { q: "Was ist das wichtigste Werkzeug der Bildbearbeitung?", a: ["Der Weißabgleich", "Das Zuschneiden (Crop)", "Die Helligkeit", "Die Sättigung"], c: [1] },
+            { q: "Was passiert bei zu viel Helligkeit in einem Foto?", a: ["Das Bild wird schärfer", "Helle Flächen 'verbrennen' und verlieren alle Details", "Das Bild wird dunkler", "Die Farben werden intensiver"], c: [1] },
+            { q: "Was ist die 'Timeline' in Videoschnittprogrammen?", a: ["Der Exportbereich", "Die Zeitleiste, auf der Videoclips angeordnet werden", "Das Vorschaufenster", "Das Werkzeugmenü"], c: [1] },
+            { q: "In welchem Format sollte ein fertiges Video exportiert werden?", a: [".mov", ".avi", ".mp4", ".wmv"], c: [2] },
+            { q: "Was ist 'Ducking' in der Videobearbeitung?", a: ["Das Zuschneiden von Videos", "Das Absenken der Musiklautstärke, wenn jemand spricht", "Ein Übergangseffekt zwischen Clips", "Eine Funktion zum Spiegeln von Videos"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Welche Aussagen zur Bildbearbeitung sind korrekt?", a: ["Instagram-Filter auf 100% wirken oft künstlich", "Körperproportionen sollte man immer retuschieren", "Der Weißabgleich korrigiert Farbstiche im Bild", "Mehr Kontrast macht jedes Bild automatisch besser"], c: [0, 2] },
+            { q: "Was ist das 'Split-Werkzeug' in Schnittprogrammen?", a: ["Ein Werkzeug zum Teilen des Bildschirms", "Ein Werkzeug, um Clips zu zerschneiden und Pausen herauszulöschen", "Ein Farbkorrekturwerkzeug", "Ein Werkzeug zum Exportieren"], c: [1] },
+            { q: "Warum gilt bei der Bildbearbeitung 'weniger ist mehr'?", a: ["Um Bearbeitungszeit zu sparen", "Übermäßige Bearbeitung wirkt unnatürlich und unrealistisch", "Programme werden bei zu viel Bearbeitung langsamer", "Fotos dürfen rechtlich nicht stark bearbeitet werden"], c: [1] },
+            { q: "Was versteht man unter 'Storytelling' in digitalen Medien?", a: ["Texte auf Folien schreiben", "Einen klaren roten Faden mit Anfang, Hauptteil und Ende", "Möglichst viele Effekte einsetzen", "Videos so lang wie möglich machen"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Welche Aussagen zum Videoexport sind korrekt?", a: ["Die Projektdatei kann jeder öffnen", "Das fertige Video muss exportiert werden, um es teilen zu können", "MP4 ist das Standardformat für Videos", "WAV ist ein Videoformat"], c: [1, 2] },
+            { q: "Was musst du beim Verändern der Bildgröße beachten?", a: ["An den Seiten ziehen für beste Qualität", "Nur an den Ecken ziehen, um Verzerrung zu vermeiden", "Das Bild immer auf 800x600 Pixel setzen", "Die Größe nur im Eigenschaften-Menü ändern"], c: [1] },
+            { q: "Was ist ethisch bei der Bildbearbeitung problematisch?", a: ["Bilder zuschneiden", "Das Verfälschen von Körperproportionen oder Nachrichtenbildern", "Helligkeit und Kontrast anpassen", "Fotos in Schwarz-Weiß umwandeln"], c: [1] },
+            { q: "Was ist ein 'Hook' in einem Video?", a: ["Das Ende des Videos", "Die Hintergrundmusik", "Ein spannender Einstieg, der den Zuschauer sofort fesselt", "Der Abspann"], c: [2] },
+            { q: "Wähle 2 richtige Antworten: Welche Aussagen zu Audio in Videos sind korrekt?", a: ["Hintergrundmusik sollte während des Sprechens lauter sein als die Stimme", "Hintergrundmusik auf eine separate Spur legen", "Ducking senkt die Musik, wenn jemand spricht", "Audio spielt keine wichtige Rolle in Videos"], c: [1, 2] },
+            { q: "Was bedeutet 'gnadenlos schneiden' beim Videoschnitt?", a: ["Das Video auf exakt 1 Minute kürzen", "Alles entfernen, was die Geschichte nicht voranbringt", "Alle ruhigen Momente löschen", "Das Video halbieren"], c: [1] }
+          ],
+          7: [
+            { q: "Welches Zeichen muss am Anfang einer Excel-Formel stehen?", a: ["+", "=", "#", "@"], c: [1] },
+            { q: "Was ist eine 'Zelle' in Excel?", a: ["Ein Tabellenblatt", "Ein einzelnes Kästchen mit einer eindeutigen Adresse aus Buchstabe und Zahl", "Eine Zeile", "Ein Diagramm"], c: [1] },
+            { q: "Was berechnet die Formel =SUMME(A1:A5)?", a: ["Den Durchschnitt von A1 bis A5", "Die Summe aller Werte von Zelle A1 bis A5", "Den größten Wert zwischen A1 und A5", "Die Anzahl der Zellen"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Welche Aussagen zu Excel-Diagrammen sind korrekt?", a: ["Ein Diagramm ohne Titel ist wertlos", "Achsenbeschriftungen sind optional", "Kreisdiagramme eignen sich gut für Prozentanteile", "Säulendiagramme zeigen nur Zeitverläufe"], c: [0, 2] },
+            { q: "Welches Diagramm eignet sich am besten für Vergleiche?", a: ["Kreisdiagramm", "Liniendiagramm", "Säulendiagramm", "Blasendiagramm"], c: [2] },
+            { q: "Was passiert automatisch, wenn du eine Zahl in Excel änderst, die Teil einer SUMME-Formel ist?", a: ["Nichts, man muss die Formel neu eingeben", "Die Summe aktualisiert sich automatisch", "Die Formel wird gelöscht", "Excel zeigt einen Fehler an"], c: [1] },
+            { q: "Wofür steht 'B4' in Excel?", a: ["Blatt 4, Zeile B", "Spalte B, Zeile 4", "Block 4", "Bereich 4"], c: [1] },
+            { q: "Wie macht man eine Excel-Tabelle übersichtlicher?", a: ["Möglichst viele Farben verwenden", "Spaltenüberschriften fett machen und mit Hintergrundfarbe versehen", "Alle Zellen verbinden", "Die Schrift sehr klein machen"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Welche Aussagen zu Tabellenkalkulationen sind korrekt?", a: ["Formeln beginnen immer mit =", "Wenn man eine Zahl ändert, müssen alle Formeln manuell neu berechnet werden", "Daten können als Diagramm visualisiert werden", "Excel kann keine Texte in Zellen speichern"], c: [0, 2] },
+            { q: "Was bedeutet 'A1:A5' in einer Excel-Formel?", a: ["Nur die Zellen A1 und A5", "Alle Zellen von A1 bis A5", "Die erste und letzte Zelle der Tabelle", "Spalte A, 15 Zeilen"], c: [1] },
+            { q: "Welches Diagramm eignet sich für die Darstellung von Prozentanteilen?", a: ["Balkendiagramm", "Kreisdiagramm", "Liniendiagramm", "Punktediagramm"], c: [1] },
+            { q: "Was muss man beim Ausdrucken einer Excel-Tabelle beachten?", a: ["Rahmenlinien sind beim Ausdrucken automatisch sichtbar", "Man muss Tabellenlinien manuell über die Rahmen-Funktion hinzufügen", "Excel-Tabellen können nicht gedruckt werden", "Das Drucken funktioniert nur mit Farbtintendruckern"], c: [1] },
+            { q: "Welche Funktion zeigt den größten Wert in einem Bereich?", a: ["=SUMME()", "=MAX()", "=WENN()", "=ANZAHL()"], c: [1] },
+            { q: "Wie springst du in Excel schnell von Zelle zu Zelle?", a: ["Mit den Pfeiltasten oder der Tab-Taste", "Nur mit der Maus", "Mit Strg + N", "Mit der Leertaste"], c: [0] },
+            { q: "Wähle 2 richtige Antworten: Welche Fehler passieren Anfängern in Excel häufig?", a: ["Das = vor Formeln vergessen", "Zu viele Farben verwenden", "Spaltenüberschriften nicht beschriften", "Zu wenige Zeilen anlegen"], c: [0, 2] }
+          ],
+          8: [
+            { q: "Bei welchem Pegel sollte eine Aufnahme idealerweise liegen?", a: ["Bei 0 dB", "Bei -6 dB", "Bei ca. -12 dB", "Bei -30 dB"], c: [2] },
+            { q: "Was passiert, wenn die Aufnahme übersteuert (0 dB berührt)?", a: ["Das Signal wird lauter", "Das Signal verzerrt dauerhaft und ist nicht mehr zu reparieren", "Die Aufnahme wird automatisch gestoppt", "Die Qualität verbessert sich"], c: [1] },
+            { q: "Welches Exportformat ist Standard für Podcasts?", a: ["WAV", "MP3 mit 192 kbps", "FLAC", "AAC mit 64 kbps"], c: [1] },
+            { q: "Was ist 'Ducking' in der Audioproduktion?", a: ["Eine Aufnahmetechnik für Interviews", "Das Absenken der Musiklautstärke, wenn jemand spricht", "Ein Mikrofon-Typ", "Eine Methode zur Rauschunterdrückung"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Welche Aussagen zur Raumakustik sind korrekt?", a: ["Leere Räume klingen trockener als vollgestellte", "Teppiche und Vorhänge schlucken Schall und verbessern die Aufnahme", "Unter einer Bettdecke aufnehmen reduziert Hall", "Küchen eignen sich am besten für Aufnahmen"], c: [1, 2] },
+            { q: "Was ist ein 'Stichwort-Skript'?", a: ["Ein vollständig ausgeschriebener Text", "Eine Struktur mit Stichworten, bei der die Formulierung spontan entsteht", "Eine Liste mit Interviewfragen", "Ein Skript ohne Inhalt"], c: [1] },
+            { q: "Aus welchen drei Spuren besteht eine professionelle Podcast-Produktion?", a: ["Stimme, Musik, Video", "Stimme, Hintergrundmusik und ggf. Soundeffekte", "Intro, Hauptteil, Outro", "Links, Rechts, Mitte"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Welche Aussagen zum 3-Akt-Modell sind korrekt?", a: ["Der Hook entscheidet in den ersten 60 Sekunden, ob jemand weiterhört", "Das Fazit sollte mindestens 10 Minuten lang sein", "Im Hauptteil kommen Belege, Argumente und Perspektiven", "Der Hook ist der letzte Teil"], c: [0, 2] },
+            { q: "Warum darf man keine Spotify-Musik im Podcast verwenden?", a: ["Weil Spotify zu teuer ist", "Weil die Musik urheberrechtlich geschützt ist", "Weil die Musikqualität zu schlecht ist", "Weil Spotify das technisch blockiert"], c: [1] },
+            { q: "Was ist der Unterschied zwischen WAV und MP3?", a: ["WAV ist schlechter als MP3", "WAV ist unkomprimiert und für Archivierung, MP3 ist komprimiert und kleiner", "MP3 ist immer besser als WAV", "Es gibt keinen Unterschied"], c: [1] },
+            { q: "Warum klingt ein vollständig abgelesenes Skript oft leblos?", a: ["Weil die Aufnahmetechnik schlechter ist", "Weil die Formulierungen steif wirken und der spontane Sprachfluss fehlt", "Weil Skripte zu lang sind", "Weil das Mikrofon die Stimme verändert"], c: [1] },
+            { q: "Was ist bei Podcasts als journalistisches Medium zu beachten?", a: ["Nur eigene Meinungen verbreiten", "Quellen prüfen, Aussagen belegen und verschiedene Perspektiven abbilden", "Möglichst viele Fakten ohne Quellenangabe nennen", "Immer kontroverse Meinungen vertreten"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Welche Plattformen bieten lizenzfreie Musik an?", a: ["Spotify", "ccmixter.org", "YouTube (normale Videos)", "freemusicarchive.org"], c: [1, 3] },
+            { q: "Was bedeutet '192 kbps' beim MP3-Export?", a: ["Die Länge des Podcasts in Sekunden", "Die Bitrate – ein Maß für Audioqualität und Dateigröße", "Die Anzahl der Spuren", "Den Pegel der Aufnahme"], c: [1] },
+            { q: "Was passiert, wenn man eine bereits komprimierte MP3 erneut als MP3 exportiert?", a: ["Die Qualität bleibt gleich", "Die Qualität verschlechtert sich jedes Mal", "Die Datei wird kleiner ohne Qualitätsverlust", "Die Datei wird automatisch in WAV umgewandelt"], c: [1] }
+          ],
+          9: [
+            { q: "Was sind die drei wichtigsten Fragen beim Bewerten einer Quelle?", a: ["Wer hat es erstellt, wann und mit welchem Ziel?", "Wie lang ist der Text und hat er Bilder?", "Ist die Webseite kostenlos und auf Deutsch?", "Hat die Webseite ein modernes Design?"], c: [0] },
+            { q: "Was ist die '2-Quellen-Regel'?", a: ["Immer zwei verschiedene Suchmaschinen verwenden", "Eine Behauptung bei mindestens zwei unabhängigen seriösen Quellen prüfen", "Immer zwei Zitate einfügen", "Zwei Autoren pro Quelle angeben"], c: [1] },
+            { q: "Was sind typische Merkmale von Fake News?", a: ["Sachliche Sprache und viele Quellenangaben", "Reißerische Überschriften, starke Emotionalisierung und fehlende Quellen", "Lange, gut recherchierte Texte", "Artikel auf bekannten Nachrichtenwebseiten"], c: [1] },
+            { q: "Was ist die Google Bilderrückwärtssuche?", a: ["Eine Suche nach Bildern zu einem Stichwort", "Ein Tool, das zeigt, wann und wo ein Bild zuerst erschienen ist", "Eine Suche nach ähnlichen Farben", "Eine Suche nach dem Fotografen"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Welche Aussagen zum Urheberrecht sind korrekt?", a: ["Bilder aus der Google-Bildersuche darf man frei verwenden", "Bilder, Texte und Videos gehören rechtlich dem Urheber", "Ein Bild einfach in eine Präsentation zu kopieren ist eine Urheberrechtsverletzung", "Urheberrecht gilt nur für kommerzielle Nutzung"], c: [1, 2] },
+            { q: "Was bedeutet die Creative-Commons-Lizenz 'CC BY'?", a: ["Das Werk darf gar nicht genutzt werden", "Das Werk darf frei genutzt werden, wenn man den Urheber nennt", "Das Werk darf nur für Schulen genutzt werden", "Das Werk darf ohne Quellenangabe genutzt werden"], c: [1] },
+            { q: "Was enthält eine vollständige Quellenangabe?", a: ["Nur die URL", "Autor, Titel, Erscheinungsjahr, URL und Abrufdatum", "Nur Autor und Erscheinungsjahr", "Nur Titel und URL"], c: [1] },
+            { q: "Was ist ein 'Impressum' auf einer Webseite?", a: ["Das Logo der Webseite", "Eine gesetzlich vorgeschriebene Seite mit Angaben zum Verantwortlichen", "Eine Liste aller Artikel", "Die Datenschutzerklärung"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Welche Plattformen bieten lizenzfreie Bilder an?", a: ["Google Bilder", "Pixabay.com", "Instagram", "Unsplash.com"], c: [1, 3] },
+            { q: "Was ist beim Zitieren aus fremden Texten Pflicht?", a: ["Den Text einfach einfügen", "Den zitierten Text in Anführungszeichen setzen und die Quelle angeben", "Nur die Quelle nennen, ohne Anführungszeichen", "Fremde Texte dürfen nicht zitiert werden"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Welche Warnsignale deuten auf eine unseriöse Webseite hin?", a: ["Das Impressum fehlt", "Die Webseite hat ein modernes Design", "Keine Quellenangaben für Behauptungen", "Die Webseite ist auf Englisch"], c: [0, 2] },
+            { q: "Wozu dient das Abrufdatum in einer Online-Quellenangabe?", a: ["Es ist nur eine Formalie", "Webseiten können sich ändern – das Datum zeigt, welcher Stand zitiert wurde", "Es ersetzt den Autor", "Es zeigt, wie alt die Webseite ist"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Welche Aussagen zu Wikipedia sind korrekt?", a: ["Wikipedia-Artikel müssen korrekt zitiert werden", "Wikipedia ist immer zu 100% korrekt", "Wikipedia kann ein guter Einstieg sein, sollte aber durch weitere Quellen ergänzt werden", "Wikipedia-Texte darf man ohne Quellenangabe kopieren"], c: [0, 2] },
+            { q: "Wann darf man ein kurzes Zitat aus einem fremden Text nutzen?", a: ["Niemals, das ist immer eine Urheberrechtsverletzung", "Immer und ohne Einschränkungen", "Wenn man es in Anführungszeichen setzt und die Quelle direkt angibt", "Nur wenn der Text älter als 10 Jahre ist"], c: [2] },
+            { q: "Welche Aussage zur Quellenarbeit ist korrekt?", a: ["Nur gedruckte Bücher sind als Quellen zulässig", "Auch YouTube-Videos und Webseiten können Quellen sein – wenn korrekt angegeben", "Wikipedia-Artikel sind keine Quellen", "Quellenangaben sind nur für Doktorarbeiten nötig"], c: [1] }
+          ],
+          10: [
+            { q: "Was bedeutet 'Du bist das Produkt' bei kostenlosen Apps?", a: ["Die App ist qualitativ hochwertig", "Die eigene Aufmerksamkeit und Daten werden an Werbetreibende verkauft", "Man muss in der App arbeiten", "Die App gehört dem Nutzer"], c: [1] },
+            { q: "Was sind 'Tracker' auf Webseiten?", a: ["Programme, die Fehler auf Webseiten suchen", "Unsichtbare Programme, die das Nutzerverhalten über verschiedene Webseiten verfolgen", "Navigationshilfen auf Webseiten", "Werbebanner"], c: [1] },
+            { q: "Was ist die 'Filterblase'?", a: ["Ein Sicherheitsfilter für Kinder", "Das Phänomen, dass Algorithmen immer mehr von dem zeigen, was man ohnehin schon denkt", "Ein Werkzeug zur Datenverschlüsselung", "Eine Funktion zum Blockieren von Inhalten"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Welche Maßnahmen schützen die eigene Privatsphäre?", a: ["Profil auf öffentlich stellen", "Profil auf privat stellen", "App-Berechtigungen prüfen und einschränken", "Möglichst viele persönliche Informationen teilen"], c: [1, 2] },
+            { q: "Was ist 'Endless Scroll'?", a: ["Eine Scroll-Funktion für lange Dokumente", "Das endlose Nachladen neuer Inhalte, das das Zeitgefühl ausschaltet", "Ein Spiel in sozialen Netzwerken", "Eine Barrierefreiheit-Funktion"], c: [1] },
+            { q: "Warum sollte man Cookie-Banner nicht blind 'Alle akzeptieren' klicken?", a: ["Weil das zu langsam ist", "Weil unnötige Daten gesammelt werden, die das eigene Werbeprofil erweitern", "Weil Cookies den Computer verlangsamen", "Weil Cookies Viren sind"], c: [1] },
+            { q: "Was ist 'Micro-Targeting'?", a: ["Kleine, kurze Werbeanzeigen", "Auf persönliche Eigenschaften und Schwächen eines Nutzers zugeschnittene Werbung", "Werbung auf kleinen Bildschirmen", "Eine Funktion des Browsers"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Welche Aussagen zu App-Berechtigungen sind korrekt?", a: ["Alle Apps brauchen Zugriff auf Standort und Mikrofon", "Nicht benötigte Berechtigungen sollten entzogen werden", "Man kann in den Smartphone-Einstellungen alle Berechtigungen einsehen", "App-Berechtigungen können nicht geändert werden"], c: [1, 2] },
+            { q: "Was zeigt die 'Bildschirmzeit'-Funktion?", a: ["Die Helligkeit des Bildschirms", "Wie viel Zeit man in welcher App verbracht hat", "Die Akkulaufzeit des Smartphones", "Die Anzahl der Nachrichten"], c: [1] },
+            { q: "Was sind 'Dark Patterns' auf Webseiten?", a: ["Webseiten mit dunklem Design", "Psychologische Design-Tricks, die Nutzer zu ungewollten Aktionen verleiten", "Versteckte Menüs", "Fehlerseiten"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Welche Aussagen zu sozialen Netzwerken sind korrekt?", a: ["Sie sind vor allem soziale Dienste ohne Gewinnabsicht", "Sie sammeln ununterbrochen Daten über das Nutzerverhalten", "Ihr Ziel ist es, die Aufmerksamkeit der Nutzer möglichst lange zu binden", "Sie zeigen alle Inhalte chronologisch"], c: [1, 2] },
+            { q: "Was sollte man mit Browserdaten regelmäßig tun?", a: ["Sie exportieren", "Sie löschen, besonders auf gemeinsam genutzten Geräten", "Sie in die Cloud hochladen", "Sie ausdrucken"], c: [1] },
+            { q: "Was ist eine 'Echokammer' im Internet?", a: ["Ein Chatroom für Musik", "Ein digitaler Raum, in dem man nur noch die eigene Meinung gespiegelt bekommt", "Eine App für Audioaufnahmen", "Ein Server für Videos"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Welche Aussagen zu Datenschutz-Einstellungen sind korrekt?", a: ["Ein öffentliches Profil ist wie ein offenes Tagebuch für alle", "App-Limits helfen, die eigene Nutzungszeit zu kontrollieren", "Datenschutz-Einstellungen können nur am Computer geändert werden", "Einmal gesetzte Einstellungen ändern sich nie von selbst"], c: [0, 1] },
+            { q: "Warum zeigt Instagram plötzlich Werbung für Schuhe, die man auf einer anderen Webseite angeschaut hat?", a: ["Zufall", "Tracker verfolgen das Nutzerverhalten quer durch verschiedene Webseiten", "Instagram speichert den Browser-Verlauf direkt", "Die Schuh-Webseite hat die Daten an Instagram geschickt"], c: [1] }
+          ],
+          11: [
+            { q: "Was ist ein 'Prompt'?", a: ["Das Ergebnis einer KI-Anfrage", "Die Eingabe oder der Befehl, den man an eine KI richtet", "Ein Programm zur Textverarbeitung", "Eine Fehlermeldung der KI"], c: [1] },
+            { q: "Was ist die 'Profi-Formel' für gute Prompts?", a: ["Kurz + einfach + unklar", "Rolle + Aufgabe + Format", "Wer + Was + Wie viel", "Thema + Länge + Sprache"], c: [1] },
+            { q: "Was sind 'Halluzinationen' bei KI?", a: ["Fehler in der Programmierung", "Erfundene, aber überzeugend klingende falsche Fakten", "Bilder, die KI generiert", "Ausrufezeichen am Satzende"], c: [1] },
+            { q: "Was bedeutet 'iteratives Arbeiten' mit KI?", a: ["Die erste Antwort ist immer die beste", "Die KI-Antwort schrittweise durch Feedback verfeinern", "Immer neue Prompts von Grund auf schreiben", "KI nur einmal pro Tag nutzen"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Welche Aussagen zu KI-generierten Texten sind korrekt?", a: ["KI-Texte klingen oft seelenlos und verwenden immer dieselben Phrasen", "KI-Texte sind immer besser als selbst geschriebene", "Lehrkräfte können KI-Texte leicht erkennen", "KI-Texte müssen nicht überprüft werden"], c: [0, 2] },
+            { q: "Was muss man bei von KI genannten Quellen tun?", a: ["Sie direkt übernehmen", "Immer per Suchmaschine prüfen, ob die Quelle wirklich existiert", "Sie nur bei Wikipedia nachschlagen", "Sie ignorieren"], c: [1] },
+            { q: "Welches ist ein Beispiel für einen guten Prompt nach der Profi-Formel?", a: ["'Erkläre die Photosynthese'", "'Handle als Bio-Lehrer. Erkläre die Photosynthese für einen 10-Jährigen in 3 kurzen Sätzen.'", "'Was ist Photosynthese?'", "'Photosynthese bitte'"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Welche Aussagen zur Transparenz bei KI-Nutzung sind korrekt?", a: ["KI-Nutzung muss in Schularbeiten angegeben werden", "Man sollte verschweigen, wenn man KI genutzt hat", "Es ist wichtig anzugeben, für welche Schritte man KI genutzt hat", "KI-Nutzung ist in der Schule immer verboten"], c: [0, 2] },
+            { q: "Warum weiß eine KI nicht, was die Wahrheit ist?", a: ["Weil sie zu alt ist", "Weil sie nicht sucht, sondern statistisch das wahrscheinlichste nächste Wort berechnet", "Weil sie keine Internetverbindung hat", "Weil sie zu langsam ist"], c: [1] },
+            { q: "Was ist der Vorteil von präzisen Prompts?", a: ["Die KI arbeitet schneller", "Die Antworten werden relevanter, nützlicher und zielgerichteter", "Die KI macht weniger Rechtschreibfehler", "Die Antworten werden kürzer"], c: [1] },
+            { q: "Was sollte man mit KI-generierten Texten tun, bevor man sie abgibt?", a: ["Sie unverändert abgeben", "Sie in den eigenen Stil umformulieren", "Sie kürzen", "Sie übersetzen"], c: [1] },
+            { q: "Was ist 'kritisches Feedback' an eine KI?", a: ["Die KI loben", "Der KI sagen, was an der Antwort verbessert werden soll", "Die Anfrage löschen", "Den Browser schließen"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Welche Einsatzmöglichkeiten für KI in der Schule sind sinnvoll?", a: ["Hausaufgaben komplett von KI schreiben lassen", "KI als Brainstorming-Hilfe nutzen", "Textentwürfe mit KI verbessern und dann in eigenen Stil umschreiben", "KI als einzige Quelle für Fakten nutzen"], c: [1, 2] },
+            { q: "Was bedeutet 'Format' in der Profi-Formel?", a: ["Die Länge des Prompts", "Die gewünschte Form der Antwort (z.B. Stichpunkte, Tabelle, Fließtext)", "Das Dateiformat der Ausgabe", "Die Schriftgröße"], c: [1] },
+            { q: "Warum sollte man wichtige KI-Fakten immer per Suchmaschine prüfen?", a: ["Weil KI langsamer als Google ist", "Weil KI Fakten erfindet (halluziniert), ohne es zu wissen", "Weil Suchmaschinen mehr Informationen haben", "Weil KI nur auf Englisch antwortet"], c: [1] }
+          ],
+          12: [
+            { q: "Was ist ein 'digitaler Fußabdruck'?", a: ["Die Schuhgröße eines Computernutzers", "Alle Spuren, die man durch digitale Aktivitäten im Netz hinterlässt", "Die Dateien auf dem eigenen Computer", "Der Browser-Verlauf"], c: [1] },
+            { q: "Warum sollte man regelmäßig 'Ego-Googeln'?", a: ["Um sich selbst zu loben", "Um zu prüfen, was Fremde (z.B. Arbeitgeber) über einen finden können", "Um die eigenen Fotos zu sehen", "Um den Browser-Verlauf zu löschen"], c: [1] },
+            { q: "Was sind 'Deepfakes'?", a: ["Sehr tiefe Töne in Videos", "KI-generierte täuschend echte Videos oder Stimmen von Personen", "Gefälschte Kommentare in sozialen Netzwerken", "Unscharfe Bilder"], c: [1] },
+            { q: "Was ist 'KI-Bias'?", a: ["Ein Fehler in der KI-Programmierung", "Vorurteile in KI-Systemen, die aus einseitigen Trainingsdaten stammen", "Eine Funktion zum Testen von KI", "Ein KI-gestützter Übersetzer"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Welche Aussagen zu Deepfakes sind korrekt?", a: ["Deepfakes können demokratische Prozesse gefährden", "Deepfakes sind leicht als solche zu erkennen", "KI kann täuschend echte Stimmen von Personen erzeugen", "Deepfakes existieren nur in Filmen"], c: [0, 2] },
+            { q: "Was ist das 'Recht am eigenen Bild'?", a: ["Das Recht, Fotos von anderen zu machen", "Das gesetzliche Recht, die Löschung von unerlaubt veröffentlichten Fotos zu verlangen", "Das Recht auf ein schönes Profilbild", "Das Recht, Fotos zu verkaufen"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Welche Aussagen zum digitalen Fußabdruck sind korrekt?", a: ["Das Internet vergisst nicht – Inhalte können dauerhaft bestehen", "Peinliche Fotos aus der Jugend können später Karrierechancen beeinflussen", "Gelöschte Posts verschwinden vollständig aus dem Internet", "Nur Erwachsene haben einen digitalen Fußabdruck"], c: [0, 1] },
+            { q: "Wem gehören KI-generierte Kunstwerke?", a: ["Immer dem Nutzer", "Immer dem KI-Unternehmen", "Das ist rechtlich noch nicht abschließend geklärt", "Den Künstlern, deren Werke als Training dienten"], c: [2] },
+            { q: "Was bedeutet 'mündig handeln' im digitalen Kontext?", a: ["Technik vollständig ablehnen", "Technik bewusst, kritisch und verantwortungsvoll nutzen", "Nur ältere Technologien verwenden", "Immer KI-Tools für Entscheidungen nutzen"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Welche Aussagen zu KI-Trainingsdaten sind korrekt?", a: ["KI lernt nur aus neutralen und perfekten Daten", "KI lernt aus menschlich produzierten Daten und übernimmt deren Vorurteile", "Historische Ungleichheiten in Daten können zu diskriminierenden KI-Ergebnissen führen", "KI-Systeme können keine Vorurteile haben"], c: [1, 2] },
+            { q: "Was kann man bei Google beantragen, wenn man bestimmte Suchergebnisse loswerden möchte?", a: ["Eine Sperrung des eigenen Namens", "Einen offiziellen Antrag auf Entfernung bestimmter Suchergebnisse", "Eine Umbenennung des Kontos", "Eine Google-Beschwerde"], c: [1] },
+            { q: "Was ist 'digitale Mündigkeit' NICHT?", a: ["Technik kritisch hinterfragen", "Technik bewusst einsetzen", "Technik blind vertrauen und keine Fakten prüfen", "Eigene Verantwortung bei der Nutzung übernehmen"], c: [2] },
+            { q: "Wähle 2 richtige Antworten: Welche Aussagen zu KI als Werkzeug sind korrekt?", a: ["KI-Tools können nützliche Assistenten sein", "KI hat einen eigenen Verstand und kann selbst entscheiden", "KI irrt sich und erfindet Fakten", "KI-Aussagen müssen nicht überprüft werden"], c: [0, 2] },
+            { q: "Was ist eine konkrete Maßnahme zur Pflege des eigenen digitalen Fußabdrucks?", a: ["Alle sozialen Netzwerke löschen", "Peinliche alte Beiträge und Fotos aktiv löschen", "Nur noch anonym im Internet surfen", "Alle Konten auf öffentlich stellen"], c: [1] },
+            { q: "Welche Gefahr stellen Deepfakes für die Gesellschaft dar?", a: ["Keine ernsthafte Gefahr", "Sie untergraben das Vertrauen in digitale Medien und können für Manipulation missbraucht werden", "Sie sind nur für Unterhaltungszwecke", "Sie betreffen nur Prominente"], c: [1] }
+          ],
+          13: [
+            { q: "Warum sind Instagram, TikTok und Google kostenlos?", a: ["Weil sie von Regierungen finanziert werden", "Weil sie Geld durch den Verkauf von Werbung auf Basis von Nutzerdaten verdienen", "Weil sie gemeinnützige Organisationen sind", "Weil Werbung verboten ist"], c: [1] },
+            { q: "Was bedeutet 'Du bist das Produkt' im Kontext von Tech-Konzernen?", a: ["Die App gehört dem Nutzer", "Die Daten und Aufmerksamkeit der Nutzer werden an Werbetreibende verkauft", "Die App wird vom Nutzer programmiert", "Der Nutzer arbeitet für das Unternehmen"], c: [1] },
+            { q: "Was sind 'Big Data Profile'?", a: ["Große Textdateien über Firmen", "Präzise psychologische Profile aus Millionen kleiner Datenpunkte", "Datenbanken mit Schulnoten", "Profile auf sozialen Netzwerken"], c: [1] },
+            { q: "Was ist 'Micro-Targeting'?", a: ["Kleine Werbebanner auf Webseiten", "Auf persönliche Ängste, Schwächen und Wünsche zugeschnittene Werbung oder politische Botschaften", "Werbung für Kinder", "Werbung nur auf Smartphones"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Welche Aussagen zu Dark Patterns sind korrekt?", a: ["Dark Patterns nutzen psychologische Tricks, um Nutzer zu ungewollten Aktionen zu verleiten", "Dark Patterns sind immer leicht zu erkennen", "Der 'Ablehnen'-Button ist oft kleiner und schwerer zu finden als 'Akzeptieren'", "Dark Patterns schützen die Privatsphäre der Nutzer"], c: [0, 2] },
+            { q: "Was war der Cambridge Analytica Skandal?", a: ["Ein Datenleck bei der Universität Cambridge", "Der missbräuchliche Einsatz von Facebook-Daten zur politischen Manipulation von Wahlen", "Ein Hackerangriff auf Google", "Der Verkauf von E-Mail-Adressen"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Welche Arten von Daten sammeln soziale Netzwerke?", a: ["Wie lange du etwas ansiehst", "Deine Schulnoten", "Was du likest und teilst", "Deine Handynummer ohne Registrierung"], c: [0, 2] },
+            { q: "Was ist ein 'Algorithmus' in sozialen Netzwerken?", a: ["Ein Nutzer mit vielen Followern", "Ein Programm, das entscheidet, welche Inhalte dir angezeigt werden", "Eine Art Werbebanner", "Ein Sicherheitssystem"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Welche Aussagen zum Geschäftsmodell von Tech-Konzernen sind korrekt?", a: ["Meta (Instagram, WhatsApp) ist vor allem eine Werbeagentur", "Google verdient hauptsächlich durch Abonnements", "Google ist eine der weltgrößten Werbeagenturen", "Soziale Netzwerke haben kein Interesse an deinen Daten"], c: [0, 2] },
+            { q: "Warum kennen Plattformen wie TikTok die Nutzer oft sehr gut?", a: ["Weil Nutzer freiwillig alle Daten eingeben", "Weil Millionen Datenpunkte zu einem präzisen psychologischen Profil zusammengesetzt werden", "Weil TikTok die Eltern befragt", "Weil TikTok Schulnoten kauft"], c: [1] },
+            { q: "Was ist der 'Preis' für kostenlose Apps?", a: ["Zeit für Werbung schauen", "Die eigenen Daten und Aufmerksamkeit", "Das Gerät wird langsamer", "Man muss Freunde einladen"], c: [1] },
+            { q: "Wähle 2 richtige Antworten: Welche Aussagen zum Datenschutz bei kostenlosen Apps sind korrekt?", a: ["Kostenlose Apps sind immer sicher und datenschutzfreundlich", "Man sollte Cookie-Einstellungen bewusst anpassen", "App-Berechtigungen sollten regelmäßig überprüft werden", "Datenschutzeinstellungen bringen nichts"], c: [1, 2] },
+            { q: "Was können Tech-Konzerne durch präzise Nutzerprofile tun?", a: ["Nur generische Werbung schalten", "Extrem gezielt auf persönliche Interessen, Ängste und Schwächen zugeschnittene Werbung zeigen", "Die Schuldaten der Nutzer abrufen", "Nutzer direkt telefonisch kontaktieren"], c: [1] },
+            { q: "Warum ist die Frage 'Ist es schlimm, Daten gegen kostenlose Apps zu tauschen?' komplex?", a: ["Es ist eindeutig schlimm", "Es ist eindeutig gut", "Es gibt Vorteile (kostenlose Dienste) und Risiken (Manipulation, Profilbildung), die abgewogen werden müssen", "Die Frage ist irrelevant"], c: [2] },
+            { q: "Wähle 2 richtige Antworten: Welche Maßnahmen schützen vor übermäßiger Datensammlung?", a: ["Auf 'Alle Cookies akzeptieren' klicken", "Nicht benötigte App-Berechtigungen entziehen", "Cookie-Banner bewusst auf 'nur essenzielle' setzen", "Alle sozialen Netzwerke sofort löschen"], c: [1, 2] }
+          ]
+        };
+
+        // --- QUIZ MODAL KOMPONENTE ---
+        const QuizModal = ({ module, onClose, onPass }) => {
+            const allQ = QUIZ_DATA[module.id] || [];
+
+            const shuffle = (arr) => {
+                const a = [...arr];
+                for (let i = a.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [a[i], a[j]] = [a[j], a[i]];
+                }
+                return a;
+            };
+
+            const buildQuestions = () => shuffle(allQ).map(q => {
+                const indexed = q.a.map((text, i) => ({ text, correct: q.c.includes(i) }));
+                const shuffled = shuffle(indexed);
+                return {
+                    q: q.q,
+                    answers: shuffled.map(x => x.text),
+                    correct: shuffled.reduce((acc, x, i) => { if (x.correct) acc.push(i); return acc; }, []),
+                    isMulti: q.c.length > 1
+                };
+            });
+
+            const [questions, setQuestions] = useState(() => buildQuestions());
+            const [current, setCurrent] = useState(0);
+            const [selected, setSelected] = useState({});
+            const [submitted, setSubmitted] = useState(false);
+            const [result, setResult] = useState(null);
+            const [saving, setSaving] = useState(false);
+
+            const q = questions[current];
+            const curSel = selected[current] || new Set();
+            const isLast = current === questions.length - 1;
+            const allAnswered = questions.every((_, i) => (selected[i] || new Set()).size > 0);
+
+            const toggle = (idx) => {
+                if (submitted) return;
+                setSelected(prev => {
+                    const s = new Set(prev[current] || []);
+                    if (q.isMulti) { s.has(idx) ? s.delete(idx) : s.add(idx); }
+                    else { s.clear(); s.add(idx); }
+                    return { ...prev, [current]: new Set(s) };
+                });
+            };
+
+            const handleSubmit = async () => {
+                let correct = 0;
+                questions.forEach((question, qi) => {
+                    const sel = selected[qi] || new Set();
+                    const correctSet = new Set(question.correct);
+                    if (sel.size === correctSet.size && [...sel].every(x => correctSet.has(x))) correct++;
+                });
+                const pct = Math.round((correct / questions.length) * 100);
+                setResult({ correct, pct, passed: pct >= 80 });
+                setSubmitted(true);
+                if (pct >= 80) {
+                    setSaving(true);
+                    await onPass(module.id);
+                    setSaving(false);
+                }
+            };
+
+            const handleRetry = () => {
+                setQuestions(buildQuestions());
+                setCurrent(0);
+                setSelected({});
+                setSubmitted(false);
+                setResult(null);
+            };
+
+            return (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-900/70 backdrop-blur-sm">
+                    <div className="bg-white rounded-[2rem] w-full max-w-2xl max-h-[92vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+
+                        {/* Header */}
+                        <div className="bg-[#BF0D3E] text-white px-6 py-5 shrink-0 flex justify-between items-center">
+                            <div>
+                                <p className="text-red-200 text-[10px] font-black uppercase tracking-widest mb-0.5">Quiz • {module.title}</p>
+                                {!submitted && <p className="text-white font-black text-sm">Frage {current + 1} von {questions.length}</p>}
+                                {submitted && <p className="text-white font-black text-sm">Auswertung</p>}
+                            </div>
+                            <button onClick={onClose} className="bg-white/20 hover:bg-white/30 p-2 rounded-xl transition-colors">
+                                <Icon name="x" size={20} />
+                            </button>
+                        </div>
+
+                        {/* Progress Bar */}
+                        {!submitted && (
+                            <div className="h-1.5 bg-slate-100 shrink-0">
+                                <div className="h-full bg-[#BF0D3E] transition-all duration-300" style={{ width: `${((current + 1) / questions.length) * 100}%` }}></div>
+                            </div>
+                        )}
+
+                        {/* Body */}
+                        <div className="overflow-y-auto custom-scroll flex-1 p-6 sm:p-8">
+                            {!submitted ? (
+                                <div>
+                                    <p className="font-black text-slate-800 text-lg leading-snug mb-6">{q.q}</p>
+                                    {q.isMulti && (
+                                        <p className="text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1.5 rounded-xl mb-4 inline-block">
+                                            ☑ Mehrere Antworten möglich
+                                        </p>
+                                    )}
+                                    <div className="space-y-3">
+                                        {q.answers.map((ans, i) => {
+                                            const isSel = curSel.has(i);
+                                            return (
+                                                <button key={i} onClick={() => toggle(i)}
+                                                    className={`w-full text-left px-5 py-4 rounded-2xl border-2 transition-all font-semibold text-sm leading-snug ${isSel ? 'border-[#BF0D3E] bg-red-50 text-[#BF0D3E]' : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50'}`}>
+                                                    <span className={`inline-flex items-center justify-center w-6 h-6 rounded-lg mr-3 text-xs font-black shrink-0 ${isSel ? 'bg-[#BF0D3E] text-white' : 'bg-slate-100 text-slate-500'}`}>
+                                                        {String.fromCharCode(65 + i)}
+                                                    </span>
+                                                    {ans}
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="text-center py-4">
+                                    {result.passed ? (
+                                        <div>
+                                            <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                                <Icon name="trophy" size={40} className="text-green-600" />
+                                            </div>
+                                            <h3 className="text-2xl font-black text-slate-800 mb-2">Bestanden! 🎉</h3>
+                                            <p className="text-4xl font-black text-green-600 mb-1">{result.pct}%</p>
+                                            <p className="text-sm text-slate-500 font-medium mb-6">{result.correct} von {questions.length} Fragen richtig</p>
+                                            {saving ? (
+                                                <div className="flex items-center justify-center gap-2 text-sm text-slate-500 mb-4">
+                                                    <div className="spinner !w-5 !h-5"></div> Speichere Fortschritt...
+                                                </div>
+                                            ) : (
+                                                <div className="bg-green-50 border border-green-200 rounded-2xl p-4 mb-6">
+                                                    <p className="text-green-800 font-bold text-sm flex items-center justify-center gap-2">
+                                                        <Icon name="book-open" size={18} /> Wissensspeicher freigeschaltet!
+                                                    </p>
+                                                </div>
+                                            )}
+                                            <button onClick={onClose} className="w-full text-white font-black uppercase tracking-widest px-6 py-4 rounded-2xl transition-all shadow-lg" style={{ backgroundColor: '#BF0D3E' }}>
+                                                Zum Modul
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <div>
+                                            <div className="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                                <Icon name="rotate-ccw" size={40} className="text-amber-600" />
+                                            </div>
+                                            <h3 className="text-2xl font-black text-slate-800 mb-2">Knapp daneben!</h3>
+                                            <p className="text-4xl font-black text-amber-500 mb-1">{result.pct}%</p>
+                                            <p className="text-sm text-slate-500 font-medium mb-2">{result.correct} von {questions.length} Fragen richtig</p>
+                                            <p className="text-sm text-slate-400 mb-6">Mindestens 80% zum Bestehen nötig. Du schaffst das!</p>
+                                            <button onClick={handleRetry} className="w-full text-white font-black uppercase tracking-widest px-6 py-4 rounded-2xl transition-all shadow-lg bg-amber-500 hover:bg-amber-600">
+                                                Nochmal versuchen
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Footer Navigation */}
+                        {!submitted && (
+                            <div className="px-6 py-4 border-t border-slate-100 shrink-0 flex justify-between items-center gap-3">
+                                <button onClick={() => setCurrent(c => Math.max(0, c - 1))} disabled={current === 0}
+                                    className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-100 text-slate-600 font-black text-sm disabled:opacity-30 hover:bg-slate-200 transition-colors">
+                                    <Icon name="arrow-left" size={16} /> Zurück
+                                </button>
+                                <div className="flex gap-1">
+                                    {questions.map((_, i) => (
+                                        <div key={i} className={`w-2 h-2 rounded-full transition-colors ${i === current ? 'bg-[#BF0D3E]' : (selected[i] || new Set()).size > 0 ? 'bg-green-400' : 'bg-slate-200'}`}></div>
+                                    ))}
+                                </div>
+                                {!isLast ? (
+                                    <button onClick={() => setCurrent(c => Math.min(questions.length - 1, c + 1))} disabled={curSel.size === 0}
+                                        className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white font-black text-sm disabled:opacity-30 transition-colors"
+                                        style={{ backgroundColor: curSel.size > 0 ? '#BF0D3E' : undefined, backgroundColor: curSel.size === 0 ? '#cbd5e1' : '#BF0D3E' }}>
+                                        Weiter <Icon name="arrow-right" size={16} />
+                                    </button>
+                                ) : (
+                                    <button onClick={handleSubmit} disabled={!allAnswered}
+                                        className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white font-black text-sm disabled:opacity-30 transition-colors"
+                                        style={{ backgroundColor: allAnswered ? '#16a34a' : '#cbd5e1' }}>
+                                        Abgeben <Icon name="send" size={16} />
+                                    </button>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        };
+
         // --- DER DYNAMISCHE WISSENSSPEICHER (Layout & Rendering) ---
         const RenderWissensspeicher = ({ module }) => {
             const data = MODULE_CONTENT_DATA[module.id];
@@ -673,9 +1093,8 @@
             const [authRequired, setAuthRequired] = useState(false);
             const [errorMsg, setErrorMsg] = useState("");
             const [activeStage, setActiveStage] = useState("5-6");
-            
-            // Zustand für das offene Modul (Modal)
             const [selectedModule, setSelectedModule] = useState(null);
+            const [activeQuiz, setActiveQuiz] = useState(null);
 
             useEffect(() => {
                 const bootstrap = async () => {
@@ -707,7 +1126,7 @@
 
             const handleLogin = () => {
                 setLoading(true);
-                msalInstance.loginRedirect({ scopes: ["Sites.Read.All"] });
+                msalInstance.loginRedirect({ scopes: ["Sites.ReadWrite.All"] });
             };
 
             const handleLogout = () => {
@@ -716,50 +1135,72 @@
 
             const fetchMyData = async (account) => {
                 try {
-                    const tokenRes = await msalInstance.acquireTokenSilent({ scopes: ["Sites.Read.All"], account });
+                    const tokenRes = await msalInstance.acquireTokenSilent({ scopes: ["Sites.ReadWrite.All"], account });
                     const url = `https://graph.microsoft.com/v1.0/sites/${MS_CONFIG.siteId}/lists/${MS_CONFIG.listId}/items?$expand=fields&$top=999`;
-                    
-                    const res = await fetch(url, { 
-                        headers: { 
+
+                    const res = await fetch(url, {
+                        headers: {
                             Authorization: `Bearer ${tokenRes.accessToken}`,
                             Prefer: "HonorNonIndexedQueriesWarningMayFailRandomly"
                         }
                     });
-                    
+
                     if (!res.ok) throw new Error("Fehler beim Abrufen der SharePoint-Daten.");
                     const data = await res.json();
-                    
-                    const myRecord = data.value.find(item => 
+
+                    const myRecord = data.value.find(item =>
                         item.fields.Title && item.fields.Title.toLowerCase() === account.username.toLowerCase()
                     );
 
                     if (myRecord) {
                         const f = myRecord.fields;
                         const completedArray = f.Erledigte_Module ? f.Erledigte_Module.split(',').map(m => parseInt(m.trim())).filter(n => !isNaN(n)) : [];
-                        
+                        const quizUnlockedArray = f.Quiz_Freigaben ? f.Quiz_Freigaben.split(',').map(m => parseInt(m.trim())).filter(n => !isNaN(n)) : [];
+
                         let parsedDates = {};
                         if (f.Modul_Daten) {
                             try { parsedDates = JSON.parse(f.Modul_Daten); } catch(e) {}
                         }
 
                         setStudentData({
+                            itemId: myRecord.id,
                             vorname: f.Vorname || "",
                             nachname: f.Nachname || "",
                             klasse: f.Klasse || "",
                             completedTasks: completedArray,
-                            moduleDates: parsedDates
+                            moduleDates: parsedDates,
+                            quizUnlocked: quizUnlockedArray
                         });
                     } else {
                         setErrorMsg("Deine E-Mail-Adresse wurde noch nicht in die Datenbank eingetragen. Bitte melde dich bei deiner Lehrkraft.");
                     }
                 } catch (error) {
                     if (error.name === "InteractionRequiredAuthError") {
-                        msalInstance.loginRedirect({ scopes: ["Sites.Read.All"] });
+                        msalInstance.loginRedirect({ scopes: ["Sites.ReadWrite.All"] });
                     } else {
                         setErrorMsg("Fehler beim Laden deiner Daten.");
                     }
                 } finally {
                     setLoading(false);
+                }
+            };
+
+            const markModuleComplete = async (moduleId) => {
+                try {
+                    const account = msalInstance.getActiveAccount();
+                    const tokenRes = await msalInstance.acquireTokenSilent({ scopes: ["Sites.ReadWrite.All"], account });
+                    const newTasks = [...studentData.completedTasks, moduleId];
+                    const newDates = { ...studentData.moduleDates, [moduleId]: { datum: new Date().toLocaleDateString('de-DE'), lehrer: "Quiz ✓" } };
+                    const url = `https://graph.microsoft.com/v1.0/sites/${MS_CONFIG.siteId}/lists/${MS_CONFIG.listId}/items/${studentData.itemId}/fields`;
+                    const res = await fetch(url, {
+                        method: 'PATCH',
+                        headers: { 'Authorization': `Bearer ${tokenRes.accessToken}`, 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ "Erledigte_Module": newTasks.join(', '), "Modul_Daten": JSON.stringify(newDates) })
+                    });
+                    if (!res.ok) throw new Error("Fehler beim Speichern");
+                    setStudentData(prev => ({ ...prev, completedTasks: newTasks, moduleDates: newDates }));
+                } catch(e) {
+                    console.error("Fehler beim Speichern des Modulabschlusses:", e);
                 }
             };
 
@@ -810,9 +1251,108 @@
             const totalCompleted = studentData ? studentData.completedTasks.length : 0;
             const progressPercent = Math.round((totalCompleted / ALL_MODULES.length) * 100) || 0;
 
+            const renderModuleCard = (modul) => {
+                const isDone = studentData?.completedTasks.includes(modul.id);
+                const isQuizUnlocked = studentData?.quizUnlocked?.includes(modul.id);
+                const moduleData = studentData?.moduleDates?.[modul.id];
+                let dateDone = "—", teacherName = "";
+                if (moduleData) {
+                    if (typeof moduleData === 'string') { dateDone = moduleData; }
+                    else { dateDone = moduleData.datum || "—"; teacherName = moduleData.lehrer || ""; }
+                }
+
+                // Zustand 3: Erledigt
+                if (isDone) {
+                    return (
+                        <div key={modul.id} onClick={() => setSelectedModule(modul)}
+                            className="bg-white rounded-2xl p-6 border-2 border-green-400 shadow-green-100 shadow-lg cursor-pointer hover:-translate-y-1 hover:shadow-xl transition-all flex flex-col h-full">
+                            <div className="flex justify-between items-start mb-5">
+                                <span className="text-[10px] font-black uppercase tracking-widest bg-green-50 text-green-600 px-3 py-1 rounded-lg">Klasse {modul.stage}</span>
+                                <div className="w-9 h-9 bg-green-500 rounded-full flex items-center justify-center text-white shadow-md shrink-0 ml-2"><Icon name="check" size={18} /></div>
+                            </div>
+                            <div className="flex items-start gap-4 mb-3">
+                                <div className="w-12 h-12 rounded-2xl bg-red-50 flex items-center justify-center shrink-0">
+                                    <Icon name={modul.icon} size={26} className="text-[#BF0D3E]" />
+                                </div>
+                                <h3 className="font-black text-lg tracking-tight leading-tight text-slate-800">{modul.title}</h3>
+                            </div>
+                            <p className="text-sm leading-relaxed font-medium mb-4 text-slate-500">{modul.description}</p>
+                            <div className="mt-auto">
+                                <div className="text-[10px] font-bold text-green-600 flex flex-col gap-0.5 mb-4">
+                                    <span className="flex items-center gap-1"><Icon name="calendar-check" size={12} /> Zertifiziert am {dateDone}</span>
+                                    {teacherName && <span className="text-[9px] text-green-700 ml-4">durch {teacherName}</span>}
+                                </div>
+                                <div className="pt-3 border-t border-slate-100 text-center">
+                                    <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-[#BF0D3E] flex items-center justify-center gap-2">
+                                        <Icon name="book-open" size={14} /> Wissensspeicher öffnen
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    );
+                }
+
+                // Zustand 2: Quiz freigeschaltet
+                if (isQuizUnlocked) {
+                    return (
+                        <div key={modul.id} className="bg-white rounded-2xl p-6 border-2 border-blue-300 shadow-blue-100 shadow-lg flex flex-col h-full">
+                            <div className="flex justify-between items-start mb-5">
+                                <span className="text-[10px] font-black uppercase tracking-widest bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">Quiz verfügbar</span>
+                                <div className="w-9 h-9 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 shrink-0 ml-2"><Icon name="pencil" size={16} /></div>
+                            </div>
+                            <div className="flex items-start gap-4 mb-3">
+                                <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center shrink-0">
+                                    <Icon name={modul.icon} size={26} className="text-blue-500" />
+                                </div>
+                                <h3 className="font-black text-lg tracking-tight leading-tight text-slate-800">{modul.title}</h3>
+                            </div>
+                            <p className="text-sm leading-relaxed font-medium mb-4 text-slate-500">{modul.description}</p>
+                            <div className="mt-auto">
+                                <p className="text-[10px] font-bold text-blue-500 mb-3 flex items-center gap-1">
+                                    <Icon name="info" size={12} /> 15 Fragen • mind. 80% zum Bestehen
+                                </p>
+                                <button onClick={() => setActiveQuiz(modul)}
+                                    className="w-full text-white font-black uppercase tracking-widest px-4 py-3 rounded-2xl transition-all shadow-md hover:scale-105 active:scale-95 flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600">
+                                    <Icon name="play" size={18} /> Quiz starten
+                                </button>
+                            </div>
+                        </div>
+                    );
+                }
+
+                // Zustand 1: Gesperrt
+                return (
+                    <div key={modul.id} className="bg-white rounded-2xl p-6 border-2 border-slate-100 shadow-sm flex flex-col h-full opacity-75">
+                        <div className="flex justify-between items-start mb-5">
+                            <span className="text-[10px] font-black uppercase tracking-widest bg-slate-100 text-slate-400 px-3 py-1 rounded-lg">Klasse {modul.stage}</span>
+                            <div className="w-9 h-9 bg-slate-100 rounded-full flex items-center justify-center text-slate-300 shrink-0 ml-2"><Icon name="lock" size={16} /></div>
+                        </div>
+                        <div className="flex items-start gap-4 mb-3">
+                            <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center shrink-0">
+                                <Icon name={modul.icon} size={26} className="text-slate-300" />
+                            </div>
+                            <h3 className="font-black text-lg tracking-tight leading-tight text-slate-400">{modul.title}</h3>
+                        </div>
+                        <p className="text-sm leading-relaxed font-medium mb-4 text-slate-300">{modul.description}</p>
+                        <div className="mt-auto">
+                            <p className="text-xs font-medium text-slate-300 flex items-center gap-1"><Icon name="lock" size={12} /> Lehrkraft schaltet Quiz frei</p>
+                        </div>
+                    </div>
+                );
+            };
+
             return (
                 <div className="min-h-screen flex flex-col bg-slate-50 font-sans pb-10 relative">
-                    
+
+                    {/* QUIZ MODAL */}
+                    {activeQuiz && (
+                        <QuizModal
+                            module={activeQuiz}
+                            onClose={() => setActiveQuiz(null)}
+                            onPass={markModuleComplete}
+                        />
+                    )}
+
                     {/* OVERLAY / MODAL: Wissensspeicher */}
                     {selectedModule && (
                         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-sm">
@@ -889,73 +1429,7 @@
                                 <Icon name="wrench" size={24} className="text-[#BF0D3E]" /> Skills (Anwendung)
                             </h3>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                {ALL_MODULES.filter(m => m.stage === activeStage && m.category === 'skills').map(modul => {
-                                    const isDone = studentData?.completedTasks.includes(modul.id);
-                                    const moduleData = studentData?.moduleDates[modul.id];
-                                    let dateDone = "—";
-                                    let teacherName = "";
-                                    if (moduleData) {
-                                        if (typeof moduleData === 'string') { dateDone = moduleData; }
-                                        else { dateDone = moduleData.datum || "—"; teacherName = moduleData.lehrer || ""; }
-                                    }
-
-                                    return (
-                                        <div 
-                                            key={modul.id} 
-                                            onClick={() => { if (isDone) setSelectedModule(modul); }}
-                                            className={`bg-white rounded-2xl p-6 border-2 transition-all flex flex-col h-full ${isDone ? 'border-green-400 shadow-green-100 shadow-lg cursor-pointer hover:-translate-y-1 hover:shadow-xl' : 'border-slate-100 shadow-sm opacity-90'}`}
-                                        >
-                                            <div className="flex justify-between items-start mb-5">
-                                                <span className="text-[10px] font-black uppercase tracking-widest bg-slate-100 text-slate-500 px-3 py-1 rounded-lg">Klasse {modul.stage}</span>
-                                                {isDone ? (
-                                                    <div className="w-9 h-9 bg-green-500 rounded-full flex items-center justify-center text-white shadow-md shrink-0 ml-2">
-                                                        <Icon name="check" size={18} />
-                                                    </div>
-                                                ) : (
-                                                    <div className="w-9 h-9 bg-slate-100 rounded-full flex items-center justify-center text-slate-300 shrink-0 ml-2">
-                                                        <Icon name="lock" size={16} />
-                                                    </div>
-                                                )}
-                                            </div>
-
-                                            <div className="flex items-start gap-4 mb-3">
-                                                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 ${isDone ? 'bg-red-50' : 'bg-slate-50'}`}>
-                                                    <Icon name={modul.icon} size={26} className={isDone ? 'text-[#BF0D3E]' : 'text-slate-300'} />
-                                                </div>
-                                                <h3 className={`font-black text-lg tracking-tight leading-tight ${isDone ? 'text-slate-800' : 'text-slate-500'}`}>
-                                                    {modul.title}
-                                                </h3>
-                                            </div>
-
-                                            <p className={`text-sm leading-relaxed font-medium mb-4 ${isDone ? 'text-slate-500' : 'text-slate-300'}`}>
-                                                {modul.description}
-                                            </p>
-
-                                            <div className="mt-auto">
-                                                {isDone ? (
-                                                    <div>
-                                                        <div className="text-[10px] font-bold text-green-600 flex flex-col gap-0.5 mb-4">
-                                                            <span className="flex items-center gap-1">
-                                                                <Icon name="calendar-check" size={12} />
-                                                                Zertifiziert am {dateDone}
-                                                            </span>
-                                                            {teacherName && <span className="text-[9px] text-green-700 ml-4">durch {teacherName}</span>}
-                                                        </div>
-                                                        <div className="pt-3 border-t border-slate-100 text-center">
-                                                            <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-[#BF0D3E] flex items-center justify-center gap-2">
-                                                                <Icon name="book-open" size={14} /> Wissensspeicher öffnen
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                ) : (
-                                                    <p className="text-xs font-medium text-slate-400">
-                                                        Noch nicht freigeschaltet.
-                                                    </p>
-                                                )}
-                                            </div>
-                                        </div>
-                                    );
-                                })}
+                                {ALL_MODULES.filter(m => m.stage === activeStage && m.category === 'skills').map(modul => renderModuleCard(modul))}
                             </div>
                         </div>
 
@@ -964,73 +1438,7 @@
                                 <Icon name="brain" size={24} className="text-[#BF0D3E]" /> Reflexion (Umgang)
                             </h3>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                {ALL_MODULES.filter(m => m.stage === activeStage && m.category === 'reflexion').map(modul => {
-                                    const isDone = studentData?.completedTasks.includes(modul.id);
-                                    const moduleData = studentData?.moduleDates[modul.id];
-                                    let dateDone = "—";
-                                    let teacherName = "";
-                                    if (moduleData) {
-                                        if (typeof moduleData === 'string') { dateDone = moduleData; }
-                                        else { dateDone = moduleData.datum || "—"; teacherName = moduleData.lehrer || ""; }
-                                    }
-
-                                    return (
-                                        <div 
-                                            key={modul.id} 
-                                            onClick={() => { if (isDone) setSelectedModule(modul); }}
-                                            className={`bg-white rounded-2xl p-6 border-2 transition-all flex flex-col h-full ${isDone ? 'border-green-400 shadow-green-100 shadow-lg cursor-pointer hover:-translate-y-1 hover:shadow-xl' : 'border-slate-100 shadow-sm opacity-90'}`}
-                                        >
-                                            <div className="flex justify-between items-start mb-5">
-                                                <span className="text-[10px] font-black uppercase tracking-widest bg-slate-100 text-slate-500 px-3 py-1 rounded-lg">Klasse {modul.stage}</span>
-                                                {isDone ? (
-                                                    <div className="w-9 h-9 bg-green-500 rounded-full flex items-center justify-center text-white shadow-md shrink-0 ml-2">
-                                                        <Icon name="check" size={18} />
-                                                    </div>
-                                                ) : (
-                                                    <div className="w-9 h-9 bg-slate-100 rounded-full flex items-center justify-center text-slate-300 shrink-0 ml-2">
-                                                        <Icon name="lock" size={16} />
-                                                    </div>
-                                                )}
-                                            </div>
-
-                                            <div className="flex items-start gap-4 mb-3">
-                                                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 ${isDone ? 'bg-red-50' : 'bg-slate-50'}`}>
-                                                    <Icon name={modul.icon} size={26} className={isDone ? 'text-[#BF0D3E]' : 'text-slate-300'} />
-                                                </div>
-                                                <h3 className={`font-black text-lg tracking-tight leading-tight ${isDone ? 'text-slate-800' : 'text-slate-500'}`}>
-                                                    {modul.title}
-                                                </h3>
-                                            </div>
-
-                                            <p className={`text-sm leading-relaxed font-medium mb-4 ${isDone ? 'text-slate-500' : 'text-slate-300'}`}>
-                                                {modul.description}
-                                            </p>
-
-                                            <div className="mt-auto">
-                                                {isDone ? (
-                                                    <div>
-                                                        <div className="text-[10px] font-bold text-green-600 flex flex-col gap-0.5 mb-4">
-                                                            <span className="flex items-center gap-1">
-                                                                <Icon name="calendar-check" size={12} />
-                                                                Zertifiziert am {dateDone}
-                                                            </span>
-                                                            {teacherName && <span className="text-[9px] text-green-700 ml-4">durch {teacherName}</span>}
-                                                        </div>
-                                                        <div className="pt-3 border-t border-slate-100 text-center">
-                                                            <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-[#BF0D3E] flex items-center justify-center gap-2">
-                                                                <Icon name="book-open" size={14} /> Wissensspeicher öffnen
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                ) : (
-                                                    <p className="text-xs font-medium text-slate-400">
-                                                        Noch nicht freigeschaltet.
-                                                    </p>
-                                                )}
-                                            </div>
-                                        </div>
-                                    );
-                                })}
+                                {ALL_MODULES.filter(m => m.stage === activeStage && m.category === 'reflexion').map(modul => renderModuleCard(modul))}
                             </div>
                         </div>
                     </main>
