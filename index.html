@@ -1186,23 +1186,43 @@
             };
 
             const markModuleComplete = async (moduleId) => {
-                // Optimistisches Update: UI sofort aktualisieren
-                const newTasks = [...(studentData.completedTasks || []), moduleId];
-                // Lehrername übernehmen, der beim Freischalten des Quiz vorgemerkt wurde
-                const existingEntry = studentData.moduleDates?.[moduleId];
-                const lehrerName = (existingEntry && existingEntry.lehrer) ? existingEntry.lehrer : "Quiz";
-                const newDates = { ...(studentData.moduleDates || {}), [moduleId]: { datum: new Date().toLocaleDateString('de-DE'), lehrer: lehrerName } };
-                setStudentData(prev => ({ ...prev, completedTasks: newTasks, moduleDates: newDates }));
+                const heute = new Date().toLocaleDateString('de-DE');
+                // Optimistisches Update: UI sofort aktualisieren (Name ggf. noch "Quiz", wird gleich korrigiert)
+                const optimisticTasks = [...(studentData.completedTasks || []), moduleId];
+                const vorgemerkt = studentData.moduleDates?.[moduleId];
+                const optimisticLehrer = (vorgemerkt && vorgemerkt.lehrer) ? vorgemerkt.lehrer : "Quiz";
+                const optimisticDates = { ...(studentData.moduleDates || {}), [moduleId]: { datum: heute, lehrer: optimisticLehrer } };
+                setStudentData(prev => ({ ...prev, completedTasks: optimisticTasks, moduleDates: optimisticDates }));
 
-                // Dann SharePoint im Hintergrund aktualisieren
+                // Dann SharePoint aktualisieren
                 try {
                     const account = msalInstance.getActiveAccount();
                     const tokenRes = await msalInstance.acquireTokenSilent({ scopes: ["Sites.ReadWrite.All"], account });
                     const url = `https://graph.microsoft.com/v1.0/sites/${MS_CONFIG.siteId}/lists/${MS_CONFIG.listId}/items/${studentData.itemId}/fields`;
+
+                    // Aktuelle Daten frisch vom Server holen, damit der vom Lehrer vorgemerkte Name
+                    // auch dann übernommen wird, wenn das Quiz erst nach dem Laden der Seite freigeschaltet wurde.
+                    let finalTasks = optimisticTasks;
+                    let finalDates = optimisticDates;
+                    try {
+                        const getRes = await fetch(url, { headers: { 'Authorization': `Bearer ${tokenRes.accessToken}` } });
+                        if (getRes.ok) {
+                            const fresh = await getRes.json();
+                            const freshTasks = fresh.Erledigte_Module ? fresh.Erledigte_Module.split(',').map(m => parseInt(m.trim())).filter(n => !isNaN(n)) : [];
+                            let freshDates = {};
+                            if (fresh.Modul_Daten) { try { freshDates = JSON.parse(fresh.Modul_Daten); } catch(e) {} }
+                            const lehrerName = (freshDates[moduleId] && freshDates[moduleId].lehrer) ? freshDates[moduleId].lehrer : "Quiz";
+                            finalTasks = freshTasks.includes(moduleId) ? freshTasks : [...freshTasks, moduleId];
+                            finalDates = { ...freshDates, [moduleId]: { datum: heute, lehrer: lehrerName } };
+                            // UI mit dem korrekten Namen aktualisieren
+                            setStudentData(prev => ({ ...prev, completedTasks: finalTasks, moduleDates: finalDates }));
+                        }
+                    } catch(e) { /* GET fehlgeschlagen -> mit optimistischen Daten weiterschreiben */ }
+
                     const res = await fetch(url, {
                         method: 'PATCH',
                         headers: { 'Authorization': `Bearer ${tokenRes.accessToken}`, 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ "Erledigte_Module": newTasks.join(', '), "Modul_Daten": JSON.stringify(newDates) })
+                        body: JSON.stringify({ "Erledigte_Module": finalTasks.join(', '), "Modul_Daten": JSON.stringify(finalDates) })
                     });
                     if (!res.ok) {
                         const errData = await res.json().catch(() => ({}));
