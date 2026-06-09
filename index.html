@@ -1186,19 +1186,25 @@
             };
 
             const markModuleComplete = async (moduleId) => {
+                // Optimistisches Update: UI sofort aktualisieren
+                const newTasks = [...(studentData.completedTasks || []), moduleId];
+                const newDates = { ...(studentData.moduleDates || {}), [moduleId]: { datum: new Date().toLocaleDateString('de-DE'), lehrer: "Quiz ✓" } };
+                setStudentData(prev => ({ ...prev, completedTasks: newTasks, moduleDates: newDates }));
+
+                // Dann SharePoint im Hintergrund aktualisieren
                 try {
                     const account = msalInstance.getActiveAccount();
                     const tokenRes = await msalInstance.acquireTokenSilent({ scopes: ["Sites.ReadWrite.All"], account });
-                    const newTasks = [...studentData.completedTasks, moduleId];
-                    const newDates = { ...studentData.moduleDates, [moduleId]: { datum: new Date().toLocaleDateString('de-DE'), lehrer: "Quiz ✓" } };
                     const url = `https://graph.microsoft.com/v1.0/sites/${MS_CONFIG.siteId}/lists/${MS_CONFIG.listId}/items/${studentData.itemId}/fields`;
                     const res = await fetch(url, {
                         method: 'PATCH',
                         headers: { 'Authorization': `Bearer ${tokenRes.accessToken}`, 'Content-Type': 'application/json' },
                         body: JSON.stringify({ "Erledigte_Module": newTasks.join(', '), "Modul_Daten": JSON.stringify(newDates) })
                     });
-                    if (!res.ok) throw new Error("Fehler beim Speichern");
-                    setStudentData(prev => ({ ...prev, completedTasks: newTasks, moduleDates: newDates }));
+                    if (!res.ok) {
+                        const errData = await res.json().catch(() => ({}));
+                        console.error("SharePoint-Fehler:", errData.error?.message || res.statusText);
+                    }
                 } catch(e) {
                     console.error("Fehler beim Speichern des Modulabschlusses:", e);
                 }
