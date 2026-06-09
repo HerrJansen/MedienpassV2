@@ -380,8 +380,14 @@
                     const student = students.find(s => s.id === studentId);
                     const isUnlocked = (student.quizUnlocked || []).includes(moduleId);
                     const newQuiz = isUnlocked ? student.quizUnlocked.filter(id => id !== moduleId) : [...(student.quizUnlocked || []), moduleId];
-                    await updateSharePoint(studentId, student.completedTasks, student.moduleDates, newQuiz);
-                    setStudents(prev => prev.map(s => s.id === studentId ? { ...s, quizUnlocked: newQuiz } : s));
+                    // Lehrername vormerken (wird beim Bestehen des Quiz übernommen), nur wenn Modul noch nicht abgeschlossen
+                    let newDates = { ...student.moduleDates };
+                    if (!student.completedTasks.includes(moduleId)) {
+                        if (!isUnlocked) { newDates[moduleId] = { ...(newDates[moduleId] || {}), lehrer: user.name }; }
+                        else { delete newDates[moduleId]; }
+                    }
+                    await updateSharePoint(studentId, student.completedTasks, newDates, newQuiz);
+                    setStudents(prev => prev.map(s => s.id === studentId ? { ...s, quizUnlocked: newQuiz, moduleDates: newDates } : s));
                 } catch (err) { alert(err.message); }
                 finally { setIsUpdating(false); }
             };
@@ -410,15 +416,21 @@
                     const newQuiz = action === "grant"
                         ? [...(student.quizUnlocked || []), moduleId]
                         : (student.quizUnlocked || []).filter(id => id !== moduleId);
+                    // Lehrername vormerken (wird beim Bestehen übernommen), nur wenn Modul noch nicht abgeschlossen
+                    let newDates = { ...student.moduleDates };
+                    if (!student.completedTasks.includes(moduleId)) {
+                        if (action === "grant") { newDates[moduleId] = { ...(newDates[moduleId] || {}), lehrer: user.name }; }
+                        else { delete newDates[moduleId]; }
+                    }
                     try {
                         const url = `https://graph.microsoft.com/v1.0/sites/${MS_CONFIG.siteId}/lists/${MS_CONFIG.listId}/items/${student.id}/fields`;
                         const res = await fetch(url, {
                             method: 'PATCH',
                             headers: { 'Authorization': `Bearer ${tokenRes.accessToken}`, 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ "Quiz_Freigaben": newQuiz.join(', ') })
+                            body: JSON.stringify({ "Quiz_Freigaben": newQuiz.join(', '), "Modul_Daten": JSON.stringify(newDates) })
                         });
                         if (!res.ok) throw new Error("Fehler");
-                        results.push({ id: student.id, quiz: newQuiz });
+                        results.push({ id: student.id, quiz: newQuiz, dates: newDates });
                         successCount++;
                         if (i < studentsToUpdate.length - 1) await new Promise(r => setTimeout(r, 150));
                     } catch (err) { errorCount++; }
@@ -426,7 +438,7 @@
                 if (results.length > 0) {
                     setStudents(prev => prev.map(s => {
                         const r = results.find(x => x.id === s.id);
-                        return r ? { ...s, quizUnlocked: r.quiz } : s;
+                        return r ? { ...s, quizUnlocked: r.quiz, moduleDates: r.dates } : s;
                     }));
                 }
                 setDebugMsg(errorCount === 0 ? `✓ Quiz für ${successCount} Schüler aktualisiert.` : `⚠ ${successCount} erfolgreich, ${errorCount} fehlgeschlagen.`);

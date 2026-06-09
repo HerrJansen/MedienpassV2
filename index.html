@@ -1188,7 +1188,10 @@
             const markModuleComplete = async (moduleId) => {
                 // Optimistisches Update: UI sofort aktualisieren
                 const newTasks = [...(studentData.completedTasks || []), moduleId];
-                const newDates = { ...(studentData.moduleDates || {}), [moduleId]: { datum: new Date().toLocaleDateString('de-DE'), lehrer: "Quiz ✓" } };
+                // Lehrername übernehmen, der beim Freischalten des Quiz vorgemerkt wurde
+                const existingEntry = studentData.moduleDates?.[moduleId];
+                const lehrerName = (existingEntry && existingEntry.lehrer) ? existingEntry.lehrer : "Quiz";
+                const newDates = { ...(studentData.moduleDates || {}), [moduleId]: { datum: new Date().toLocaleDateString('de-DE'), lehrer: lehrerName } };
                 setStudentData(prev => ({ ...prev, completedTasks: newTasks, moduleDates: newDates }));
 
                 // Dann SharePoint im Hintergrund aktualisieren
