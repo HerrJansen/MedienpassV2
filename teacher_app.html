@@ -175,6 +175,7 @@
             const [accessDenied, setAccessDenied] = useState(false);
             const [debugMsg, setDebugMsg] = useState("");
             const [isUpdating, setIsUpdating] = useState(false);
+            const [pendingCell, setPendingCell] = useState(null); // Status-Feld, das gerade gespeichert wird ("schülerId-modulId")
             const [searchName, setSearchName] = useState("");
             const [filterKlasse, setFilterKlasse] = useState("ALL");
             const [filterJahrgang, setFilterJahrgang] = useState("ALL");
@@ -259,6 +260,7 @@
             const toggleModuleSingle = async (studentId, moduleId) => {
                 if (isUpdating) return;
                 setIsUpdating(true);
+                setPendingCell(`${studentId}-${moduleId}`);
                 try {
                     const student = students.find(s => s.id === studentId);
                     const isDone = student.completedTasks.includes(moduleId);
@@ -269,7 +271,7 @@
                     await updateSharePoint(studentId, newTasks, newDates);
                     setStudents(prev => prev.map(s => s.id === studentId ? { ...s, completedTasks: newTasks, moduleDates: newDates } : s));
                 } catch (err) { alert(err.message); }
-                finally { setIsUpdating(false); }
+                finally { setIsUpdating(false); setPendingCell(null); }
             };
 
             // FIX: Sequenziell statt Promise.all, um "failed to fetch" bei Masseneintragungen zu vermeiden.
@@ -625,7 +627,7 @@
                                                                 </div>
                                                             ) : (
                                                                 <button disabled={isUpdating} onClick={() => toggleModuleSingle(student.id, parseInt(filterModul))}
-                                                                    className={`w-8 h-8 rounded-lg flex items-center justify-center mx-auto transition-all ${isModulDone ? 'bg-green-500 text-white shadow-md shadow-green-200 hover:bg-red-500 hover:shadow-red-200' : 'bg-slate-100 text-slate-300 hover:bg-green-500 hover:text-white'}`}
+                                                                    className={`w-8 h-8 rounded-lg flex items-center justify-center mx-auto transition-all ${isModulDone ? 'bg-green-500 text-white shadow-md shadow-green-200 hover:bg-green-600' : 'bg-slate-100 text-slate-300 hover:bg-slate-200 hover:text-slate-500'} ${pendingCell === `${student.id}-${filterModul}` ? 'animate-pulse opacity-60 cursor-wait' : ''}`}
                                                                     title={isModulDone ? "Klicken zum Entziehen" : "Klicken zum Freischalten"}>
                                                                     <Icon name={isModulDone ? "check" : "circle"} size={16} />
                                                                 </button>
