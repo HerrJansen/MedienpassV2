@@ -461,6 +461,17 @@
 
             const hasActiveFilters = searchName.trim() !== "" || filterJahrgang !== "ALL" || filterKlasse !== "ALL" || filterModul !== "ALL";
 
+            // Status der Sammelaktionen: Sind Quiz bzw. Modul schon für alle angezeigten Schüler freigeschaltet?
+            // Die Farbe wandert dann vom Freischalten- zum Sperren-Button.
+            const selectedModul = filterModul !== "ALL" ? parseInt(filterModul) : null;
+            const quizCount = selectedModul ? filteredStudents.filter(s => (s.quizUnlocked || []).includes(selectedModul)).length : 0;
+            const doneCount = selectedModul ? filteredStudents.filter(s => s.completedTasks.includes(selectedModul)).length : 0;
+            const allQuizUnlocked = filteredStudents.length > 0 && quizCount === filteredStudents.length;
+            const allModulDone = filteredStudents.length > 0 && doneCount === filteredStudents.length;
+            const btnNeutral = "bg-white text-slate-700 hover:bg-slate-100 border px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all";
+            const btnBlue = "text-white bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all shadow-md";
+            const btnRed = "text-white px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all shadow-md";
+
             if (accessDenied) return (
                 <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 p-6">
                     <div className="bg-white p-10 rounded-[3rem] shadow-2xl max-w-md w-full text-center border border-red-100">
@@ -544,10 +555,13 @@
                                             Quiz-Freigabe (Modul {filterModul})
                                         </h3>
                                         <p className="text-xs font-medium text-slate-500">Quiz für alle {filteredStudents.length} angezeigten Schüler freischalten oder sperren.</p>
+                                        <p className={`text-xs font-black mt-1 ${allQuizUnlocked ? 'text-blue-600' : 'text-slate-500'}`}>
+                                            {allQuizUnlocked ? '✓ ' : ''}Freigeschaltet: {quizCount} von {filteredStudents.length}
+                                        </p>
                                     </div>
                                     <div className="flex gap-2">
-                                        <button disabled={isUpdating} onClick={() => bulkQuizToggle('revoke')} className="bg-white text-slate-700 hover:bg-slate-100 border px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all">Quiz sperren</button>
-                                        <button disabled={isUpdating} onClick={() => bulkQuizToggle('grant')} className="text-white bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all shadow-md">Quiz freischalten</button>
+                                        <button disabled={isUpdating} onClick={() => bulkQuizToggle('revoke')} className={allQuizUnlocked ? btnBlue : btnNeutral}>Quiz sperren</button>
+                                        <button disabled={isUpdating} onClick={() => bulkQuizToggle('grant')} className={allQuizUnlocked ? btnNeutral : btnBlue}>Quiz freischalten</button>
                                     </div>
                                 </div>
                                 {/* Modul-Abschluss */}
@@ -558,10 +572,13 @@
                                             Modul-Abschluss (Modul {filterModul})
                                         </h3>
                                         <p className="text-xs font-medium text-slate-500">Modul für alle {filteredStudents.length} angezeigten Schüler manuell abhaken oder sperren.</p>
+                                        <p className="text-xs font-black mt-1" style={{ color: allModulDone ? THOMA_RED : undefined }}>
+                                            <span className={allModulDone ? '' : 'text-slate-500'}>{allModulDone ? '✓ ' : ''}Abgeschlossen: {doneCount} von {filteredStudents.length}</span>
+                                        </p>
                                     </div>
                                     <div className="flex gap-2">
-                                        <button disabled={isUpdating} onClick={() => bulkToggle('revoke')} className="bg-white text-slate-700 hover:bg-slate-100 border px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all">Alle sperren</button>
-                                        <button disabled={isUpdating} onClick={() => bulkToggle('grant')} className="text-white px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all shadow-md" style={{ backgroundColor: THOMA_RED }}>Alle freischalten</button>
+                                        <button disabled={isUpdating} onClick={() => bulkToggle('revoke')} className={allModulDone ? btnRed : btnNeutral} style={allModulDone ? { backgroundColor: THOMA_RED } : undefined}>Alle sperren</button>
+                                        <button disabled={isUpdating} onClick={() => bulkToggle('grant')} className={allModulDone ? btnNeutral : btnRed} style={allModulDone ? undefined : { backgroundColor: THOMA_RED }}>Alle freischalten</button>
                                     </div>
                                 </div>
                             </div>
