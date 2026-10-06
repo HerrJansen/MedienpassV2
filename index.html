@@ -70,7 +70,7 @@
         // --- MODULE BASIS-DATEN ---
         // ÄNDERUNG: Module 1, 2, 3 wurden zu einem Modul zusammengefasst.
         const ALL_MODULES = [
-            { id: 1,  title: "Word-Führerschein und Dateimanagement", stage: "5-6",  category: "skills",    icon: "file-text",     description: "Hardware-Grundlagen, Ordnerstrukturen und Dateinamen – plus die wichtigsten Word-Funktionen für den Schulalltag." },
+            { id: 1,  title: "Word-Führerschein und Dateimanagement", stage: "5-6",  category: "skills",    icon: "file-text",     description: "Maus und Tastatur sicher bedienen, Texte in Word bearbeiten und formatieren – plus Dateimanagement und Hardware-Grundlagen." },
             { id: 2,  title: "Umgang mit PowerPoint",                 stage: "5-6",  category: "skills",    icon: "presentation",  description: "Folien professionell gestalten, den Designer nutzen und frei vor Publikum sprechen statt ablesen." },
             { id: 3,  title: "Digitale Verantwortung",                stage: "5-6",  category: "reflexion", icon: "heart-handshake", description: "Respektvoller Umgang im Netz, Netiquette im Klassenchat und richtiges Reagieren bei Cybermobbing." },
             { id: 4,  title: "Suchmaschinen",                         stage: "5-6",  category: "reflexion", icon: "search",        description: "Clever googeln mit Keywords und Suchoperatoren, Werbung erkennen und sichere Kindersuchmaschinen kennenlernen." },
@@ -95,7 +95,255 @@
             1: {
                 sections: [
                     {
-                        title: "1. Hardware – Die wichtigsten Bauteile",
+                        title: "1. Die Maus richtig bedienen",
+                        intro: "Die Maus ist dein wichtigstes Werkzeug am Computer. Wer sie sicher bedient, arbeitet schneller und genauer – besonders beim Schreiben und Bearbeiten von Texten.",
+                        blocks: [
+                            {
+                                type: 'info',
+                                title: 'Die Maus richtig halten',
+                                text: 'Lege deine Hand **locker und entspannt** auf die Maus. Der **Zeigefinger** liegt auf der **linken Taste**, der **Mittelfinger** auf der **rechten Taste**. Der **Daumen** hält die Maus seitlich fest.'
+                            },
+                            {
+                                type: 'standard',
+                                title: 'Die Maus bewegen (Cursor steuern)',
+                                text: 'Wenn du die Maus auf dem Tisch bewegst, bewegt sich der **Mauszeiger (Cursor)** auf dem Bildschirm mit. Bewege die Maus **langsam und kontrolliert**. Nutze möglichst ein **Mauspad** – damit wird die Bewegung genauer.'
+                            },
+                            {
+                                type: 'info',
+                                title: 'Der Linksklick',
+                                text: 'Mit **einem Klick** auf die linke Maustaste kannst du Dinge **auswählen** und **Schaltflächen (Buttons) drücken**. In einem Text setzt du mit einem Linksklick den Cursor genau an diese Stelle.'
+                            },
+                            {
+                                type: 'info',
+                                title: 'Der Doppelklick',
+                                text: 'Ein **Doppelklick** sind **zwei schnelle Klicks** mit der linken Maustaste. Damit **öffnest du Programme und Dateien** – und in einem Text **markierst du damit ein einzelnes Wort**.'
+                            },
+                            {
+                                type: 'info',
+                                title: 'Der Rechtsklick',
+                                text: 'Mit der **rechten Maustaste** öffnest du ein **Menü mit Optionen** (Kontextmenü). Dort findest du zum Beispiel **Kopieren**, **Ausschneiden** und **Einfügen**. Welche Optionen erscheinen, hängt davon ab, worauf du klickst.'
+                            },
+                            {
+                                type: 'standard',
+                                title: 'Klicken und Ziehen (Drag & Drop)',
+                                text: 'So geht es: **1.** Linke Maustaste gedrückt halten · **2.** Maus bewegen · **3.** Taste loslassen. Damit kannst du **Dateien verschieben**, **Fenster bewegen** und **Text markieren**.'
+                            },
+                            {
+                                type: 'tip',
+                                title: 'Profi-Trick: Schneller markieren',
+                                text: 'Ein **Doppelklick** markiert ein Wort, ein **Dreifachklick** (drei schnelle Klicks) markiert einen ganzen Absatz. Mit **`Strg + A`** markierst du den gesamten Text auf einmal.'
+                            }
+                        ]
+                    },
+                    {
+                        title: "2. Die Tastatur",
+                        intro: "Auf der Tastatur gibt es neben Buchstaben und Zahlen viele Sondertasten. Wenn du weißt, was sie tun, schreibst du schneller und brauchst seltener die Maus.",
+                        blocks: [
+                            {
+                                type: 'info',
+                                title: 'Leertaste und Enter-Taste',
+                                text: 'Die **Leertaste** (die lange Taste ganz unten) fügt ein **Leerzeichen** ein – damit trennst du Wörter und Sätze voneinander. Die **Enter-Taste** (⏎) erzeugt eine **neue Textzeile** bzw. einen neuen Absatz oder **bestätigt eine Eingabe**.'
+                            },
+                            {
+                                type: 'info',
+                                title: 'Umschalttaste und Feststelltaste',
+                                text: 'Die **Umschalttaste** (⇧, auch Shift genannt) gibt es **zweimal** auf der Tastatur. Hältst du sie gedrückt, schreibst du einen **Großbuchstaben** oder das **obere Zeichen** einer Taste – z. B. das **Ausrufezeichen** auf der 1. Die **Feststelltaste** (⇩, auch Caps Lock) schaltet **dauerhaft auf Großbuchstaben** um – so lange, bis du sie noch einmal drückst.'
+                            },
+                            {
+                                type: 'warning',
+                                title: 'Löschtaste und Entf-Taste',
+                                text: 'Die **Löschtaste** (⟵, auch Rücktaste oder Backspace) bewegt den Cursor ein Zeichen nach links und **löscht das Zeichen links vom Cursor** – also das zuletzt geschriebene. Die **Entf-Taste** löscht dagegen das Zeichen **rechts** vom Cursor.'
+                            },
+                            {
+                                type: 'standard',
+                                title: 'Tab-Taste und Escape-Taste',
+                                text: 'Die **Tab-Taste** (⇥) rückt den Cursor um einen **festen Abstand** weiter – praktisch zum Einrücken und um in Tabellen oder Formularen ins nächste Feld zu springen. Mit der **Escape-Taste** (Esc, ganz oben links) **beendest oder brichst du einen Vorgang ab**, ohne die Maus zu benutzen.'
+                            },
+                            {
+                                type: 'info',
+                                title: 'Steuerungstaste und Alt Gr',
+                                text: 'Die **Steuerungstaste** (Strg) funktioniert immer **zusammen mit einer anderen Taste** und führt Befehle aus, z. B. **`Strg + S`** zum Speichern. Die Taste **Alt Gr** verändert die Funktion anderer Tasten – so erhältst du **alternative Zeichen**: **`Alt Gr + Q`** = **@** und **`Alt Gr + E`** = **€**.'
+                            },
+                            {
+                                type: 'tip',
+                                title: 'Satzzeichen finden',
+                                text: 'Viele Satzzeichen stehen oben auf einer Taste und brauchen die Umschalttaste: **`Umschalt + Punkt`** = Doppelpunkt (:), **`Umschalt + Komma`** = Semikolon (;), **`Umschalt + 1`** = Ausrufezeichen (!), **`Umschalt + ß`** = Fragezeichen (?).'
+                            }
+                        ]
+                    },
+                    {
+                        title: "3. Texte bearbeiten: Markieren, Ausschneiden, Einfügen",
+                        intro: "Beim Schreiben musst du oft Wörter umstellen oder Textteile verschieben. Mit Ausschneiden und Einfügen geht das, ohne alles neu zu tippen.",
+                        blocks: [
+                            {
+                                type: 'info',
+                                title: 'Erst markieren, dann bearbeiten',
+                                text: 'Bevor du einen Text bearbeiten oder formatieren kannst, musst du ihn **markieren**: Halte die **linke Maustaste gedrückt** und ziehe über den Text. Markierter Text ist **farbig hinterlegt**. Ein einzelnes Wort markierst du schneller mit einem **Doppelklick**.'
+                            },
+                            {
+                                type: 'standard',
+                                title: 'Ausschneiden und Einfügen mit der Maus',
+                                text: '**1.** Markiere den Textteil, den du verschieben möchtest. **2.** Drücke die **rechte Maustaste** – es öffnet sich ein Menü. Wähle **„Ausschneiden“**. **3.** Klicke mit der linken Maustaste an die Stelle, an der der Text eingefügt werden soll. **4.** Drücke wieder die **rechte Maustaste** und wähle **„Einfügen“**.'
+                            },
+                            {
+                                type: 'info',
+                                title: 'Kopieren oder Ausschneiden?',
+                                text: 'Beim **Ausschneiden** verschwindet der Text an der alten Stelle – er wird **verschoben**. Beim **Kopieren** bleibt das Original stehen, und du fügst an der neuen Stelle eine **Kopie** ein.'
+                            },
+                            {
+                                type: 'tip',
+                                title: 'Schneller mit Tastenkürzeln',
+                                text: '**`Strg + X`** = Ausschneiden · **`Strg + C`** = Kopieren · **`Strg + V`** = Einfügen. So musst du nicht jedes Mal das Rechtsklick-Menü öffnen.'
+                            },
+                            {
+                                type: 'warning',
+                                title: 'Speichern und Retten',
+                                text: 'Drücke während des Schreibens regelmäßig **`Strg + S`** – so geht nichts verloren. Hast du aus Versehen Text gelöscht? **`Strg + Z`** macht den letzten Schritt rückgängig, beliebig oft. **`Strg + Y`** stellt einen rückgängig gemachten Schritt wieder her. Speichere neue Dokumente sofort unter einem sinnvollen Namen ab, bevor du anfängst zu schreiben.'
+                            },
+                            {
+                                type: 'standard',
+                                title: 'Die wichtigsten Tastenkürzel',
+                                text: '`Strg + S` = Speichern · `Strg + Z` = Rückgängig · `Strg + Y` = Wiederholen · `Strg + C` = Kopieren · `Strg + X` = Ausschneiden · `Strg + V` = Einfügen · `Strg + A` = Alles markieren · `Strg + F` = Suchen · `Strg + H` = Ersetzen · `Strg + P` = Drucken · `Strg + Umschalt + F` = **Fett** · `Strg + Umschalt + K` = *Kursiv* · `Strg + Umschalt + U` = Unterstrichen.'
+                            }
+                        ]
+                    },
+                    {
+                        title: "4. Texte formatieren in Word",
+                        intro: "Formatieren heißt: das Aussehen eines Textes verändern – Schriftart, Größe, Farbe und Hervorhebungen wie fett oder kursiv. Die Werkzeuge dafür findest du oben in Word.",
+                        blocks: [
+                            {
+                                type: 'info',
+                                title: 'Das Menüband',
+                                text: 'Oben in Word liegt das **Menüband** mit mehreren **Registerkarten** (Start, Einfügen, Layout …). Fast alle Werkzeuge zum Formatieren findest du in der Registerkarte **„Start“** im Bereich **„Schriftart“**.'
+                            },
+                            {
+                                type: 'warning',
+                                title: 'Die goldene Regel: Erst markieren!',
+                                text: 'Word formatiert immer nur den Text, der **markiert** ist. Markiere also zuerst das Wort oder den Satz – und klicke erst dann auf die gewünschte Schaltfläche.'
+                            },
+                            {
+                                type: 'standard',
+                                title: 'Schriftart und Schriftgröße',
+                                text: 'Im **ersten Feld** wählst du die **Schriftart** (z. B. **Arial** oder **Calibri**) – klicke auf den kleinen Pfeil und suche sie in der Liste aus. Daneben stellst du die **Schriftgröße** ein (z. B. **14**). Je größer die Zahl, desto größer die Schrift.'
+                            },
+                            {
+                                type: 'info',
+                                title: 'Fett, kursiv, unterstrichen, durchgestrichen',
+                                text: 'Im deutschen Word tragen die Schaltflächen deutsche Buchstaben: **F** = **Fett**, **K** = *Kursiv* (schräg), **U** = Unterstrichen. Die Schaltfläche **abc** mit Strich streicht ein Wort **durch**. Ein zweiter Klick auf dieselbe Schaltfläche hebt die Formatierung wieder auf.'
+                            },
+                            {
+                                type: 'standard',
+                                title: 'Schriftfarbe ändern',
+                                text: 'Die Schaltfläche **A mit farbigem Balken** darunter ändert die **Schriftfarbe**. Klicke auf den kleinen Pfeil daneben, um eine Farbe auszuwählen – z. B. **Orange**. Nicht verwechseln mit dem **Textmarker** (Stift-Symbol): Er färbt den Hintergrund hinter dem Text ein.'
+                            },
+                            {
+                                type: 'tip',
+                                title: 'Formatvorlagen – der richtige Weg für Überschriften',
+                                text: 'Mache eine Überschrift niemals nur durch manuelle Vergrößerung und Fettdruck. Markiere das Wort und wähle oben in der Leiste: **„Überschrift 1"** für Hauptüberschriften (z.B. Kapitel), **„Überschrift 2"** für Unterüberschriften. Nur so kann Word später automatisch ein **Inhaltsverzeichnis** erstellen – und die Struktur deines Dokuments bleibt konsistent.'
+                            },
+                            {
+                                type: 'info',
+                                title: 'Suchen und Ersetzen',
+                                text: 'Mit **`Strg + F`** öffnest du die Suchleiste und findest jedes Wort im Dokument sofort. Mit **`Strg + H`** öffnest du „Suchen und Ersetzen": Trage oben das gesuchte Wort ein (z.B. „Schüler") und unten das neue Wort (z.B. „Lernende") – dann klicke **„Alle ersetzen"**. Word tauscht alle Vorkommen auf einmal aus. Praktisch bei langen Texten!'
+                            },
+                            {
+                                type: 'tip',
+                                title: 'Rechtschreibprüfung richtig nutzen',
+                                text: 'Rot unterstrichene Wörter = Rechtschreibfehler. Blau unterstrichene Wörter = mögliche Grammatikfehler. **Rechtsklick** auf das unterstrichene Wort zeigt Korrekturvorschläge. Mit **F7** öffnest du die vollständige Rechtschreibprüfung für das gesamte Dokument. Wichtig: Die Prüfung ist nicht unfehlbar – lies deinen Text trotzdem selbst durch!'
+                            }
+                        ]
+                    },
+                    {
+                        title: "5. Word – Eine Seite professionell formatieren",
+                        intro: "Ein gut formatiertes Dokument wirkt professionell und ist leichter zu lesen. Hier lernst du Schritt für Schritt, wie du eine Seite richtig einrichtest.",
+                        blocks: [
+                            {
+                                type: 'info',
+                                title: 'Seitenränder einstellen',
+                                text: 'Gehe zu **Layout → Seitenränder**. Für schulische Dokumente empfiehlt sich: oben **2,5 cm**, unten **2,5 cm**, links **3 cm** (Platz für Heftung oder Korrekturrand), rechts **2 cm**. Alternativ wähle die Voreinstellung **„Normal"** (alle Seiten 2,54 cm) als guten Ausgangspunkt. Diese Einstellung gilt für das gesamte Dokument.'
+                            },
+                            {
+                                type: 'info',
+                                title: 'Schriftart und -größe festlegen',
+                                text: 'Markiere deinen gesamten Text mit **`Strg + A`**. Wähle oben eine ruhige, gut lesbare Schriftart: **Calibri**, **Arial** oder **Times New Roman**. Die Schriftgröße für den Fließtext sollte **11 oder 12 Punkt** betragen. Überschriften werden durch Formatvorlagen automatisch größer – verändere deren Größe niemals manuell, sonst verlierst du die Einheitlichkeit.'
+                            },
+                            {
+                                type: 'standard',
+                                title: 'Zeilenabstand und Absatzabstand einstellen',
+                                text: 'Markiere alles mit **`Strg + A`**. Gehe zu **Start → Absatz → Zeilenabstand**. Für schulische Arbeiten ist **1,5-facher Abstand** standard – das macht den Text leichter lesbar und gibt Lehrkräften Raum für Korrekturen. Für den Abstand zwischen Absätzen: **„Abstand nach"** auf **6 Punkt** setzen. So entsteht zwischen Absätzen automatisch etwas Luft – ohne eine leere Zeile einzufügen.'
+                            },
+                            {
+                                type: 'standard',
+                                title: 'Textausrichtung',
+                                text: 'Markiere deinen Text und wähle die Ausrichtung: **Linksbündig** (Strg + L) – Standard für Fließtext, natürlich zu lesen. **Zentriert** (Strg + E) – für Titelseiten und Überschriften auf einer eigenen Zeile. **Rechtsbündig** (Strg + R) – selten, z.B. für Datum oben rechts. **Blocksatz** (Strg + B) – beide Seiten bündig, wirkt formell; Achtung: kann große Lücken zwischen Wörtern erzeugen.'
+                            },
+                            {
+                                type: 'standard',
+                                title: 'Aufzählungen und Nummerierungen',
+                                text: 'Für **Aufzählungslisten** (Spiegelstriche/Punkte): Klicke im Start-Tab auf das Symbol mit den Punkten und Strichen. Für **nummerierte Listen** (1., 2., 3.): Klicke das Symbol mit den Zahlen daneben. Word setzt die Nummerierung automatisch fort. Mit der **Tab-Taste** rückst du einen Punkt in der Hierarchie nach unten ein (z.B. von 1. zu 1.a). Mit **Shift + Tab** gehst du wieder nach oben.'
+                            },
+                            {
+                                type: 'standard',
+                                title: 'Tabellen einfügen',
+                                text: 'Gehe zu **Einfügen → Tabelle** und ziehe mit der Maus die gewünschte Anzahl an Zeilen und Spalten auf. Mit der **Tab-Taste** springst du von Zelle zu Zelle (am Ende einer Zeile automatisch in die nächste). Mit **Tab in der letzten Zelle** fügst du eine neue Zeile ein. Über **Tabellenentwurf** (erscheint oben, wenn die Tabelle angeklickt ist) kannst du Farben und Rahmenlinien gestalten.'
+                            },
+                            {
+                                type: 'tip',
+                                title: 'Kopf- und Fußzeile einfügen',
+                                text: '**Doppelklicke** ganz oben auf der Seite (über dem Text) – das öffnet die Kopfzeile. Hier kannst du Name, Fach oder Titel eintragen. Unten auf der Seite ist die Fußzeile. Automatische **Seitenzahlen** fügst du ein über: **Einfügen → Seitenzahl → Unten auf der Seite → Einfache Zahl**. Die Zahl erscheint dann auf jeder Seite automatisch. Mit **Doppelklick** auf den normalen Text verlässt du die Kopf-/Fußzeile wieder.'
+                            },
+                            {
+                                type: 'tip',
+                                title: 'Automatisches Inhaltsverzeichnis erstellen',
+                                text: 'Voraussetzung: Du hast deine Überschriften mit den Formatvorlagen **„Überschrift 1"** und **„Überschrift 2"** formatiert. Dann: Setze den Cursor an die Stelle, wo das Inhaltsverzeichnis erscheinen soll. Gehe zu **Referenzen → Inhaltsverzeichnis → Automatische Tabelle 1**. Word erstellt das Verzeichnis mit allen Überschriften und Seitenzahlen. Wenn du später etwas änderst: Rechtsklick auf das Verzeichnis → **„Felder aktualisieren"**.'
+                            },
+                            {
+                                type: 'tip',
+                                title: 'Bilder einfügen ohne Chaos',
+                                text: 'Gehe zu **Einfügen → Bilder → Dieses Gerät**. Das Bild erscheint oft mitten im Text und zerreißt alles. Klicke das Bild an, wähle die kleinen **Layoutoptionen** (erscheinen rechts neben dem Bild) und stelle **„Quadrat"** ein. Jetzt fließt der Text um das Bild herum. Verändere die Bildgröße immer nur an den **Ecken** (nicht an den Seiten), sonst verzerrt das Bild.'
+                            },
+                            {
+                                type: 'success',
+                                title: 'Fertige Dokumente als PDF exportieren',
+                                text: 'Gehe zu **Datei → Speichern unter → Dateityp: PDF**. Ein PDF ist wie ein digitales Foto deines Dokuments – Schrift, Abstände und Bilder bleiben auf jedem Computer genau gleich. Abgaben an Lehrkräfte immer als **PDF**, niemals als .docx – die Formatierung könnte sonst beim Öffnen verrutschen, besonders wenn der Empfänger eine andere Word-Version hat.'
+                            }
+                        ]
+                    },
+                    {
+                        title: "6. Dateimanagement",
+                        intro: "Dein Computer ist wie ein riesiges Zimmer – ohne Ordnung findest du nie etwas wieder. Hier sind die wichtigsten Profi-Regeln für perfekte Ordnung.",
+                        blocks: [
+                            {
+                                type: 'info',
+                                title: 'Deine Kommandozentrale: Der Windows Explorer',
+                                text: 'Der **Windows Explorer** zeigt dir alle Ordner und Dateien auf deinem Computer wie die Äste eines Baumes. Öffne ihn blitzschnell mit `Windows + E`. Auf der linken Seite siehst du die großen Hauptordner, rechts deren Inhalt. Oben in der Adressleiste siehst du immer, wo du dich gerade befindest.',
+                                image: ''
+                            },
+                            {
+                                type: 'tip',
+                                title: 'Professionelle Dateinamen – die 3 goldenen Regeln',
+                                text: 'Nenne Dateien niemals `Unbenannt` oder `asdf`. **1. Sei genau:** Schreibe Fach und Thema hinein (z.B. `Deutsch_Referat.docx`). **2. Das Datum gehört an den Anfang** – und zwar umgekehrt: `2026-05-12_...`. So sortiert der Computer alle Dateien automatisch chronologisch. **3. Keine Sonderzeichen** wie `? / \\ * : < > |` im Dateinamen – sie sind unter Windows verboten.'
+                            },
+                            {
+                                type: 'standard',
+                                title: 'Kopieren, Ausschneiden und Einfügen',
+                                text: 'Nutze lieber Tastaturkürzel als Drag & Drop: **`Strg + C`** kopiert, **`Strg + X`** schneidet aus (= verschiebt), **`Strg + V`** fügt ein. Willst du mehrere Dateien auf einmal markieren: Halte **Strg** gedrückt und klicke die Dateien einzeln an. Für einen zusammenhängenden Block: erste Datei anklicken, dann **Shift** halten und letzte anklicken.',
+                                image: ''
+                            },
+                            {
+                                type: 'info',
+                                title: 'Dateiformate verstehen',
+                                text: 'Jede Datei hat eine **Dateiendung**, die ihr Format anzeigt. Wichtige Formate: **.docx** = Word-Dokument, **.pdf** = unveränderliches Dokument, **.xlsx** = Excel-Tabelle, **.pptx** = PowerPoint-Präsentation, **.jpg / .png** = Bilddateien, **.mp4** = Video, **.mp3** = Audio. Lösche diese Endung beim Umbenennen niemals – sonst erkennt Windows die Datei nicht mehr!'
+                            },
+                            {
+                                type: 'warning',
+                                title: 'Der Papierkorb bringt sich nicht selbst raus',
+                                text: 'Wenn du die `Entf`-Taste drückst, landet die Datei nur im Papierkorb – der Speicherplatz ist noch belegt. Erst wenn du mit Rechtsklick auf den Papierkorb **„Papierkorb leeren"** wählst, wird der Platz wirklich frei. Mit `Strg + Z` kurz nach dem Löschen kannst du eine Datei sofort wiederherstellen.'
+                            }
+                        ]
+                    },
+                    {
+                        title: "7. Zusatzwissen: Hardware – Die wichtigsten Bauteile",
                         intro: "Ein Computer ist kein Zauberkästchen – er besteht aus klar definierten Bauteilen, die jeweils eine bestimmte Aufgabe haben. Wer sie kennt, versteht auch, warum manche Dinge schnell oder langsam sind, und weiß, was zu tun ist, wenn etwas nicht funktioniert.",
                         blocks: [
                             {
@@ -122,11 +370,6 @@
                                 type: 'standard',
                                 title: 'Bildschirm (Monitor)',
                                 text: 'Der Monitor zeigt dir alles an. Wichtige Kenngrößen: Die **Auflösung** (z.B. **1920×1080 Pixel = Full HD**) bestimmt, wie scharf das Bild ist. Die **Bildwiederholrate** (z.B. 60 Hz) gibt an, wie flüssig Bewegungen dargestellt werden. Der **Zoll-Wert** (z.B. 24") beschreibt die Bildschirmdiagonale. Für normale Schulaufgaben reicht Full HD mit 60 Hz und 22–24 Zoll völlig aus.'
-                            },
-                            {
-                                type: 'standard',
-                                title: 'Maus & Tastatur',
-                                text: 'Der **Linksklick** wählt Dinge aus oder öffnet Programme. Der **Rechtsklick** öffnet ein Kontextmenü (Kopieren, Umbenennen, Löschen). Das **Scrollrad** scrollt durch Seiten. Auf der Tastatur: **Shift** (gedrückt halten) = einzelner Großbuchstabe. **Caps Lock** = dauerhaft Großbuchstaben. **Tab** = Einrücken in Tabellen oder Formularen. **Entf** = löscht das Zeichen rechts vom Cursor oder eine markierte Datei. **Backspace** = löscht das Zeichen links vom Cursor.'
                             },
                             {
                                 type: 'standard',
@@ -164,137 +407,18 @@
                                 text: 'Stelle deinen Stuhl so ein, dass deine Augen ungefähr auf Höhe des **oberen Bildschirmrands** sind – so vermeidest du Nackenschmerzen. Halte ca. **50–70 cm Abstand** zum Bildschirm. Platziere die Tastatur so, dass deine Unterarme waagerecht liegen. Essen und Trinken gehören nicht direkt neben die Tastatur. Verlässt du deinen Platz: Bildschirm sperren mit `Windows + L`.'
                             }
                         ]
-                    },
-                    {
-                        title: "2. Dateimanagement",
-                        intro: "Dein Computer ist wie ein riesiges Zimmer – ohne Ordnung findest du nie etwas wieder. Hier sind die wichtigsten Profi-Regeln für perfekte Ordnung.",
-                        blocks: [
-                            {
-                                type: 'info',
-                                title: 'Deine Kommandozentrale: Der Windows Explorer',
-                                text: 'Der **Windows Explorer** zeigt dir alle Ordner und Dateien auf deinem Computer wie die Äste eines Baumes. Öffne ihn blitzschnell mit `Windows + E`. Auf der linken Seite siehst du die großen Hauptordner, rechts deren Inhalt. Oben in der Adressleiste siehst du immer, wo du dich gerade befindest.',
-                                image: ''
-                            },
-                            {
-                                type: 'tip',
-                                title: 'Professionelle Dateinamen – die 3 goldenen Regeln',
-                                text: 'Nenne Dateien niemals `Unbenannt` oder `asdf`. **1. Sei genau:** Schreibe Fach und Thema hinein (z.B. `Deutsch_Referat.docx`). **2. Das Datum gehört an den Anfang** – und zwar umgekehrt: `2026-05-12_...`. So sortiert der Computer alle Dateien automatisch chronologisch. **3. Keine Sonderzeichen** wie `? / \\ * : < > |` im Dateinamen – sie sind unter Windows verboten.'
-                            },
-                            {
-                                type: 'standard',
-                                title: 'Kopieren, Ausschneiden und Einfügen',
-                                text: 'Nutze lieber Tastaturkürzel als Drag & Drop: **`Strg + C`** kopiert, **`Strg + X`** schneidet aus (= verschiebt), **`Strg + V`** fügt ein. Willst du mehrere Dateien auf einmal markieren: Halte **Strg** gedrückt und klicke die Dateien einzeln an. Für einen zusammenhängenden Block: erste Datei anklicken, dann **Shift** halten und letzte anklicken.',
-                                image: ''
-                            },
-                            {
-                                type: 'info',
-                                title: 'Dateiformate verstehen',
-                                text: 'Jede Datei hat eine **Dateiendung**, die ihr Format anzeigt. Wichtige Formate: **.docx** = Word-Dokument, **.pdf** = unveränderliches Dokument, **.xlsx** = Excel-Tabelle, **.pptx** = PowerPoint-Präsentation, **.jpg / .png** = Bilddateien, **.mp4** = Video, **.mp3** = Audio. Lösche diese Endung beim Umbenennen niemals – sonst erkennt Windows die Datei nicht mehr!'
-                            },
-                            {
-                                type: 'warning',
-                                title: 'Der Papierkorb bringt sich nicht selbst raus',
-                                text: 'Wenn du die `Entf`-Taste drückst, landet die Datei nur im Papierkorb – der Speicherplatz ist noch belegt. Erst wenn du mit Rechtsklick auf den Papierkorb **„Papierkorb leeren"** wählst, wird der Platz wirklich frei. Mit `Strg + Z` kurz nach dem Löschen kannst du eine Datei sofort wiederherstellen.'
-                            }
-                        ]
-                    },
-                    {
-                        title: "3. Word – Grundlagen und Tastenkürzel",
-                        intro: "Bevor du formatierst, musst du die Grundbedienung sitzen haben. Diese Tastenkürzel sparst du dir täglich Minuten.",
-                        blocks: [
-                            {
-                                type: 'warning',
-                                title: 'Speichern und Retten',
-                                text: 'Drücke während des Schreibens regelmäßig **`Strg + S`** – so geht nichts verloren. Hast du aus Versehen Text gelöscht? **`Strg + Z`** macht den letzten Schritt rückgängig, beliebig oft. **`Strg + Y`** stellt einen rückgängig gemachten Schritt wieder her. Speichere neue Dokumente sofort unter einem sinnvollen Namen ab, bevor du anfängst zu schreiben.'
-                            },
-                            {
-                                type: 'standard',
-                                title: 'Die wichtigsten Tastenkürzel',
-                                text: '`Strg + S` = Speichern · `Strg + Z` = Rückgängig · `Strg + Y` = Wiederholen · `Strg + C` = Kopieren · `Strg + X` = Ausschneiden · `Strg + V` = Einfügen · `Strg + A` = Alles markieren · `Strg + F` = Suchen · `Strg + H` = Suchen & Ersetzen · `Strg + P` = Drucken · `Strg + B` = **Fett** · `Strg + I` = *Kursiv* · `Strg + U` = Unterstrichen.'
-                            },
-                            {
-                                type: 'tip',
-                                title: 'Formatvorlagen – der richtige Weg für Überschriften',
-                                text: 'Mache eine Überschrift niemals nur durch manuelle Vergrößerung und Fettdruck. Markiere das Wort und wähle oben in der Leiste: **„Überschrift 1"** für Hauptüberschriften (z.B. Kapitel), **„Überschrift 2"** für Unterüberschriften. Nur so kann Word später automatisch ein **Inhaltsverzeichnis** erstellen – und die Struktur deines Dokuments bleibt konsistent.'
-                            },
-                            {
-                                type: 'info',
-                                title: 'Suchen und Ersetzen',
-                                text: 'Mit **`Strg + F`** öffnest du die Suchleiste und findest jedes Wort im Dokument sofort. Mit **`Strg + H`** öffnest du „Suchen und Ersetzen": Trage oben das gesuchte Wort ein (z.B. „Schüler") und unten das neue Wort (z.B. „Lernende") – dann klicke **„Alle ersetzen"**. Word tauscht alle Vorkommen auf einmal aus. Praktisch bei langen Texten!'
-                            },
-                            {
-                                type: 'tip',
-                                title: 'Rechtschreibprüfung richtig nutzen',
-                                text: 'Rot unterstrichene Wörter = Rechtschreibfehler. Blau unterstrichene Wörter = mögliche Grammatikfehler. **Rechtsklick** auf das unterstrichene Wort zeigt Korrekturvorschläge. Mit **F7** öffnest du die vollständige Rechtschreibprüfung für das gesamte Dokument. Wichtig: Die Prüfung ist nicht unfehlbar – lies deinen Text trotzdem selbst durch!'
-                            }
-                        ]
-                    },
-                    {
-                        title: "4. Word – Eine Seite professionell formatieren",
-                        intro: "Ein gut formatiertes Dokument wirkt professionell und ist leichter zu lesen. Hier lernst du Schritt für Schritt, wie du eine Seite richtig einrichtest.",
-                        blocks: [
-                            {
-                                type: 'info',
-                                title: 'Seitenränder einstellen',
-                                text: 'Gehe zu **Layout → Seitenränder**. Für schulische Dokumente empfiehlt sich: oben **2,5 cm**, unten **2,5 cm**, links **3 cm** (Platz für Heftung oder Korrekturrand), rechts **2 cm**. Alternativ wähle die Voreinstellung **„Normal"** (alle Seiten 2,54 cm) als guten Ausgangspunkt. Diese Einstellung gilt für das gesamte Dokument.'
-                            },
-                            {
-                                type: 'info',
-                                title: 'Schriftart und -größe festlegen',
-                                text: 'Markiere deinen gesamten Text mit **`Strg + A`**. Wähle oben eine ruhige, gut lesbare Schriftart: **Calibri**, **Arial** oder **Times New Roman**. Die Schriftgröße für den Fließtext sollte **11 oder 12 Punkt** betragen. Überschriften werden durch Formatvorlagen automatisch größer – verändere deren Größe niemals manuell, sonst verlierst du die Einheitlichkeit.'
-                            },
-                            {
-                                type: 'standard',
-                                title: 'Zeilenabstand und Absatzabstand einstellen',
-                                text: 'Markiere alles mit **`Strg + A`**. Gehe zu **Start → Absatz → Zeilenabstand**. Für schulische Arbeiten ist **1,5-facher Abstand** standard – das macht den Text leichter lesbar und gibt Lehrkräften Raum für Korrekturen. Für den Abstand zwischen Absätzen: **„Abstand nach"** auf **6 Punkt** setzen. So entsteht zwischen Absätzen automatisch etwas Luft – ohne eine leere Zeile einzufügen.'
-                            },
-                            {
-                                type: 'standard',
-                                title: 'Textausrichtung',
-                                text: 'Markiere deinen Text und wähle die Ausrichtung: **Linksbündig** (Strg + L) – Standard für Fließtext, natürlich zu lesen. **Zentriert** (Strg + E) – für Titelseiten und Überschriften auf einer eigenen Zeile. **Rechtsbündig** (Strg + R) – selten, z.B. für Datum oben rechts. **Blocksatz** (Strg + J) – beide Seiten bündig, wirkt formell; Achtung: kann große Lücken zwischen Wörtern erzeugen.'
-                            },
-                            {
-                                type: 'standard',
-                                title: 'Aufzählungen und Nummerierungen',
-                                text: 'Für **Aufzählungslisten** (Spiegelstriche/Punkte): Klicke im Start-Tab auf das Symbol mit den Punkten und Strichen. Für **nummerierte Listen** (1., 2., 3.): Klicke das Symbol mit den Zahlen daneben. Word setzt die Nummerierung automatisch fort. Mit der **Tab-Taste** rückst du einen Punkt in der Hierarchie nach unten ein (z.B. von 1. zu 1.a). Mit **Shift + Tab** gehst du wieder nach oben.'
-                            },
-                            {
-                                type: 'standard',
-                                title: 'Tabellen einfügen',
-                                text: 'Gehe zu **Einfügen → Tabelle** und ziehe mit der Maus die gewünschte Anzahl an Zeilen und Spalten auf. Mit der **Tab-Taste** springst du von Zelle zu Zelle (am Ende einer Zeile automatisch in die nächste). Mit **Tab in der letzten Zelle** fügst du eine neue Zeile ein. Über **Tabellenentwurf** (erscheint oben, wenn die Tabelle angeklickt ist) kannst du Farben und Rahmenlinien gestalten.'
-                            },
-                            {
-                                type: 'tip',
-                                title: 'Kopf- und Fußzeile einfügen',
-                                text: '**Doppelklicke** ganz oben auf der Seite (über dem Text) – das öffnet die Kopfzeile. Hier kannst du Name, Fach oder Titel eintragen. Unten auf der Seite ist die Fußzeile. Automatische **Seitenzahlen** fügst du ein über: **Einfügen → Seitenzahl → Unten auf der Seite → Einfache Zahl**. Die Zahl erscheint dann auf jeder Seite automatisch. Mit **Doppelklick** auf den normalen Text verlässt du die Kopf-/Fußzeile wieder.'
-                            },
-                            {
-                                type: 'tip',
-                                title: 'Automatisches Inhaltsverzeichnis erstellen',
-                                text: 'Voraussetzung: Du hast deine Überschriften mit den Formatvorlagen **„Überschrift 1"** und **„Überschrift 2"** formatiert. Dann: Setze den Cursor an die Stelle, wo das Inhaltsverzeichnis erscheinen soll. Gehe zu **Referenzen → Inhaltsverzeichnis → Automatische Tabelle 1**. Word erstellt das Verzeichnis mit allen Überschriften und Seitenzahlen. Wenn du später etwas änderst: Rechtsklick auf das Verzeichnis → **„Felder aktualisieren"**.'
-                            },
-                            {
-                                type: 'tip',
-                                title: 'Bilder einfügen ohne Chaos',
-                                text: 'Gehe zu **Einfügen → Bilder → Dieses Gerät**. Das Bild erscheint oft mitten im Text und zerreißt alles. Klicke das Bild an, wähle die kleinen **Layoutoptionen** (erscheinen rechts neben dem Bild) und stelle **„Quadrat"** ein. Jetzt fließt der Text um das Bild herum. Verändere die Bildgröße immer nur an den **Ecken** (nicht an den Seiten), sonst verzerrt das Bild.'
-                            },
-                            {
-                                type: 'success',
-                                title: 'Fertige Dokumente als PDF exportieren',
-                                text: 'Gehe zu **Datei → Speichern unter → Dateityp: PDF**. Ein PDF ist wie ein digitales Foto deines Dokuments – Schrift, Abstände und Bilder bleiben auf jedem Computer genau gleich. Abgaben an Lehrkräfte immer als **PDF**, niemals als .docx – die Formatierung könnte sonst beim Öffnen verrutschen, besonders wenn der Empfänger eine andere Word-Version hat.'
-                            }
-                        ]
                     }
                 ],
                 missions: [
-                    "Benenne die wichtigsten Bauteile eines Computers (CPU, RAM, SSD, GPU, Monitor) und erkläre in einem Satz, was jedes davon macht.",
-                    "Stecke einen USB-Stick an deinen Computer, öffne ihn im Explorer und wirf ihn danach sicher aus (Rechtsklick → Auswerfen).",
+                    "Übe das Markieren: Markiere in einem Text mit einem Doppelklick ein einzelnes Wort und mit einem Dreifachklick einen ganzen Absatz.",
+                    "Bringe durcheinandergeratene Sätze mit Ausschneiden und Einfügen (Rechtsklick) in die richtige Reihenfolge, z. B. „von den Bäumen die Blätter Im Herbst fallen.“",
+                    "Zeige deinem Sitznachbarn auf der Tastatur folgende Tasten und erkläre, was sie tun: Leertaste, Enter, Escape, Feststelltaste, Löschtaste, Umschalttaste, Strg und Alt Gr.",
+                    "Schreibe einen Satz, der das @-Zeichen (Alt Gr + Q) und das €-Zeichen (Alt Gr + E) enthält.",
+                    "Tippe einen kurzen Text ab und formatiere ihn: Schriftart Arial, Schriftgröße 14, ein Wort kursiv, ein Wort unterstrichen, ein Wort fett und orange, ein Wort durchgestrichen.",
                     "Öffne den Windows Explorer (Win + E) und erstelle eine Ordnerstruktur: Hauptordner 'Schule' mit je einem Unterordner für drei deiner Fächer.",
-                    "Suche eine Datei auf deinem Computer und benenne sie nach den Profi-Regeln um: Datum umgekehrt + Fach + Thema (z.B. 2026-05-12_Deutsch_Referat.docx).",
-                    "Öffne Word und richte eine neue Seite ein: Seitenränder (links 3 cm, rechts 2 cm, oben/unten 2,5 cm), Schrift Calibri 12pt, Zeilenabstand 1,5.",
-                    "Schreibe einen kurzen Text mit mindestens zwei Überschriften. Formatiere sie mit den Formatvorlagen 'Überschrift 1' und 'Überschrift 2'.",
-                    "Erstelle aus deinen Überschriften ein automatisches Inhaltsverzeichnis (Referenzen → Inhaltsverzeichnis).",
-                    "Füge eine Tabelle mit 3 Spalten und 4 Zeilen ein und befülle sie mit Beispieldaten. Gestalte sie farblich über 'Tabellenentwurf'.",
+                    "Speichere dein Dokument nach den Profi-Regeln: Datum umgekehrt + Fach + Thema (z.B. 2026-05-12_Deutsch_Herbsttext.docx).",
+                    "Richte in Word eine neue Seite ein: Seitenränder (links 3 cm, rechts 2 cm, oben/unten 2,5 cm), Schrift Calibri 12pt, Zeilenabstand 1,5.",
+                    "Schreibe einen kurzen Text mit zwei Überschriften (Formatvorlagen 'Überschrift 1' und 'Überschrift 2') und erstelle daraus ein automatisches Inhaltsverzeichnis.",
                     "Füge eine Kopfzeile mit deinem Namen und eine automatische Seitenzahl in der Fußzeile ein.",
                     "Speichere dein fertiges Dokument einmal als .docx und einmal als PDF ab."
                 ]
@@ -540,21 +664,21 @@
         // Format: { q: Fragetext, a: [Antworten], c: [korrekte Indizes] }
         const QUIZ_DATA = {
           1: [
-            { q: "Was ist die Aufgabe der CPU?", a: ["Sie speichert Dateien dauerhaft auf der Festplatte", "Sie verarbeitet alle Berechnungen und führt Programme aus", "Sie zeigt Bilder auf dem Bildschirm an", "Sie verbindet den Computer mit dem Internet"], c: [1] },
-            { q: "Welche Aussage zur SSD trifft zu?", a: ["Sie hat drehende mechanische Scheiben", "Sie ist langsamer als eine HDD", "Sie ist schneller und stoßunempfindlicher als eine HDD", "Sie wird zum Anzeigen von Bildern verwendet"], c: [2] },
-            { q: "Wie heißt der Tastaturbefehl zum Speichern in Word?", a: ["Strg + Z", "Strg + S", "Strg + P", "Strg + C"], c: [1] },
-            { q: "Wähle 2 richtige Antworten: Welche zwei Aussagen zum RAM sind korrekt?", a: ["Der RAM speichert Daten dauerhaft", "Der RAM wird beim Ausschalten geleert", "Der RAM ist der kurzfristige Arbeitsspeicher", "Der RAM ist dasselbe wie die Festplatte"], c: [1, 2] },
-            { q: "Wie sollte ein professioneller Dateiname für ein Referat aussehen?", a: ["Unbenannt.docx", "referat.docx", "2026-05-12_Deutsch_Referat.docx", "Datei1.docx"], c: [2] },
-            { q: "Was macht Strg + Z in Word?", a: ["Speichern", "Drucken", "Letzten Schritt rückgängig machen", "Alles markieren"], c: [2] },
-            { q: "Mit welchem Tastaturkürzel öffnest du den Windows Explorer?", a: ["Strg + E", "Windows + E", "Alt + E", "Strg + W"], c: [1] },
-            { q: "Welche Dateiendung hat ein Word-Dokument?", a: [".pdf", ".xlsx", ".docx", ".pptx"], c: [2] },
-            { q: "Wie entfernst du einen USB-Stick sicher?", a: ["Einfach abziehen", "Rechtsklick auf das Symbol → Auswerfen, dann abziehen", "Den Computer neu starten", "Strg + Alt + Entf drücken"], c: [1] },
-            { q: "Wähle 2 richtige Antworten: Welche Aussagen zu Formatvorlagen in Word sind korrekt?", a: ["Formatvorlagen ermöglichen ein automatisches Inhaltsverzeichnis", "Formatvorlagen sind nur für Bilder gedacht", "Mit 'Überschrift 1' und 'Überschrift 2' strukturiert man Dokumente korrekt", "Formatvorlagen vergrößern die Schrift immer auf 24pt"], c: [0, 2] },
-            { q: "Was bedeutet die Dateiendung .pdf?", a: ["Eine bearbeitbare Word-Datei", "Ein unveränderliches Dokument, das überall gleich aussieht", "Eine Tabellendatei", "Eine Videodatei"], c: [1] },
-            { q: "Wie viel RAM empfiehlt sich mindestens für den Schulalltag?", a: ["1 GB", "4 GB", "8 GB", "64 GB"], c: [2] },
-            { q: "Was ist der Unterschied zwischen Kopieren (Strg+C) und Ausschneiden (Strg+X)?", a: ["Es gibt keinen Unterschied", "Kopieren lässt das Original bestehen, Ausschneiden entfernt es", "Ausschneiden lässt das Original bestehen, Kopieren entfernt es", "Kopieren löscht die Datei direkt"], c: [1] },
-            { q: "Wähle 2 richtige Antworten: Welche zwei Zeichen sind in Windows-Dateinamen verboten?", a: ["Unterstrich (_)", "Fragezeichen (?)", "Bindestrich (-)", "Schrägstrich (/)"], c: [1, 3] },
-            { q: "Was passiert, wenn du die Entf-Taste bei einer Datei drückst?", a: ["Die Datei wird sofort unwiderruflich gelöscht", "Die Datei landet im Papierkorb und kann wiederhergestellt werden", "Die Datei wird verschoben", "Die Datei wird komprimiert"], c: [1] }
+            { q: "Mit welchem Finger drückst du die linke Maustaste?", a: ["Mit dem Zeigefinger", "Mit dem Mittelfinger", "Mit dem Daumen", "Mit dem Ringfinger"], c: [0] },
+            { q: "Was passiert, wenn du in einem Text doppelt auf ein Wort klickst?", a: ["Das Wort wird gelöscht", "Das Wort wird markiert", "Das Wort wird fett gedruckt", "Das Wort wird kopiert"], c: [1] },
+            { q: "Wähle 3 richtige Antworten: Wofür kannst du Klicken und Ziehen (Drag & Drop) nutzen?", a: ["Dateien verschieben", "Fenster bewegen", "Text markieren", "Den Computer ausschalten"], c: [0, 1, 2] },
+            { q: "Was öffnest du mit einem Rechtsklick?", a: ["Ein Menü mit Optionen wie Kopieren, Ausschneiden und Einfügen", "Immer ein neues Programm", "Den Papierkorb", "Die Rechtschreibprüfung"], c: [0] },
+            { q: "In welcher Reihenfolge schneidest du einen Textteil aus und fügst ihn an anderer Stelle ein?", a: ["Markieren → Rechtsklick → Ausschneiden → an die neue Stelle klicken → Rechtsklick → Einfügen", "Rechtsklick → Einfügen → Markieren → Ausschneiden", "An die neue Stelle klicken → Ausschneiden → Markieren → Einfügen", "Ausschneiden → Einfügen → Markieren → Rechtsklick"], c: [0] },
+            { q: "Was ist der Unterschied zwischen Ausschneiden und Kopieren?", a: ["Es gibt keinen Unterschied", "Beim Ausschneiden verschwindet der Text an der alten Stelle, beim Kopieren bleibt er stehen", "Beim Kopieren verschwindet der Text an der alten Stelle, beim Ausschneiden bleibt er stehen", "Ausschneiden löscht den Text endgültig"], c: [1] },
+            { q: "Mit welcher Taste erzeugst du eine neue Textzeile oder bestätigst eine Eingabe?", a: ["Leertaste", "Enter-Taste", "Tab-Taste", "Escape-Taste"], c: [1] },
+            { q: "Welche Taste löscht das Zeichen links vom Cursor, also das zuletzt geschriebene?", a: ["Die Löschtaste (Rücktaste)", "Die Escape-Taste", "Die Leertaste", "Die Tab-Taste"], c: [0] },
+            { q: "Wähle 2 richtige Antworten: Welche Aussagen zur Umschalt- und zur Feststelltaste stimmen?", a: ["Hältst du die Umschalttaste gedrückt, schreibst du einen Großbuchstaben", "Die Feststelltaste schaltet dauerhaft auf Großbuchstaben um", "Die Umschalttaste löscht das letzte Zeichen", "Die Feststelltaste fügt ein Leerzeichen ein"], c: [0, 1] },
+            { q: "Wie schreibst du das @-Zeichen?", a: ["Alt Gr + Q", "Umschalt + Q", "Strg + Q", "Alt Gr + E"], c: [0] },
+            { q: "Mit welcher Taste brichst du einen Vorgang ab, ohne die Maus zu benutzen?", a: ["Enter-Taste", "Escape-Taste", "Feststelltaste", "Alt Gr"], c: [1] },
+            { q: "Was musst du tun, bevor du ein Wort fett, kursiv oder farbig machen kannst?", a: ["Das Dokument speichern", "Das Wort markieren", "Word neu starten", "Die Feststelltaste drücken"], c: [1] },
+            { q: "Welcher Buchstabe steht im deutschen Word auf der Schaltfläche für Fettdruck?", a: ["F", "B", "K", "U"], c: [0] },
+            { q: "Du sollst das Wort „löschen“ durchstreichen. Welche Schaltfläche nutzt du?", a: ["abc mit Strich (Durchgestrichen)", "U (Unterstrichen)", "K (Kursiv)", "A mit Farbbalken (Schriftfarbe)"], c: [0] },
+            { q: "Mit welchem Tastenkürzel speicherst du dein Dokument zwischendurch?", a: ["Strg + Z", "Strg + S", "Strg + P", "Strg + C"], c: [1] }
           ],
           2: [
             { q: "Was ist die wichtigste Regel für Text auf Präsentationsfolien?", a: ["Je mehr Text, desto besser", "Nur kurze Stichpunkte, keine ganzen Sätze", "Mindestens 5 Sätze pro Folie", "Schriftgröße immer unter 10pt"], c: [1] },
